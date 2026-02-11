@@ -7,7 +7,3 @@ CREATE TABLE inflation_data (
     Country_Code TEXT
 );
 
-COPY inflation_data
-FROM '/docker-entrypoint-initdb.d/inflation.csv'
-DELIMITER ','
-CSV HEADER;
