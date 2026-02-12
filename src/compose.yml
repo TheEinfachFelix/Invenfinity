@@ -4,17 +4,17 @@ services:
     restart: always
     env_file:
       - .env
+    user: postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD", "pg_isready"]
       interval: 1s
       timeout: 5s
       retries: 10
     volumes:
-      - pgdata:/var/lib/postgresql/data 
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
 
  
-volumes:
-  pgdata:
+#volumes:
+ # pgdata:
