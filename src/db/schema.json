@@ -1,0 +1,467 @@
+{
+  "tables": [
+    {
+      "id": "4OwlMXCRTG985n-oEeuIE",
+      "name": "Part",
+      "x": 889.5999755859374,
+      "y": -472.79998779296875,
+      "locked": false,
+      "fields": [
+        {
+          "name": "PartID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "hEDBSsD8HeZ3ZBamgmxoy"
+        },
+        {
+          "id": "H9waThBrZ7OKlnfK2YTPB",
+          "name": "InventreeID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "pa07xE1lLe2QPH5BIq-1f",
+      "name": "Grid",
+      "x": -384.80004882812494,
+      "y": -455.2000122070312,
+      "locked": false,
+      "fields": [
+        {
+          "name": "GridID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "Vg7yYBEC0GIzgEV6BHlNK"
+        },
+        {
+          "id": "sUBReahs2bMHmvjlG8rfX",
+          "name": "LocationID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "2sEcP9xKtljSErKB2Egfp",
+          "name": "Name",
+          "type": "TEXT",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "O3A6xNr5_j5EQRyqOWwnC",
+      "name": "Location",
+      "x": -659.9999694824219,
+      "y": -492.800048828125,
+      "locked": false,
+      "fields": [
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "azxZmNXPE-ZXhuStE8vNy"
+        },
+        {
+          "id": "0juUbhVAPAtQyyfy_4WPo",
+          "name": "name",
+          "type": "TEXT",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "dWCyu4gktfZogK63du15z",
+          "name": "MasterLocationID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "6ngRqtcalxBCvlzm2zNkj",
+      "name": "Bin",
+      "x": 208.8000488281249,
+      "y": -492.800048828125,
+      "locked": false,
+      "fields": [
+        {
+          "name": "BinID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "FUsbauuYUDBsg03qGbTmA"
+        },
+        {
+          "id": "aJLaP8qzeCnMa3ZqqYNSE",
+          "name": "BinTypeID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "ol21Mq4lZB1citXm0gTXp",
+      "name": "BinPart",
+      "x": 551.999755859375,
+      "y": -491.99993896484386,
+      "locked": false,
+      "fields": [
+        {
+          "name": "BinID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "id": "l8g26shJKFmeVg33Y0lle"
+        },
+        {
+          "id": "VcAbaiEZ59r05v09D2rS7",
+          "name": "PartID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "6Sp-sKB7XT3wW1IOmThFV",
+          "name": "SlotNr",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "W2UZYhSU5fjWljDzKheCu",
+      "name": "BinType",
+      "x": 202.40008544921875,
+      "y": -290.4000701904297,
+      "locked": false,
+      "fields": [
+        {
+          "name": "BinTypeID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "AVHjALr8Ck-FvqZu0rzZP"
+        },
+        {
+          "id": "ekpeFDY6BO1V5m8mGhJSu",
+          "name": "SlotCount",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "8gWljSQiCvcRqxU8Yjsf_",
+          "name": "X",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "aAoJmGa0ArCfn4nl1FZ3p",
+          "name": "Y",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    },
+    {
+      "id": "IZLJAUrTLjdShPA7ke_Sx",
+      "name": "GridPos",
+      "x": -95.2000732421875,
+      "y": -486.4000549316406,
+      "locked": false,
+      "fields": [
+        {
+          "name": "GridPosID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": "J_PEXLQRLQO6BBd9ubHkc"
+        },
+        {
+          "id": "zyM-BubpXEhUJ6n4jFRQy",
+          "name": "X",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "KiJ9fXGVuN7vQUg3PJOgP",
+          "name": "Y",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "l7IzxCIffAIFxPRyXvs5I",
+          "name": "BinID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "acNUZBjJaeGMqdcbhY8E5",
+          "name": "GridID",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "",
+      "indices": [],
+      "color": "#175e7a"
+    }
+  ],
+  "relationships": [
+    {
+      "startTableId": "ol21Mq4lZB1citXm0gTXp",
+      "startFieldId": "l8g26shJKFmeVg33Y0lle",
+      "endTableId": "6ngRqtcalxBCvlzm2zNkj",
+      "endFieldId": "FUsbauuYUDBsg03qGbTmA",
+      "cardinality": "one_to_many",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_BinPart_BinID_Bin",
+      "id": "wsJcCpusIFVfoxf_gctDe"
+    },
+    {
+      "startTableId": "ol21Mq4lZB1citXm0gTXp",
+      "startFieldId": "VcAbaiEZ59r05v09D2rS7",
+      "endTableId": "4OwlMXCRTG985n-oEeuIE",
+      "endFieldId": "hEDBSsD8HeZ3ZBamgmxoy",
+      "cardinality": "one_to_many",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_BinPart_PartID_Part",
+      "id": "BaSYmL3269_XWz33P85Nv"
+    },
+    {
+      "startTableId": "6ngRqtcalxBCvlzm2zNkj",
+      "startFieldId": "aJLaP8qzeCnMa3ZqqYNSE",
+      "endTableId": "W2UZYhSU5fjWljDzKheCu",
+      "endFieldId": "AVHjALr8Ck-FvqZu0rzZP",
+      "cardinality": "many_to_one",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_Bin_BinTypeID_BinType",
+      "id": "uLy-bFz4krtg-8yv0f9Wz"
+    },
+    {
+      "startTableId": "O3A6xNr5_j5EQRyqOWwnC",
+      "startFieldId": "dWCyu4gktfZogK63du15z",
+      "endTableId": "O3A6xNr5_j5EQRyqOWwnC",
+      "endFieldId": "azxZmNXPE-ZXhuStE8vNy",
+      "cardinality": "many_to_one",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_Location_MasterLocationID_Location",
+      "id": "m6c57igY8V76VwcoPBMWD"
+    },
+    {
+      "startTableId": "pa07xE1lLe2QPH5BIq-1f",
+      "startFieldId": "sUBReahs2bMHmvjlG8rfX",
+      "endTableId": "O3A6xNr5_j5EQRyqOWwnC",
+      "endFieldId": "azxZmNXPE-ZXhuStE8vNy",
+      "cardinality": "many_to_one",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_Grid_LocationID_Location",
+      "id": "OScN_nNp2PfbjpWpzcsKt"
+    },
+    {
+      "startTableId": "IZLJAUrTLjdShPA7ke_Sx",
+      "startFieldId": "l7IzxCIffAIFxPRyXvs5I",
+      "endTableId": "6ngRqtcalxBCvlzm2zNkj",
+      "endFieldId": "FUsbauuYUDBsg03qGbTmA",
+      "cardinality": "many_to_one",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_GridPos_BinID_Bin",
+      "id": "NTavQiUD8_lYo-1cLXaKV"
+    },
+    {
+      "startTableId": "IZLJAUrTLjdShPA7ke_Sx",
+      "startFieldId": "acNUZBjJaeGMqdcbhY8E5",
+      "endTableId": "pa07xE1lLe2QPH5BIq-1f",
+      "endFieldId": "Vg7yYBEC0GIzgEV6BHlNK",
+      "cardinality": "many_to_one",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Restrict",
+      "name": "fk_GridPos_GridID_Grid",
+      "id": "K2KlSIWIgTmgkyU-aewVc"
+    }
+  ],
+  "notes": [],
+  "subjectAreas": [],
+  "database": "postgresql",
+  "types": [],
+  "enums": [],
+  "title": "Invenfinity"
+}
