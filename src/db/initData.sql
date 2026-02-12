@@ -28,12 +28,12 @@ VALUES
   (2, NULL)
 ON CONFLICT ("PartID") DO NOTHING;
 
-INSERT INTO "BinPart" ("BinID", "PartID", "SlotNr")
+INSERT INTO "BinSlot" ("BinID", "SlotNr", "PartID")
 VALUES
   (1, 1, 1),
   (2, 2, 2),
   (2, 1, 1)
-ON CONFLICT ("BinID", "PartID") DO NOTHING;
+ON CONFLICT ("BinID", "SlotNr") DO NOTHING;
 
 INSERT INTO "GridPos" ("GridPosID", "X", "Y", "BinID", "GridID")
 VALUES
