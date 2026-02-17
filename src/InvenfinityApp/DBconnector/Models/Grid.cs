@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Backend.Models;
+namespace DBconnector.Models;
 
 public partial class Grid
 {

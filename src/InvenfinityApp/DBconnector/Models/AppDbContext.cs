@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Models;
+namespace DBconnector.Models;
 
 public partial class AppDbContext : DbContext
 {
