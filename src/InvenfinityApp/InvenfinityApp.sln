@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvenfinityApp", "InvenfinityApp\InvenfinityApp.csproj", "{B33BA024-D893-4EC7-8EE3-1DC224D54C29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{8B189065-A34C-4638-A6A8-D8E49DCF08E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBconnector", "DBconnector\DBconnector.csproj", "{1DC5C4CB-217E-4E96-BA91-1FA827D7CF18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +19,19 @@ Global
 		{B33BA024-D893-4EC7-8EE3-1DC224D54C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B33BA024-D893-4EC7-8EE3-1DC224D54C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B33BA024-D893-4EC7-8EE3-1DC224D54C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B189065-A34C-4638-A6A8-D8E49DCF08E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B189065-A34C-4638-A6A8-D8E49DCF08E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B189065-A34C-4638-A6A8-D8E49DCF08E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B189065-A34C-4638-A6A8-D8E49DCF08E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC5C4CB-217E-4E96-BA91-1FA827D7CF18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC5C4CB-217E-4E96-BA91-1FA827D7CF18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC5C4CB-217E-4E96-BA91-1FA827D7CF18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC5C4CB-217E-4E96-BA91-1FA827D7CF18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B54F2081-6CDB-4A46-A20D-605DC2583895}
 	EndGlobalSection
 EndGlobal
