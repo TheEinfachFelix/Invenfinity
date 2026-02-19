@@ -8,5 +8,8 @@ namespace Backend.Application.DTOs
 {
     public interface IDotTreeItem
     {
+        public string Name { get; }
+        public int Id { get; }
+        bool IsSelectable { get; }
     }
 }

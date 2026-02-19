@@ -26,7 +26,7 @@ namespace Backend.Infrastructure.Datenbank
             {
                 outp.Parts.Add(DBMapper.mapPart(item));
             }
-            outp.Root = DBMapper.mapLocation(context.Locations.Where(x => x.LocationId == 1).FirstOrDefault(), null);
+            outp.Root = DBMapper.mapLocation(context.Locations.Where(x => x.LocationId == 1).FirstOrDefault(), null, outp);
             return outp;
         }
     }

@@ -8,8 +8,15 @@ namespace Backend.Application.DTOs
 {
     public class DTOLocation: IDotTreeItem
     {
-        public string name {  get; }
-        public List<IDotTreeItem> Children { get; }
+        public DTOLocation(string Name, int id)
+        {
+            this.Name = Name;
+            Id = id;
+        }
+        public string Name {  get; }
+        public int Id { get; }
+        public bool IsSelectable => false;
+        public List<IDotTreeItem> Children { get; set; } = new List<IDotTreeItem>();
 
     }
 }
