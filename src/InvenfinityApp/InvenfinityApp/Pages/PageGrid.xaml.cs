@@ -19,9 +19,9 @@ namespace InvenfinityApp.Views
     /// <summary>
     /// Interaktionslogik für Grid.xaml
     /// </summary>
-    public partial class Grid : Page
+    public partial class ViewGrid : Page
     {
-        public Grid()
+        public ViewGrid()
         {
             InitializeComponent();
         }

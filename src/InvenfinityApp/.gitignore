@@ -6,8 +6,7 @@
 *.user
 *.sln.docstates
 .vs/*
-.vscode/*
-.github/*
+
 .obj/*
 # Build results
 

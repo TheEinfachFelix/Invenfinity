@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InvenfinityApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using InvenfinityApp.ViewModel;
 
 namespace InvenfinityApp
 {
@@ -24,7 +24,12 @@ namespace InvenfinityApp
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            //MainFrame.Navigate(new Grid()); DataContext = new MainViewModel();
+        }
+
+        private void GoToSettings_Click(object sender, RoutedEventArgs e)
+        {
+            MainTabControl.SelectedIndex = 1;
         }
     }
 }

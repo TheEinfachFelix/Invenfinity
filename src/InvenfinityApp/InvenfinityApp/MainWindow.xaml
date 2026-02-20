@@ -1,10 +1,36 @@
 ﻿<Window x:Class="InvenfinityApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Invenfinity" Height="800" Width="1400">
+        Title="Invenfinity" Height="600" Width="1000">
 
-    <DockPanel>
-        <ContentControl Content="{Binding CurrentPage}" />
-    </DockPanel>
+    <Grid>
+
+            <TabControl x:Name="MainTabControl">
+
+                <TabItem Header="Start">
+                    <StackPanel>
+                        <TextBlock Text="Startseite"/>
+                        <Button Content="Zu Einstellungen"
+                            Click="GoToSettings_Click"/>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Einstellungen">
+                    <TextBlock Text="Settings Page"/>
+                </TabItem>
+
+                <TabItem Header="Test">
+                    <Frame Source="Pages/PageTest.xaml"
+                   NavigationUIVisibility="Hidden"/>
+                </TabItem>
+
+            <TabItem Header="Page">
+                <Frame Source="Pages/PageGrid.xaml"
+                NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
 
 </Window>

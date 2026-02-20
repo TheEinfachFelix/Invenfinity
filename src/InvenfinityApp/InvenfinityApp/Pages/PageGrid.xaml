@@ -1,4 +1,4 @@
-﻿<Page x:Class="InvenfinityApp.Views.Grid"
+﻿<Page x:Class="InvenfinityApp.Views.ViewGrid"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,6 +10,10 @@
       Title="Grid">
 
     <Grid>
+        <TextBlock Text="Grid View"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Margin="10" />
         <TreeView ItemsSource="{Binding RootItems}">
 
             <TreeView.Resources>
