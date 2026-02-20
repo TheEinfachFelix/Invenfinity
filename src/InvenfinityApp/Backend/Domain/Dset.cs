@@ -8,8 +8,8 @@ namespace Backend.Domain
 {
     internal class Dset
     {
-        public List<DPart> Parts { get; set; }
-        public List<DBinType> Types { get; set; }
+        public List<DPart> Parts { get; set; } = new List<DPart>();
+        public List<DBinType> Types { get; set; } = new List<DBinType>();
         public DLocation Root {  get; set; }
 
         public DPart findPartbyID(int id)

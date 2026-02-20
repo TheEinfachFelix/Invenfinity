@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Backend.Application.DTOs;
+using InvenfinityApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Backend.Application.DTOs;
 
 namespace InvenfinityApp.Views
 {
@@ -24,6 +25,7 @@ namespace InvenfinityApp.Views
         public ViewGrid()
         {
             InitializeComponent();
+            DataContext = new ViewGridViewModel();
         }
 
         private void Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
