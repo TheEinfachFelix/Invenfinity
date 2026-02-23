@@ -17,6 +17,6 @@ namespace Backend.Application.DTOs
         public int Id { get; }
         public bool IsSelectable => false;
         public List<IDotTreeItem> Children { get; set; } = new List<IDotTreeItem>();
-
+        IEnumerable<IDotTreeItem> IDotTreeItem.Children => Children;
     }
 }

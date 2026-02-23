@@ -10,28 +10,24 @@
       Title="Grid">
 
     <Grid>
-        <TextBlock Text="Grid View"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Margin="10" />
-        <TreeView ItemsSource="{Binding RootItems}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootItems}">
             <TreeView.Resources>
-
-                <!-- Template für Locations (Dropdown-Knoten) -->
-                <HierarchicalDataTemplate DataType="{x:Type dto:DTOLocation}"
-                                  ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}"
-                       FontWeight="Bold"/>
+                <HierarchicalDataTemplate DataType="{x:Type dto:DTOLocation}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Path=Name}" />
                 </HierarchicalDataTemplate>
-
-                <!-- Template für Grids (auswählbar) -->
-                <DataTemplate DataType="{x:Type dto:DTOGrid}">
-                    <TextBlock Text="{Binding Name}" />
+                <DataTemplate DataType="{x:Type dto:DTOGrid}" >
+                    <TextBlock Text="{Binding Path=Name}" />
                 </DataTemplate>
-
             </TreeView.Resources>
-
         </TreeView>
+
+
+       
+
     </Grid>
 </Page>

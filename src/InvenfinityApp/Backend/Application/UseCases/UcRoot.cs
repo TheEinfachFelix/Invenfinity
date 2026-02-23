@@ -19,6 +19,7 @@ namespace Backend.Application.UseCases
         {
             dbContext = new AppDbContext();
             RepoDatabase = new RepoDatabase(dbContext);
+            // GetData() liefert Task<Dset> -> synchron darauf warten und Ergebnis zuweisen
             Data = RepoDatabase.GetData();
             Locations = new UcLocations(this);
         }

@@ -39,5 +39,16 @@ namespace InvenfinityApp.Views
                 tree.SelectedItemChanged += Tree_SelectedItemChanged;
             }
         }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is DTOGrid grid)
+            {
+                if (DataContext is ViewGridViewModel vm)
+                {
+                    vm.GridClicked(grid);
+                }
+            }
+        }
     }
 }
