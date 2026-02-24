@@ -5,9 +5,9 @@ VALUES
   (3, 'Testsschubladen', 2)
 ON CONFLICT ("LocationID") DO NOTHING;
 
-INSERT INTO "Grid" ("GridID", "LocationID", "Name")
+INSERT INTO "Grid" ("GridID", "LocationID", "Name", "Xmax", "Ymax")
 VALUES
-  (1, 2, 'Oberste Schublade')
+  (1, 2, 'Oberste Schublade',3,4)
 ON CONFLICT ("GridID") DO NOTHING;
 
 INSERT INTO "BinType" ("BinTypeID", "SlotCount", "X", "Y")
@@ -30,9 +30,9 @@ ON CONFLICT ("PartID") DO NOTHING;
 
 INSERT INTO "BinSlot" ("BinID", "SlotNr", "PartID")
 VALUES
-  (1, 1, 1),
-  (2, 2, 2),
-  (2, 1, 1)
+  (1, 1, 0),
+  (2, 2, 1),
+  (2, 1, 0)
 ON CONFLICT ("BinID", "SlotNr") DO NOTHING;
 
 INSERT INTO "GridPos" ("GridPosID", "X", "Y", "BinID", "GridID")
@@ -40,5 +40,4 @@ VALUES
   (1, 0, 0, 1, 1),
   (2, 1, 0, 1, 1),
   (3, 0, 1, 2, 1),
-  (4, 1, 1, NULL, 1)
 ON CONFLICT ("GridPosID") DO NOTHING;

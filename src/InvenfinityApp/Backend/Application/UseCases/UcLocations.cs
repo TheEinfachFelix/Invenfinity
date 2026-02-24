@@ -17,7 +17,7 @@ namespace Backend.Application.UseCases
         { 
             _root = root;
         }
-        public DTOLocation GetLocations () 
+        public DTOTreeLocation GetLocations () 
         { 
             return LocationFactory.CreateLocation(_root.Data.Root); 
         }

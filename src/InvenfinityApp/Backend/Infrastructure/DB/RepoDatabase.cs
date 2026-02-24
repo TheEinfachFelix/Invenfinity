@@ -1,5 +1,6 @@
 ﻿using Backend.Domain;
 using Backend.Infrastructure.Mapper;
+using DBconnector;
 using DBconnector.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,33 +34,8 @@ namespace Backend.Infrastructure.Datenbank
 
             // get the rest of the Data
 
-
-            var inloc = context.Locations
-                        .Where(l => l.LocationId == 1)
-
-                        // gesamte Location-Hierarchie
-                        .Include(l => l.InverseMasterLocation)
-                            .ThenInclude(l => l.InverseMasterLocation)
-
-                        // Grids
-                        .Include(l => l.Grids)
-                            .ThenInclude(g => g.GridPos)
-
-                                // Bin
-                                .ThenInclude(gp => gp.Bin)
-
-                                    // BinType
-                                    .ThenInclude(b => b.BinType)
-
-                        // BinSlots + Part
-                        .Include(l => l.Grids)
-                            .ThenInclude(g => g.GridPos)
-                                .ThenInclude(gp => gp.Bin)
-                                    .ThenInclude(b => b.BinSlots)
-                                        .ThenInclude(bs => bs.Part)
-
-                        .AsSplitQuery()   // wichtig gegen Cartesian Explosion
-                        .SingleAsync().GetAwaiter().GetResult();
+            var inloc = context.Locations.Single(l => l.LocationId == 1);
+            LoadGridsRecursively(inloc);
 
 
 
@@ -67,6 +43,32 @@ namespace Backend.Infrastructure.Datenbank
             if (inloc == null) throw new Exception("The root Location was not found");
             outp.Root = DBMapper.mapLocation(inloc, null, outp);
             return outp;
+        }
+
+        void LoadGridsRecursively(Location loc)
+        {
+            // Grids und GridPos + Bin + BinType + BinSlots + Part laden
+            context.Entry(loc)
+                .Collection(l => l.Grids)
+                .Query()
+                .Include(g => g.GridPos)
+                    .ThenInclude(gp => gp.Bin)
+                        .ThenInclude(b => b.BinType)
+                .Include(g => g.GridPos)
+                    .ThenInclude(gp => gp.Bin)
+                        .ThenInclude(b => b.BinSlots)
+                            .ThenInclude(bs => bs.Part)
+                .Load();
+
+            // alle Kinder laden
+            context.Entry(loc)
+                .Collection(l => l.InverseMasterLocation)
+                .Load();
+
+            foreach (var child in loc.InverseMasterLocation)
+            {
+                LoadGridsRecursively(child);
+            }
         }
     }
 }

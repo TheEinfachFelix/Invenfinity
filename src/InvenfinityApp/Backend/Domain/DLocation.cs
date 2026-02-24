@@ -25,7 +25,7 @@ namespace Backend.Domain
 
         public int? ParentId { get; }
 
-        public virtual ICollection<DGrid> Grids { get; set; }
+        public virtual ICollection<DGrid> Grids { get; set; } = new List<DGrid>();
 
         public virtual ICollection<DLocation> Childeren { get; set; } = new List<DLocation>();
 

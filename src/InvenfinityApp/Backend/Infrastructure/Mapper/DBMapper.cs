@@ -36,9 +36,18 @@ namespace Backend.Infrastructure.Mapper
         public static DGrid mapGrid(Grid inGrid, DLocation parent, Dset data)
         {
             // erstellen des Grid Objekts
-            var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.LocationId ?? int.MinValue);
+            var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.LocationId ?? int.MinValue, inGrid.Xmax, inGrid.Ymax);
             // Nachliefern von Bins da diese eine Referenz auf das Grid Objekt benötigen
-            var newGrid = new List<List<DBin>>();
+            var newGrid = new List<List<DBin?>>();
+            for (int i = 0; i < inGrid.Xmax; i++)
+            {
+                newGrid.Add(new List<DBin?>());
+                for (int j = 0; j < inGrid.Ymax; j++)
+                {
+                    newGrid[i].Add(null);
+                }
+            }
+
             foreach (var item in inGrid.GridPos)
             {
                 if (newGrid[item.X][item.Y] != null) throw new Exception("Grid Pos already filled");
@@ -51,14 +60,19 @@ namespace Backend.Infrastructure.Mapper
         }
         public static DBin mapBin(Bin inBin, Dset data, DGrid Grid)
         {
+            // referenzieren des BinTypes zu dem BinType Objekt des Bins
+            var Bintype = data.findBinTypebyID(inBin.BinTypeId);
             // referenzieren der Parts zu der Slotliste des Bins
-            var Slots = new List<DPart>(); 
+            var Slots = new List<DPart?>();
+            for (int i = 0; i < Bintype.SlotCount; i++)
+            {
+                Slots.Add(null);
+            }
             foreach (var item in inBin.BinSlots)
             {
                 Slots[item.SlotNr] = data.findPartbyID(item.PartId);
             }
-            // referenzieren des BinTypes zu dem BinType Objekt des Bins
-            var Bintype = data.findBinTypebyID(inBin.BinTypeId);
+
             // erstellen des Bin Objekts
             return new DBin(inBin.BinId, Slots, Bintype, Grid);
         }

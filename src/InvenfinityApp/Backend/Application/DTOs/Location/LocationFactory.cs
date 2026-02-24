@@ -8,18 +8,18 @@ using Backend.Domain;
 
 namespace Backend.Application.DTOs.Location
 {
-    internal class LocationFactory
+    internal static class LocationFactory
     {
-        public static DTOLocation CreateLocation (DLocation root)
+        public static DTOTreeLocation CreateLocation (DLocation root)
         {
-            var outp = new DTOLocation(root.Name, root.LocationId);
+            var outp = new DTOTreeLocation(root.Name, root.LocationId);
             foreach (var item in root.Childeren)
             {
                 outp.Children.Add(CreateLocation(item));
             }
             foreach (var item in root.Grids)
             {
-                outp.Children.Add(new DTOGrid(item.Name, item.GridId));
+                outp.Children.Add(new DTOTreeGrid(item.Name, item.GridId));
             }
             return outp;
         }

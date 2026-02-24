@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using DBconnector.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DBconnector.Models;
+namespace DBconnector;
 
 public partial class AppDbContext : DbContext
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Backend.Domain;
 using Backend.Infrastructure.Datenbank;
-using DBconnector.Models;
+using DBconnector;
 
 namespace Backend.Application.UseCases
 {
@@ -15,6 +15,7 @@ namespace Backend.Application.UseCases
         internal RepoDatabase RepoDatabase;
         internal AppDbContext dbContext;
         public UcLocations Locations;
+        public UcGrid Grid;
         public UcRoot()
         {
             dbContext = new AppDbContext();
@@ -22,6 +23,7 @@ namespace Backend.Application.UseCases
             // GetData() liefert Task<Dset> -> synchron darauf warten und Ergebnis zuweisen
             Data = RepoDatabase.GetData();
             Locations = new UcLocations(this);
+            Grid = new UcGrid(this);
         }
         
     }

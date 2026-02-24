@@ -14,20 +14,87 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootItems}">
+        <!-- LEFT TREE -->
+        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootItems}" SelectedItemChanged="GroupView_SelectedItemChanged">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type dto:DTOLocation}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Path=Name}" />
+                <HierarchicalDataTemplate DataType="{x:Type dto:DTOTreeLocation}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Path=Name}" Background="LightGray"/>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type dto:DTOGrid}" >
+                <DataTemplate DataType="{x:Type dto:DTOTreeGrid}" >
                     <TextBlock Text="{Binding Path=Name}" />
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
 
+        <!-- RIGHT GRID AREA -->
+        <ScrollViewer Grid.Column="1">
+            <Grid>
 
-       
+                <!-- Hintergrund Grid -->
+                <ItemsControl ItemsSource="{Binding Grid.Bins}">
+
+                    <!-- Panel = echtes WPF Grid -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid x:Name="DrawGrid"
+                                  Background="#222"
+                                  ShowGridLines="True"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <!-- Positionierung der Bins -->
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Grid.Column" Value="{Binding X}" />
+                            <Setter Property="Grid.Row" Value="{Binding Y}" />
+                            <Setter Property="Grid.ColumnSpan" Value="{Binding WidthCells}" />
+                            <Setter Property="Grid.RowSpan" Value="{Binding HeightCells}" />
+                            <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+
+                    <!-- BIN TEMPLATE -->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type dto:DTOBin}">
+                            <Border BorderBrush="White"
+                                    BorderThickness="2"
+                                    Background="DarkSlateGray"
+                                    CornerRadius="4"
+                                    Padding="4"
+                                    AllowDrop="True"
+                                    PreviewMouseLeftButtonDown="Bin_MouseDown"
+                                    PreviewMouseMove="Bin_MouseMove"
+                                    Drop="Bin_Drop">
+
+                                <StackPanel>
+                                    <TextBlock Text="Bin"
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               Margin="0,0,0,5"/>
+
+                                    <!-- PARTS -->
+                                    <ItemsControl ItemsSource="{Binding Parts}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="Orange"
+                                                        Margin="2"
+                                                        Padding="2"
+                                                        CornerRadius="2">
+                                                    <TextBlock Text="{Binding PartName}"
+                                                               FontSize="12"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
 
     </Grid>
 </Page>

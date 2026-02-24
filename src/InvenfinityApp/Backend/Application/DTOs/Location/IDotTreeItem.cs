@@ -10,7 +10,6 @@ namespace Backend.Application.DTOs
     {
         public string Name { get; }
         public int Id { get; }
-        bool IsSelectable { get; }
         public IEnumerable<IDotTreeItem>? Children { get; }
     }
 }

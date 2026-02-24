@@ -22,33 +22,122 @@ namespace InvenfinityApp.Views
     /// </summary>
     public partial class ViewGrid : Page
     {
+        private Point _dragStart;
+        private DTOBin? _draggedBin;
         public ViewGrid()
         {
             InitializeComponent();
             DataContext = new ViewGridViewModel();
+            Loaded += ViewGrid_Loaded;
         }
 
-        private void Tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+
+        private void GroupView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (e.NewValue is not DTOGrid)
+            if (e.NewValue is DTOTreeGrid grid)
             {
-                // Selektion zurücksetzen
-                var tree = (TreeView)sender;
-                tree.SelectedItemChanged -= Tree_SelectedItemChanged;
-                ((TreeViewItem)tree.ItemContainerGenerator.ContainerFromItem(e.NewValue))?.IsSelected = false;
-                tree.SelectedItemChanged += Tree_SelectedItemChanged;
+                // Methode aufrufen
+                HandleGridSelected(grid);
             }
         }
 
-        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void HandleGridSelected(DTOTreeGrid grid)
         {
-            if (e.NewValue is DTOGrid grid)
+            // Deine Logik hier
+            MessageBox.Show($"DTOGrid ausgewählt: {grid.Name}");
+        }
+
+
+
+
+
+        private void ViewGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewGridViewModel vm)
             {
-                if (DataContext is ViewGridViewModel vm)
-                {
-                    vm.GridClicked(grid);
-                }
+                BuildGrid(vm.Grid);
             }
+        }
+
+        private void BuildGrid(DTOGrid gridDto)
+        {
+            var grid = FindVisualChild<Grid>(this, "DrawGrid");
+            if (grid == null) return;
+
+            grid.RowDefinitions.Clear();
+            grid.ColumnDefinitions.Clear();
+
+            for (int i = 0; i < gridDto.WidthCells; i++)
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            for (int i = 0; i < gridDto.HeightCells; i++)
+                grid.RowDefinitions.Add(new RowDefinition());
+        }
+
+        #region Drag & Drop
+
+        private void Bin_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border &&
+                border.DataContext is DTOBin bin)
+            {
+                _dragStart = e.GetPosition(null);
+                _draggedBin = bin;
+            }
+        }
+
+        private void Bin_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                _draggedBin != null)
+            {
+                DragDrop.DoDragDrop((DependencyObject)sender,
+                                    _draggedBin,
+                                    DragDropEffects.Move);
+            }
+        }
+
+        private void Bin_Drop(object sender, DragEventArgs e)
+        {
+            if (_draggedBin == null) return;
+
+            var position = e.GetPosition((IInputElement)sender);
+            var grid = FindVisualChild<Grid>(this, "DrawGrid");
+            if (grid == null) return;
+
+            double cellWidth = grid.ActualWidth / grid.ColumnDefinitions.Count;
+            double cellHeight = grid.ActualHeight / grid.RowDefinitions.Count;
+
+            int newX = (int)(position.X / cellWidth);
+            int newY = (int)(position.Y / cellHeight);
+
+            // DTO ist immutable → hier müsstest du
+            // entweder:
+            // 1. neues DTO erzeugen
+            // 2. oder ViewModel-Command verwenden
+            // 3. oder DTOBin mutable machen
+
+            MessageBox.Show($"Neue Position: {newX}, {newY}");
+        }
+
+        #endregion
+
+        private T? FindVisualChild<T>(DependencyObject parent, string name)
+            where T : FrameworkElement
+        {
+            for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T typed && typed.Name == name)
+                    return typed;
+
+                var result = FindVisualChild<T>(child, name);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
         }
     }
 }

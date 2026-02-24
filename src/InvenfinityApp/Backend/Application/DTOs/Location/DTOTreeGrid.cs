@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Application.DTOs
 {
-    public class DTOGrid: IDotTreeItem
+    public class DTOTreeGrid: IDotTreeItem
     {
-        public DTOGrid(string Name, int Id)
+        internal DTOTreeGrid(string Name, int Id)
         {
             this.Name = Name;
             this.Id = Id;
@@ -16,8 +16,6 @@ namespace Backend.Application.DTOs
 
         public string Name { get; }
         public int Id { get; }
-        public bool IsSelectable => true;
-
         public IEnumerable<IDotTreeItem>? Children => null;
     }
 }

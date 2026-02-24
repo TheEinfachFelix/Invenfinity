@@ -10,8 +10,4 @@
     <ProjectReference Include="..\DBconnector\DBconnector.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\DTOs\Grid\" />
-  </ItemGroup>
-
 </Project>

@@ -14,6 +14,7 @@ namespace InvenfinityApp.ViewModel
         private readonly UcRoot _root;
 
         public ObservableCollection<IDotTreeItem> RootItems { get; set; }
+        public DTOGrid Grid { get; set; }
 
         public ViewGridViewModel()
         {
@@ -25,12 +26,8 @@ namespace InvenfinityApp.ViewModel
             {
                 rootLocation
             };
-        }
 
-        public void GridClicked(DTOGrid grid)
-        {
-            // DEMO
-            MessageBox.Show($"Grid geklickt: {grid.Name} ({grid.Id})");
+            Grid = _root.Grid.getGridByID(1);
         }
     }
 }
