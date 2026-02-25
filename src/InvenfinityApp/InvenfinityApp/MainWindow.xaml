@@ -6,7 +6,10 @@
     <Grid>
 
             <TabControl x:Name="MainTabControl">
-
+            <TabItem Header="Page">
+                <Frame Source="Pages/PageGrid.xaml"
+                NavigationUIVisibility="Hidden"/>
+            </TabItem>
                 <TabItem Header="Start">
                     <StackPanel>
                         <TextBlock Text="Startseite"/>
@@ -19,15 +22,8 @@
                     <TextBlock Text="Settings Page"/>
                 </TabItem>
 
-                <TabItem Header="Test">
-                    <Frame Source="Pages/PageTest.xaml"
-                   NavigationUIVisibility="Hidden"/>
-                </TabItem>
 
-            <TabItem Header="Page">
-                <Frame Source="Pages/PageGrid.xaml"
-                NavigationUIVisibility="Hidden"/>
-            </TabItem>
+
 
         </TabControl>
 

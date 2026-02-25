@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:dto="clr-namespace:Backend.Application.DTOs;assembly=Backend"
+      xmlns:uc="clr-namespace:InvenfinityApp.Elements"
       Title="Grid">
 
     <Grid>
@@ -15,17 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- LEFT TREE -->
-        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootItems}" SelectedItemChanged="GroupView_SelectedItemChanged">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type dto:DTOTreeLocation}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Path=Name}" Background="LightGray"/>
-                </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type dto:DTOTreeGrid}" >
-                    <TextBlock Text="{Binding Path=Name}" />
-                </DataTemplate>
-            </TreeView.Resources>
-        </TreeView>
-
+        <uc:LocationTree Grid.Column="0" Root="{Binding RootItems}"/>
         <!-- RIGHT GRID AREA -->
         <ScrollViewer Grid.Column="1">
             <Grid>

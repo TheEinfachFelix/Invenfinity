@@ -35,20 +35,7 @@ namespace InvenfinityApp.Views
         }
 
 
-        private void GroupView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (e.NewValue is DTOTreeGrid grid)
-            {
-                // Methode aufrufen
-                HandleGridSelected(grid);
-            }
-        }
 
-        private void HandleGridSelected(DTOTreeGrid grid)
-        {
-            // Deine Logik hier
-            MessageBox.Show($"DTOGrid ausgewählt: {grid.Name}");
-        }
 
 
 
