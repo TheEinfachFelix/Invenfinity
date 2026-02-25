@@ -47,6 +47,17 @@ namespace Backend.Domain
             }
             return null;
         }
+        public DBin? findBininGrid(int id, DGrid grid)
+        {
+            foreach (var item in grid.Grid)
+            {
+                foreach (var bin in item)
+                {
+                    if (bin != null && bin.BinId == id) return bin;
+                }
+            }
+            return null;
+        }
 
     }
 }

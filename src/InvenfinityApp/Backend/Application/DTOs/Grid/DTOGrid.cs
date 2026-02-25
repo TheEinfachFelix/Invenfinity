@@ -8,13 +8,15 @@ namespace Backend.Application.DTOs
 {
     public class DTOGrid
     {
-        internal DTOGrid(int WidthCells, int HeightCells, IReadOnlyList< DTOBin > Bins)
+        internal DTOGrid(int GridId, int WidthCells, int HeightCells, IReadOnlyList< DTOBin > Bins)
         {
+            this.GridId = GridId;
             this.WidthCells = WidthCells;
             this.HeightCells = HeightCells;
            // this.CellSizeMm = CellSizeMm;
             this.Bins = Bins;
         }
+        public int GridId { get; }
         public int WidthCells { get; }
         public int HeightCells { get; }
         //public double CellSizeMm { get; }

@@ -29,7 +29,8 @@ namespace Backend.Application.DTOs
 
         public static DTOBin CreateBin(DBin inBin)
         {
-            var Pos = inBin.Grid.GetGridPos(inBin);
+            var Pos = inBin.GetPos();
+            if (Pos == null) throw new Exception("Bin not in Grid");
             var type = inBin.BinType;
             var parts = CreatePartList(inBin.Slots);
             return new DTOBin(inBin.BinId, Pos.Xpos, Pos.Ypos, type.X, type.Y, parts);
@@ -48,7 +49,7 @@ namespace Backend.Application.DTOs
                     }
                 }
             }
-            return new DTOGrid(inGrid.Xmax, inGrid.Ymax, outp);
+            return new DTOGrid(inGrid.GridId ,inGrid.Xmax, inGrid.Ymax, outp);
         }
 
 

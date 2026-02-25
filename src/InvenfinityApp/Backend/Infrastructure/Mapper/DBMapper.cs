@@ -17,19 +17,15 @@ namespace Backend.Infrastructure.Mapper
             // erstellen des Location Objekts
             var outp = new DLocation(inlocation.LocationId, inlocation.Name ?? "", inlocation.MasterLocationId, parent);
             // Nachliefern von Grids un Childeren da diese eine Referenz auf das Location Objekt benötigen
-            var Grids = new List<DGrid>();
             foreach (Grid item in inlocation.Grids)
             {
-                Grids.Add(mapGrid(item, outp, data));
+                outp.AddGrid(mapGrid(item, outp, data));
             }
-            outp.Grids = Grids;
 
-            var Childeren = new List<DLocation>();
             foreach (Location item in inlocation.InverseMasterLocation)
             {
-                Childeren.Add(mapLocation(item, outp, data));
+                outp.AddChild(mapLocation(item, outp, data));
             }
-            outp.Childeren = Childeren;
 
             return outp;
         }
@@ -38,27 +34,32 @@ namespace Backend.Infrastructure.Mapper
             // erstellen des Grid Objekts
             var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.LocationId ?? int.MinValue, inGrid.Xmax, inGrid.Ymax);
             // Nachliefern von Bins da diese eine Referenz auf das Grid Objekt benötigen
-            var newGrid = new List<List<DBin?>>();
-            for (int i = 0; i < inGrid.Xmax; i++)
-            {
-                newGrid.Add(new List<DBin?>());
-                for (int j = 0; j < inGrid.Ymax; j++)
-                {
-                    newGrid[i].Add(null);
-                }
-            }
-
+            // Setup der Liste
+            var newGrid = outp.createGrid();
+            // Hinzufügen der Bins zu einer temp Liste
             foreach (var item in inGrid.GridPos)
             {
                 if (newGrid[item.X][item.Y] != null) throw new Exception("Grid Pos already filled");
                 if (item.Bin == null) throw new Exception("Bin is null");
-                newGrid[item.X][item.Y] = mapBin(item.Bin, data, outp);
+                newGrid[item.X][item.Y] = mapBin(item.Bin, data);
             }
-            outp.Grid = newGrid;
+            // Iterieren über die temp liste und hinzufügen der Bins zum Grid Objekt
+            var addedIds = new HashSet<int>();
+            for (int X = 0; X < outp.Xmax; X++)
+            {
+                for (int Y = 0; Y < outp.Ymax; Y++)
+                {
+                    var bin = newGrid[X][Y];
+                    if (bin == null) continue;
+                    if (addedIds.Contains(bin.BinId)) continue;
+                    outp.AddBin(bin, X, Y);
+                    addedIds.Add(bin.BinId);
+                }
+            }
 
             return outp;
         }
-        public static DBin mapBin(Bin inBin, Dset data, DGrid Grid)
+        public static DBin mapBin(Bin inBin, Dset data)
         {
             // referenzieren des BinTypes zu dem BinType Objekt des Bins
             var Bintype = data.findBinTypebyID(inBin.BinTypeId);
@@ -74,7 +75,7 @@ namespace Backend.Infrastructure.Mapper
             }
 
             // erstellen des Bin Objekts
-            return new DBin(inBin.BinId, Slots, Bintype, Grid);
+            return new DBin(inBin.BinId, Slots, Bintype);
         }
 
         public static DBinType mapBinType(BinType inType)

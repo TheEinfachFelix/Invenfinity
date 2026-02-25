@@ -16,8 +16,8 @@ namespace Backend.Domain
             this.ParentId = ParentID;
             this.Parent = Parent;
 
-            if (Parent != null )
-                Parent.Childeren.Add( this );
+            if (Parent != null)
+                Parent.Childeren.Add(this);
         }
         public int LocationId { get; }
 
@@ -30,5 +30,16 @@ namespace Backend.Domain
         public virtual ICollection<DLocation> Childeren { get; set; } = new List<DLocation>();
 
         public virtual DLocation? Parent { get; }
+
+        public void AddGrid(DGrid inGrid)
+        {
+            if (Grids.Contains(inGrid)) throw new Exception("Grid already in location");
+            Grids.Add(inGrid);
+        }
+        public void AddChild(DLocation inLoc)
+        {
+            if (Childeren.Contains(inLoc)) throw new Exception("Location already a child");
+            Childeren.Add(inLoc);
+        }
     }
 }

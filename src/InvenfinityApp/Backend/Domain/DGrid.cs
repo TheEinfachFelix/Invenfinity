@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Backend.Application.UseCases;
+using DBconnector.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DBconnector.Models;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Backend.Domain
 {
@@ -21,6 +22,22 @@ namespace Backend.Domain
             this.Ymax = Ymax;
 
             Location.Grids.Add( this );
+
+            Grid = createGrid();
+        }
+
+        internal List<List<DBin?>> createGrid()
+        {
+            var outp = new List<List<DBin?>>();
+            for (int i = 0; i < Xmax; i++)
+            {
+                outp.Add(new List<DBin?>());
+                for (int j = 0; j < Ymax; j++)
+                {
+                    outp[i].Add(null);
+                }
+            }
+            return outp;
         }
         public int GridId { get; }
 
@@ -34,9 +51,9 @@ namespace Backend.Domain
 
         public virtual DLocation Location { get; }
 
-        public List<List<DBin?>> Grid { get; set; } = new List<List<DBin?>>();
+        public List<List<DBin?>> Grid { get; set; }
 
-        public BinPos GetGridPos(DBin inBin)
+        public BinPos GetBinPosInGrid(DBin inBin)
         {
             for (int X = 0; X < Xmax; X++)
             {
@@ -50,6 +67,36 @@ namespace Backend.Domain
                 }
             }
             throw new Exception("Bin not found in grid");
+        }
+
+        public void RemoveBin(DBin inBin)
+        {
+            for (int X = 0; X < Xmax; X++)
+            {
+                for (int Y = 0; Y < Ymax; Y++)
+                {
+                    var bin = Grid[X][Y];
+                    if (bin != null && bin.BinId == inBin.BinId)
+                    {
+                        Grid[X][Y] = null;
+                    }
+                }
+            }
+            inBin.Grid = null;
+        }
+        public void AddBin(DBin inBin, int X, int Y)
+        {
+            var width = inBin.BinType.X;
+            var height = inBin.BinType.Y;
+            for (int Xoffset = 0; Xoffset < width; Xoffset++)
+            {
+                for (int Yoffset = 0; Yoffset < height; Yoffset++)
+                {
+                    if (Grid[X + Xoffset][Y + Yoffset] != null) throw new Exception("Grid Pos already filled");
+                    Grid[X + Xoffset][Y + Yoffset] = inBin;
+                }
+            }
+            inBin.Grid = this;
         }
 
     }

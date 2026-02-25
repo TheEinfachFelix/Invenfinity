@@ -86,6 +86,47 @@ namespace InvenfinityApp.Views
             }
         }
 
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            if (_draggedBin == null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+            var grid = sender as Grid;
+            var position = e.GetPosition(grid);
+
+            int newX = GetColumnFromPosition(grid, position.X);
+            int newY = GetRowFromPosition(grid, position.Y);
+
+            if (IsAreaFree(newX, newY, _draggedBin))
+                e.Effects = DragDropEffects.Move;
+            else
+                e.Effects = DragDropEffects.None;
+
+            e.Handled = true;
+        }
+
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+            if (_draggedBin == null) return;
+
+            var grid = sender as Grid;
+            var position = e.GetPosition(grid);
+
+            int newX = GetColumnFromPosition(grid, position.X);
+            int newY = GetRowFromPosition(grid, position.Y);
+
+            if (!IsAreaFree(newX, newY, _draggedBin))
+                return;
+
+            MoveBin(_draggedBin, newX, newY);
+
+            _draggedBin = null;
+        }
+
         private void Bin_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed &&
@@ -116,6 +157,60 @@ namespace InvenfinityApp.Views
             // 1. neues DTO erzeugen
             // 2. oder ViewModel-Command verwenden
             // 3. oder DTOBin mutable machen
+
+            MessageBox.Show($"Neue Posxxxxxxxxxxxxxxxxxxxition: {newX}, {newY}");
+        }
+
+        private int GetColumnFromPosition(Grid grid, double x)
+        {
+            double cellWidth = grid.ActualWidth / grid.ColumnDefinitions.Count;
+            return Math.Max(0,
+                Math.Min(grid.ColumnDefinitions.Count - 1,
+                (int)(x / cellWidth)));
+        }
+
+        private int GetRowFromPosition(Grid grid, double y)
+        {
+            double cellHeight = grid.ActualHeight / grid.RowDefinitions.Count;
+            return Math.Max(0,
+                Math.Min(grid.RowDefinitions.Count - 1,
+                (int)(y / cellHeight)));
+        }
+
+        private bool IsAreaFree(int x, int y, DTOBin bin)
+        {
+            if (DataContext is not ViewGridViewModel vm)
+                return false;
+
+            // außerhalb des Grids?
+            if (x + bin.WidthCells > vm.Grid.WidthCells)
+                return false;
+
+            if (y + bin.HeightCells > vm.Grid.HeightCells)
+                return false;
+
+            foreach (var other in vm.Grid.Bins)
+            {
+                if (other == bin)
+                    continue;
+
+                bool overlap =
+                    x < other.X + other.WidthCells &&
+                    x + bin.WidthCells > other.X &&
+                    y < other.Y + other.HeightCells &&
+                    y + bin.HeightCells > other.Y;
+
+                if (overlap)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private void MoveBin(DTOBin bin, int newX, int newY)
+        {
+            if (DataContext is not ViewGridViewModel vm)
+                return;
 
             MessageBox.Show($"Neue Position: {newX}, {newY}");
         }

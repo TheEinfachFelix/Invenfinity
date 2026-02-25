@@ -38,7 +38,10 @@
                         <ItemsPanelTemplate>
                             <Grid x:Name="DrawGrid"
                                   Background="#222"
-                                  ShowGridLines="True"/>
+                                  ShowGridLines="True"
+                                  AllowDrop="True"
+                                  Drop="Grid_Drop"
+                                  DragOver="Grid_DragOver"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 

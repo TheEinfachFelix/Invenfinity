@@ -18,5 +18,14 @@ namespace Backend.Application.UseCases
 
             return GridFactory.CreateGrid(Dgrid);
         }
+        public void moveBinInGrid(DTOGrid grid, DTOBin inBin, int X, int Y)
+        {
+            var Dgrid = _root.Data.findGridbyID(grid.GridId);
+            var Dbin = _root.Data.findBininGrid(inBin.BinId, Dgrid);
+            //Dbin.X = X;
+            //Dbin.Y = Y;
+            //_root.Data.updateBin(Dbin);
+
+        }
     }
 }
