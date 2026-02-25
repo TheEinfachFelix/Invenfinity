@@ -10,7 +10,7 @@ using DBconnector.Models;
 
 namespace Backend.Infrastructure.Mapper
 {
-    internal static class DBMapper
+    internal static class DBtoDomainMapper
     {
         public static DLocation mapLocation(Location inlocation, DLocation? parent, Dset data)
         {

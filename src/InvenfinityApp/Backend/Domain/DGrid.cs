@@ -55,6 +55,15 @@ namespace Backend.Domain
 
         public BinPos GetBinPosInGrid(DBin inBin)
         {
+            var pos = GetAllBinPosInGrid(inBin);
+            if (pos.Count == 0)
+                throw new Exception("Bin not found in grid");
+            return pos[0];
+        }
+
+        public List<BinPos> GetAllBinPosInGrid(DBin inBin)
+        {
+            var outp = new List<BinPos>();
             for (int X = 0; X < Xmax; X++)
             {
                 for (int Y = 0; Y < Ymax; Y++)
@@ -62,11 +71,28 @@ namespace Backend.Domain
                     var bin = Grid[X][Y];
                     if (bin != null && bin.BinId == inBin.BinId)
                     {
-                        return new(X, Y);
+                        outp.Add(new(X, Y));
                     }
                 }
             }
-            throw new Exception("Bin not found in grid");
+            return outp;
+        }
+
+        public List<DBin> GetAllBinsInGrid()
+        {
+            var outp = new List<DBin>();
+            for (int X = 0; X < Xmax; X++)
+            {
+                for (int Y = 0; Y < Ymax; Y++)
+                {
+                    var bin = Grid[X][Y];
+                    if (bin != null && !outp.Any(b => b.BinId == bin.BinId))
+                    {
+                        outp.Add(bin);
+                    }
+                }
+            }
+            return outp;
         }
 
         public void RemoveBin(DBin inBin)

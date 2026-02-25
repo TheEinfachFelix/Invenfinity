@@ -24,6 +24,7 @@ namespace Backend.Application.UseCases
             var Dbin = _root.Data.findBininGrid(inBin.BinId, Dgrid);
             if (Dbin == null) throw new Exception("Bin not found in grid");
             Dgrid.MoveBin(Dbin, X,Y);
+            _root.RepoDatabase.UpdateGrid(Dgrid);
         }
     }
 }
