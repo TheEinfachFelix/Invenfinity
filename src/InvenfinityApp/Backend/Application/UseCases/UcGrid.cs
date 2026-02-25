@@ -22,10 +22,8 @@ namespace Backend.Application.UseCases
         {
             var Dgrid = _root.Data.findGridbyID(grid.GridId);
             var Dbin = _root.Data.findBininGrid(inBin.BinId, Dgrid);
-            //Dbin.X = X;
-            //Dbin.Y = Y;
-            //_root.Data.updateBin(Dbin);
-
+            if (Dbin == null) throw new Exception("Bin not found in grid");
+            Dgrid.MoveBin(Dbin, X,Y);
         }
     }
 }

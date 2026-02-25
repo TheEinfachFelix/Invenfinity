@@ -33,11 +33,8 @@ namespace Backend.Infrastructure.Datenbank
 
 
             // get the rest of the Data
-
             var inloc = context.Locations.Single(l => l.LocationId == 1);
             LoadGridsRecursively(inloc);
-
-
 
 
             if (inloc == null) throw new Exception("The root Location was not found");

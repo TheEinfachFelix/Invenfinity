@@ -51,7 +51,5 @@ namespace Backend.Application.DTOs
             }
             return new DTOGrid(inGrid.GridId ,inGrid.Xmax, inGrid.Ymax, outp);
         }
-
-
     }
 }

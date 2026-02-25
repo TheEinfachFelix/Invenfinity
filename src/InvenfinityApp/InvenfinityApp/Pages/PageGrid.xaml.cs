@@ -24,10 +24,13 @@ namespace InvenfinityApp.Views
     {
         private Point _dragStart;
         private DTOBin? _draggedBin;
+        private ViewGridViewModel data;
         public ViewGrid()
         {
             InitializeComponent();
-            DataContext = new ViewGridViewModel();
+            data = new ViewGridViewModel();
+            DataContext = data;
+
             Loaded += ViewGrid_Loaded;
         }
 
@@ -111,6 +114,9 @@ namespace InvenfinityApp.Views
 
         private void Grid_Drop(object sender, DragEventArgs e)
         {
+            if (DataContext is not ViewGridViewModel vm)
+                return;
+
             if (_draggedBin == null) return;
 
             var grid = sender as Grid;
@@ -122,7 +128,7 @@ namespace InvenfinityApp.Views
             if (!IsAreaFree(newX, newY, _draggedBin))
                 return;
 
-            MoveBin(_draggedBin, newX, newY);
+            vm.MoveBin(_draggedBin, newX, newY);
 
             _draggedBin = null;
         }
@@ -207,13 +213,7 @@ namespace InvenfinityApp.Views
             return true;
         }
 
-        private void MoveBin(DTOBin bin, int newX, int newY)
-        {
-            if (DataContext is not ViewGridViewModel vm)
-                return;
 
-            MessageBox.Show($"Neue Position: {newX}, {newY}");
-        }
 
         #endregion
 

@@ -17,7 +17,7 @@ namespace Backend.Domain
             this.Parent = Parent;
 
             if (Parent != null)
-                Parent.Childeren.Add(this);
+                Parent.AddChild(this);
         }
         public int LocationId { get; }
 

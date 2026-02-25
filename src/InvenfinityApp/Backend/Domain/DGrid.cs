@@ -21,7 +21,7 @@ namespace Backend.Domain
             this.Xmax = Xmax;
             this.Ymax = Ymax;
 
-            Location.Grids.Add( this );
+            Location.AddGrid(this);
 
             Grid = createGrid();
         }
@@ -62,7 +62,7 @@ namespace Backend.Domain
                     var bin = Grid[X][Y];
                     if (bin != null && bin.BinId == inBin.BinId)
                     {
-                        return new(X,Y);
+                        return new(X, Y);
                     }
                 }
             }
@@ -99,6 +99,13 @@ namespace Backend.Domain
             inBin.Grid = this;
         }
 
+        public void MoveBin(DBin inBin, int newX, int newY)
+        {
+            var pos = inBin.GetPos();
+            if (pos is null) throw new Exception("Bin not in grid");
+            RemoveBin(inBin);
+            AddBin(inBin, newX, newY);
+        }
     }
 
     internal record BinPos

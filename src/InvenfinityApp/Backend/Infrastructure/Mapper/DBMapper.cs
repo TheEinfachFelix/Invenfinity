@@ -19,12 +19,14 @@ namespace Backend.Infrastructure.Mapper
             // Nachliefern von Grids un Childeren da diese eine Referenz auf das Location Objekt benötigen
             foreach (Grid item in inlocation.Grids)
             {
-                outp.AddGrid(mapGrid(item, outp, data));
+                // durch den Construcker von Dgrid werden die schon automatisch der Liste Hinzugefügt
+                mapGrid(item, outp, data);
             }
 
             foreach (Location item in inlocation.InverseMasterLocation)
             {
-                outp.AddChild(mapLocation(item, outp, data));
+                // Durch den Constructor wird es automtisch der liste hinzugefügt
+                mapLocation(item, outp, data);
             }
 
             return outp;
@@ -60,22 +62,20 @@ namespace Backend.Infrastructure.Mapper
             return outp;
         }
         public static DBin mapBin(Bin inBin, Dset data)
-        {
+        { 
             // referenzieren des BinTypes zu dem BinType Objekt des Bins
             var Bintype = data.findBinTypebyID(inBin.BinTypeId);
-            // referenzieren der Parts zu der Slotliste des Bins
-            var Slots = new List<DPart?>();
-            for (int i = 0; i < Bintype.SlotCount; i++)
-            {
-                Slots.Add(null);
-            }
-            foreach (var item in inBin.BinSlots)
-            {
-                Slots[item.SlotNr] = data.findPartbyID(item.PartId);
-            }
 
             // erstellen des Bin Objekts
-            return new DBin(inBin.BinId, Slots, Bintype);
+            var outp = new DBin(inBin.BinId, Bintype);
+
+            // hinzufügen der Parts zu den Slots des Bin Objekts
+            foreach (var item in inBin.BinSlots)
+            {
+                outp.AddPart(data.findPartbyID(item.PartId), item.SlotNr);
+            }
+
+            return outp;
         }
 
         public static DBinType mapBinType(BinType inType)

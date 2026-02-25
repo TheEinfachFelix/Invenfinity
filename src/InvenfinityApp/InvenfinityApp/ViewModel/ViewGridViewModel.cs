@@ -3,31 +3,53 @@ using Backend.Application.UseCases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 
 namespace InvenfinityApp.ViewModel
 {
-    class ViewGridViewModel
+    class ViewGridViewModel : INotifyPropertyChanged
     {
-
-        private readonly UcRoot _root;
+        public readonly UcRoot _root;
 
         public ObservableCollection<IDotTreeItem> RootItems { get; set; }
-        public DTOGrid Grid { get; set; }
+
+        private DTOGrid _grid;
+        public DTOGrid Grid
+        {
+            get => _grid;
+            private set
+            {
+                _grid = value;
+                OnPropertyChanged(nameof(Grid));
+            }
+        }
 
         public ViewGridViewModel()
         {
             _root = new UcRoot();
-
-            var rootLocation = _root.Locations.GetLocations();
-
             RootItems = new ObservableCollection<IDotTreeItem>
-            {
-                rootLocation
-            };
+        {
+            _root.Locations.GetLocations()
+        };
 
+            ReloadGrid();
+        }
+
+        public void MoveBin(DTOBin bin, int newX, int newY)
+        {
+            _root.Grid.moveBinInGrid(Grid, bin, newX, newY);
+            ReloadGrid();
+        }
+
+        public void ReloadGrid()
+        {
             Grid = _root.Grid.getGridByID(1);
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string name)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
