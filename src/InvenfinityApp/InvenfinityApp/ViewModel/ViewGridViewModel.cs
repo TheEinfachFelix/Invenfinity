@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace InvenfinityApp.ViewModel
 {
-    class ViewGridViewModel : INotifyPropertyChanged
+    public class ViewGridViewModel : INotifyPropertyChanged
     {
         public readonly UcRoot _root;
 
@@ -23,6 +23,21 @@ namespace InvenfinityApp.ViewModel
             {
                 _grid = value;
                 OnPropertyChanged(nameof(Grid));
+            }
+        }
+
+        private int? _selectedGrid = 1;
+        public int? SelectedGrid
+        {
+            get => _selectedGrid;
+            set
+            {
+                if (value != null)
+                {
+                    _selectedGrid = value;
+                    OnPropertyChanged(nameof(SelectedGrid));
+                    ReloadGrid();
+                }
             }
         }
 
@@ -43,9 +58,16 @@ namespace InvenfinityApp.ViewModel
             ReloadGrid();
         }
 
+        public bool isAreaFree(int x, int y, DTOBin bin)
+        {
+            return _root.Grid.isBinMovePossible(Grid, bin, x, y);
+        }
+                    
+
         public void ReloadGrid()
         {
-            Grid = _root.Grid.getGridByID(1);
+            if (SelectedGrid == null) return;
+            Grid = _root.Grid.getGridByID((int)SelectedGrid);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

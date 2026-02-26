@@ -132,6 +132,19 @@ namespace Backend.Domain
             RemoveBin(inBin);
             AddBin(inBin, newX, newY);
         }
+        public bool IsAreaFree(int X, int Y, DBinType inBinType)
+        {
+            var width = inBinType.X;
+            var height = inBinType.Y;
+            for (int Xoffset = 0; Xoffset < width; Xoffset++)
+            {
+                for (int Yoffset = 0; Yoffset < height; Yoffset++)
+                {
+                    if (Grid[X + Xoffset][Y + Yoffset] != null) return false;
+                }
+            }
+            return true;
+        }
     }
 
     internal record BinPos
