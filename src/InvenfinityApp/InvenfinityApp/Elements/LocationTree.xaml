@@ -8,8 +8,8 @@
              xmlns:dto="clr-namespace:Backend.Application.DTOs;assembly=Backend"
 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Root, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItemChanged="GroupView_SelectedItemChanged">
+    
+        <TreeView Name="GroupView" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootItems}" SelectedItemChanged="GroupView_SelectedItemChanged">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type dto:DTOTreeLocation}" ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Path=Name}" Background="LightGray"/>
@@ -19,6 +19,4 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
-
-    </Grid>
 </UserControl>

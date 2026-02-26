@@ -134,6 +134,8 @@ namespace Backend.Domain
         }
         public bool IsAreaFree(int X, int Y, DBinType inBinType)
         {
+            if (X + inBinType.X > Xmax || Y + inBinType.Y > Ymax) return false;
+            if (X < 0 || Y < 0) return false;
             var width = inBinType.X;
             var height = inBinType.Y;
             for (int Xoffset = 0; Xoffset < width; Xoffset++)

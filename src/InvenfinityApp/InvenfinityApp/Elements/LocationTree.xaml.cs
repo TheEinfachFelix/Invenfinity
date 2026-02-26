@@ -23,23 +23,9 @@ namespace InvenfinityApp.Elements
         public int? SelectedGridId { get; private set; }
         public int? SelectedLocationId { get; private set; }
 
-        public static readonly DependencyProperty RootProperty =
-            DependencyProperty.Register(
-                nameof(Root),
-                typeof(ObservableCollection<IDotTreeItem>),
-                typeof(LocationTree),
-                new PropertyMetadata(null));
-
-        public ObservableCollection<IDotTreeItem> Root
-        {
-            get => (ObservableCollection<IDotTreeItem>)GetValue(RootProperty);
-            set => SetValue(RootProperty, value);
-        }
-
         public LocationTree()
         {
             InitializeComponent();
-            //this.DataContext = this;
         }
 
         private void GroupView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

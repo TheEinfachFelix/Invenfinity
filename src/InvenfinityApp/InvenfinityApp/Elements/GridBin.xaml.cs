@@ -23,23 +23,13 @@ namespace InvenfinityApp.Elements
         {
             InitializeComponent();
         }
-
-        private void Bin_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Border border &&
-                border.DataContext is DTOBin bin)
-            {
-                _dragStart = e.GetPosition(null);
-                _draggedBin = bin;
-            }
-        }
         private void Bin_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed &&
-                _draggedBin != null)
+            DataContext is DTOBin bin)
             {
-                DragDrop.DoDragDrop((DependencyObject)sender,
-                                    _draggedBin,
+                DragDrop.DoDragDrop(this,
+                                    bin,
                                     DragDropEffects.Move);
             }
         }

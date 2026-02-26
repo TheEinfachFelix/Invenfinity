@@ -23,47 +23,15 @@ namespace InvenfinityApp.Views
     public partial class ViewGrid : Page
     {
 
-        private ViewGridViewModel data;
         public ViewGrid()
         {
             InitializeComponent();
-            data = new ViewGridViewModel();
+            var data = new ViewGridViewModel();
             DataContext = data;
 
-            Loaded += ViewGrid_Loaded;
         }
 
 
-
-
-
-
-
-
-        private void ViewGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewGridViewModel vm)
-            {
-                BuildGrid(vm.Grid);
-            }
-        }
-
-        private void BuildGrid(DTOGrid gridDto)
-        {
-            var grid = FindVisualChild<Grid>(this, "DrawGrid");
-            if (grid == null) return;
-
-            grid.RowDefinitions.Clear();
-            grid.ColumnDefinitions.Clear();
-
-            for (int i = 0; i < gridDto.WidthCells; i++)
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
-
-            for (int i = 0; i < gridDto.HeightCells; i++)
-                grid.RowDefinitions.Add(new RowDefinition());
-        }
-
-        #region Drag & Drop
 
 
     }

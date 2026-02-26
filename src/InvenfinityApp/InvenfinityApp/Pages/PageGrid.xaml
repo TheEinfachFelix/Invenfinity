@@ -16,9 +16,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- LEFT TREE -->
-        <uc:LocationTree Grid.Column="0" Root="{Binding RootItems}"/>
+        <uc:LocationTree Grid.Column="0"/>
         <!-- RIGHT GRID AREA -->
-        <uc:Grid data="{Binding data}"/>
+        <uc:GridBoard Grid.Column="1"/>
 
     </Grid>
 </Page>
