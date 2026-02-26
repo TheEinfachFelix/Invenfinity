@@ -20,3 +20,19 @@
 - Auswahl fertigstellen
 - Gird erstellen
 - Grid bearbeitungsfunktionen erstellen
+
+## Woche 2 - 26.02.2026
+
+### Das habe ich geschaft
+
+- Fixen des laden von Datan aus der DB
+- erstellen der grid visualisierung
+- Drag and Drop im Grid
+- updaten der DB via Repo
+- code Putzen
+- Rausbrechen von UI modulen
+
+### Daran arbeite ich als nächstes
+
+- Bearbeiten vom Grid und Tree
+- Scanner Implementieren
