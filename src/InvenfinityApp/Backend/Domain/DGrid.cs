@@ -132,7 +132,7 @@ namespace Backend.Domain
             RemoveBin(inBin);
             AddBin(inBin, newX, newY);
         }
-        public bool IsAreaFree(int X, int Y, DBinType inBinType)
+        public bool IsAreaFree(int X, int Y, DBinType inBinType, int binID)
         {
             if (X + inBinType.X > Xmax || Y + inBinType.Y > Ymax) return false;
             if (X < 0 || Y < 0) return false;
@@ -142,7 +142,8 @@ namespace Backend.Domain
             {
                 for (int Yoffset = 0; Yoffset < height; Yoffset++)
                 {
-                    if (Grid[X + Xoffset][Y + Yoffset] != null) return false;
+                    var gridpos = Grid[X + Xoffset][Y + Yoffset];
+                    if (gridpos != null && gridpos.BinId != binID) return false;
                 }
             }
             return true;

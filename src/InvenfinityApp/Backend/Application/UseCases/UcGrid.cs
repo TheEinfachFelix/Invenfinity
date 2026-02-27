@@ -31,7 +31,7 @@ namespace Backend.Application.UseCases
             var Dgrid = _root.Data.findGridbyID(grid.GridId);
             var Dbin = _root.Data.findBininGrid(inBin.BinId, Dgrid);
             if (Dbin == null) throw new Exception("Bin not found in grid");
-            return Dgrid.IsAreaFree(X, Y, Dbin.BinType);
+            return Dgrid.IsAreaFree(X, Y, Dbin.BinType, inBin.BinId);
         }
     }
 }

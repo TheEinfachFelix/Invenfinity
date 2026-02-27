@@ -29,25 +29,59 @@ namespace InvenfinityApp.Elements
         }
 
 
-        private void GridBoardControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (VM != null)
-            {
-                BuildGrid(VM.Grid);
-            }
-        }
+
 
         private void BuildGrid(DTOGrid gridDto)
         {
             DrawGrid.RowDefinitions.Clear();
             DrawGrid.ColumnDefinitions.Clear();
+            DrawGrid.Children.Clear();
 
             for (int i = 0; i < gridDto.WidthCells; i++)
                 DrawGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             for (int i = 0; i < gridDto.HeightCells; i++)
                 DrawGrid.RowDefinitions.Add(new RowDefinition());
+
+            // Bins hinzufügen
+            foreach (var bin in gridDto.Bins)
+            {
+                var binControl = new GridBin { DataContext = bin };
+                Grid.SetColumn(binControl, bin.X);
+                Grid.SetRow(binControl, bin.Y);
+                Grid.SetColumnSpan(binControl, bin.WidthCells);
+                Grid.SetRowSpan(binControl, bin.HeightCells);
+                Panel.SetZIndex(binControl, bin.ZIndex);
+
+                DrawGrid.Children.Add(binControl);
+            }
         }
+
+        private void GridBoardControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+            {
+                BuildGrid(VM.Grid);
+
+                // Auf PropertyChanged hören
+                VM.PropertyChanged += VM_PropertyChanged;
+            }
+        }
+
+        private void VM_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewGridViewModel.Grid))
+            {
+                // Grid neu zeichnen
+                BuildGrid(VM!.Grid);
+            }
+        }
+
+
+
+
+
+
 
 
         private void Grid_DragOver(object sender, DragEventArgs e)

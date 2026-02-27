@@ -11,39 +11,13 @@
 
     <ScrollViewer>
         <Grid x:Name="DrawGrid"
-            Background="#222"
-            ShowGridLines="True"
-            AllowDrop="True"
-            Drop="Grid_Drop"
-            DragOver="Grid_DragOver">
+      Background="#222"
+      ShowGridLines="True"
+      AllowDrop="True"
+      Drop="Grid_Drop"
+      DragOver="Grid_DragOver">
 
-            <ItemsControl ItemsSource="{Binding Grid.Bins}">
-
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <!-- WICHTIG: Nur ein leeres Grid hier -->
-                        <Grid />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="Grid.Column" Value="{Binding X}" />
-                        <Setter Property="Grid.Row" Value="{Binding Y}" />
-                        <Setter Property="Grid.ColumnSpan" Value="{Binding WidthCells}" />
-                        <Setter Property="Grid.RowSpan" Value="{Binding HeightCells}" />
-                        <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <uc:GridBin/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-            </ItemsControl>
-
+            
         </Grid>
     </ScrollViewer>
 </UserControl>
