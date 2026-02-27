@@ -86,13 +86,15 @@ namespace Backend.Infrastructure.Datenbank
         }
         internal void UpdateGrid(DGrid inDgrid)
         {
-            var dbGrid = context.Grids.Find(inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");
+            var dbGrid = context.Grids
+                .Include(g => g.GridPos)
+                .FirstOrDefault(g => g.GridId == inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");
             dbGrid.LocationId = inDgrid.LocationId;
             dbGrid.Name = inDgrid.Name;
             dbGrid.Xmax = inDgrid.Xmax;
             dbGrid.Ymax = inDgrid.Ymax;
             // Grid Pos
-            var dbGridPosList = dbGrid.GridPos.ToList();
+            var dbGridPosList = dbGrid.GridPos;
             var inGridBin = inDgrid.GetAllBinsInGrid();
             // checken ob die bins im Grid in der nm tabelle sind
             foreach (var inGridPos in inGridBin)
@@ -122,15 +124,25 @@ namespace Backend.Infrastructure.Datenbank
             // Positionen updaten
             foreach (var inGridPos in inGridBin)
             {
-                var dbGridPos = dbGridPosList.FindAll(gp => gp.BinId == inGridPos.BinId);
+                var dbGridPos = dbGrid.GridPos
+                    .Where(gp => gp.BinId == inGridPos.BinId)
+                    .ToList();
                 var inBinPos = inDgrid.GetAllBinPosInGrid(inGridPos);
                 if (dbGridPos.Count > inBinPos.Count)
                 {
-                    dbGridPos.RemoveAt(dbGridPos.Count - 1);
+                    var toRemove = dbGridPos.Last();
+                    context.GridPos.Remove(toRemove);
+                    dbGridPos.Remove(toRemove);
                 }
                 if (dbGridPos.Count < inBinPos.Count)
                 {
-                    dbGridPos.Add(new GridPo { GridId = dbGrid.GridId, BinId = inGridPos.BinId });
+                    var newPos = new GridPo
+                    {
+                        GridId = dbGrid.GridId,
+                        BinId = inGridPos.BinId
+                    };
+                    dbGrid.GridPos.Add(newPos);
+                    dbGridPos.Add(newPos);
                 }
                 for (int i = 0; i < dbGridPos.Count; i++)
                 {
@@ -145,7 +157,10 @@ namespace Backend.Infrastructure.Datenbank
         
         internal void UpdateBin(DBin inDBin)
         {
-            var dbBin = context.Bins.Find(inDBin.BinId) ?? throw new Exception($"Bin with ID {inDBin.BinId} not found");
+            var dbBin = context.Bins
+                .Include(b => b.BinSlots)
+                .FirstOrDefault(b => b.BinId == inDBin.BinId)
+                ?? throw new Exception($"Bin with ID {inDBin.BinId} not found");
             dbBin.BinTypeId = inDBin.BinType.BinTypeId;
             UpdateBinType(inDBin.BinType);
             for (int i = 0; i < inDBin.BinType.SlotCount; i++)
@@ -170,7 +185,6 @@ namespace Backend.Infrastructure.Datenbank
                 }
             }
 
-            context.SaveChanges();
         }
         internal void UpdateBinType(DBinType inDBinType)
         {
@@ -179,14 +193,12 @@ namespace Backend.Infrastructure.Datenbank
             dbBinType.X = inDBinType.X;
             dbBinType.Y = inDBinType.Y;
             // BinType
-            context.SaveChanges();
         }
         internal void UpdatePart(DPart inDPart)
         {
             var dbPart = context.Parts.Find(inDPart.PartId) ?? throw new Exception($"Part with ID {inDPart.PartId} not found");
             dbPart.InventreeId = inDPart.InventreeId;
             // Part
-            context.SaveChanges();
         }
 
     }
