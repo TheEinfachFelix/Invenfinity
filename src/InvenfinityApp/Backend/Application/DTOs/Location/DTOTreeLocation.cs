@@ -8,13 +8,15 @@ namespace Backend.Application.DTOs
 {
     public class DTOTreeLocation: IDotTreeItem
     {
-        internal DTOTreeLocation(string Name, int id)
+        internal DTOTreeLocation(string Name, int id, string path)
         {
             this.Name = Name;
             Id = id;
+            this.path = path;
         }
         public string Name {  get; }
         public int Id { get; }
+        public string path { get; }
         public List<IDotTreeItem> Children { get; set; } = new List<IDotTreeItem>();
         IEnumerable<IDotTreeItem> IDotTreeItem.Children => Children;
     }

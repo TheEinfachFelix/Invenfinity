@@ -52,18 +52,16 @@ namespace InvenfinityApp.ViewModel
             ReloadGrid();
         }
 
+        // Grid
         public void MoveBin(DTOBin bin, int newX, int newY)
         {
             _root.Grid.moveBinInGrid(Grid, bin, newX, newY);
             ReloadGrid();
         }
-
         public bool isAreaFree(int x, int y, DTOBin bin)
         {
             return _root.Grid.isBinMovePossible(Grid, bin, x, y);
         }
-                    
-
         public void ReloadGrid()
         {
             if (SelectedGrid == null) return;

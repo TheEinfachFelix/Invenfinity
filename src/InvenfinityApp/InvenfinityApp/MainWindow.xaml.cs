@@ -24,8 +24,11 @@ namespace InvenfinityApp
         public MainWindow()
         {
             InitializeComponent();
-            //MainFrame.Navigate(new Grid()); DataContext = new MainViewModel();
+            var data = new ViewGridViewModel();
+            DataContext = data;
         }
+
+
 
         private void GoToSettings_Click(object sender, RoutedEventArgs e)
         {

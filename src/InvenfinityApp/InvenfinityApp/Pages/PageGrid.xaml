@@ -17,6 +17,11 @@
         </Grid.ColumnDefinitions>
         <!-- LEFT TREE -->
         <uc:LocationTree Grid.Column="0"/>
+        <Button Content="Edit Locations"
+                Grid.Column="0"
+                VerticalAlignment="Bottom"
+                Margin="10"
+                Click="EditLocations_Click"/>
         <!-- RIGHT GRID AREA -->
         <uc:GridBoard Grid.Column="1"/>
 

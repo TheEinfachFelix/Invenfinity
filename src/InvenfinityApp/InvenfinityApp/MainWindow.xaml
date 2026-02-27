@@ -6,11 +6,17 @@
     <Grid>
 
             <TabControl x:Name="MainTabControl">
-            <TabItem Header="Page">
-                <Frame Source="Pages/PageGrid.xaml"
-                NavigationUIVisibility="Hidden"/>
+                <TabItem Header="Grid">
+                    <Frame Source="Pages/PageGrid.xaml"
+                    NavigationUIVisibility="Hidden"/>
+                </TabItem>
+
+            <TabItem Header="LocationEdit">
+                <Frame Source="Pages/PageLocationTreeEdit.xaml"
+        NavigationUIVisibility="Hidden"/>
             </TabItem>
-                <TabItem Header="Start">
+
+            <TabItem Header="Start">
                     <StackPanel>
                         <TextBlock Text="Startseite"/>
                         <Button Content="Zu Einstellungen"

@@ -10,6 +10,7 @@ namespace Backend.Application.DTOs
     {
         public string Name { get; }
         public int Id { get; }
+        public string path { get; }
         public IEnumerable<IDotTreeItem>? Children { get; }
     }
 }

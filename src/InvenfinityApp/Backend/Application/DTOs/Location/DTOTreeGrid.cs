@@ -8,14 +8,16 @@ namespace Backend.Application.DTOs
 {
     public class DTOTreeGrid: IDotTreeItem
     {
-        internal DTOTreeGrid(string Name, int Id)
+        internal DTOTreeGrid(string Name, int Id, string path)
         {
             this.Name = Name;
             this.Id = Id;
+            this.path = path;
         }
 
         public string Name { get; }
         public int Id { get; }
+        public string path { get; }
         public IEnumerable<IDotTreeItem>? Children => null;
     }
 }

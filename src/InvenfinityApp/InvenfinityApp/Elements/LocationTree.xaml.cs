@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,8 @@ namespace InvenfinityApp.Elements
     {
         public int? SelectedGridId { get; private set; }
         public int? SelectedLocationId { get; private set; }
-
+        public IDotTreeItem? SelectedTreeItem { get; private set; }
+        public event EventHandler? SelectionChanged;
         public LocationTree()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace InvenfinityApp.Elements
         {
             SelectedGridId = null;
             SelectedLocationId = null;
+            SelectedTreeItem = (IDotTreeItem?)e.NewValue;
 
             if (e.NewValue is DTOTreeGrid grid)
             {
@@ -41,7 +44,8 @@ namespace InvenfinityApp.Elements
             {
                 SelectedLocationId = location.Id;
             }
-        }
 
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

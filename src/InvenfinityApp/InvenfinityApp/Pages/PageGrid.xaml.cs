@@ -26,13 +26,19 @@ namespace InvenfinityApp.Views
         public ViewGrid()
         {
             InitializeComponent();
-            var data = new ViewGridViewModel();
-            DataContext = data;
+            DataContext = Global.ViewGridViewModel;
 
         }
 
-
-
+        
+        private void EditLocations_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainTabControl.SelectedIndex = 1;
+            }
+        }
 
     }
 }
