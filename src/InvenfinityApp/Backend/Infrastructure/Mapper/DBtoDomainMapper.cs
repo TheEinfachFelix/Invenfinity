@@ -15,7 +15,7 @@ namespace Backend.Infrastructure.Mapper
         public static DLocation mapLocation(Location inlocation, DLocation? parent, Dset data)
         {
             // erstellen des Location Objekts
-            var outp = new DLocation(inlocation.LocationId, inlocation.Name ?? "", inlocation.MasterLocationId, parent);
+            var outp = new DLocation(inlocation.LocationId, inlocation.Name ?? "", parent);
             // Nachliefern von Grids un Childeren da diese eine Referenz auf das Location Objekt benötigen
             foreach (Grid item in inlocation.Grids)
             {
@@ -34,7 +34,7 @@ namespace Backend.Infrastructure.Mapper
         public static DGrid mapGrid(Grid inGrid, DLocation parent, Dset data)
         {
             // erstellen des Grid Objekts
-            var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.LocationId ?? int.MinValue, inGrid.Xmax, inGrid.Ymax);
+            var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.Xmax, inGrid.Ymax);
             // Nachliefern von Bins da diese eine Referenz auf das Grid Objekt benötigen
             // Setup der Liste
             var newGrid = outp.createGrid();

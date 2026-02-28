@@ -12,12 +12,12 @@ namespace Backend.Domain
     internal class DGrid
     {
 
-        public DGrid(int GridID, string Name, DLocation Location, int LocationID, int Xmax, int Ymax)
+        public DGrid(int GridID, string Name, DLocation Location, int Xmax, int Ymax)
         {
             this.GridId = GridID;
             this.Name = Name;
             this.Location = Location;
-            this.LocationId = LocationID;
+            LocationId = Location.LocationId;
             this.Xmax = Xmax;
             this.Ymax = Ymax;
 
@@ -80,9 +80,9 @@ namespace Backend.Domain
             {
                 var bin = Grid[x][y];
                 if (bin != null && bin.BinId == inBin.BinId)
-                    {
-                        outp.Add(new(x, y));
-                    }
+                {
+                    outp.Add(new(x, y));
+                }
             }
             return outp;
         }
@@ -170,7 +170,7 @@ namespace Backend.Domain
         }
         public BinPos GetMinRequiredGridSize()
         {
-            var outp = new BinPos(1, 1);
+            var outp = new BinPos(0, 0);
             foreach (var (x, y) in AllPositions())
             {
                 var bin = Grid[x][y];

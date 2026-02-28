@@ -9,11 +9,13 @@ namespace Backend.Domain
 {
     internal class DLocation
     {
-        public DLocation(int LocationId, string Name, int? ParentID, DLocation? Parent)
+        public DLocation(int LocationId, string Name, DLocation? Parent)
         {
             this.LocationId = LocationId;
             this.Name = Name;
-            this.ParentId = ParentID;
+            this.ParentId = null;
+            if (Parent != null)
+                this.ParentId = Parent.LocationId;
             this.Parent = Parent;
 
             if (Parent != null)
@@ -61,7 +63,7 @@ namespace Backend.Domain
             if (Grids.Contains(inGrid)) throw new Exception("Grid already in location");
             Grids.Add(inGrid);
         }
-        public void AddChild(DLocation inLoc)
+        internal void AddChild(DLocation inLoc)
         {
             if (Childeren.Contains(inLoc)) throw new Exception("Location already a child");
             Childeren.Add(inLoc);
@@ -69,7 +71,7 @@ namespace Backend.Domain
 
         public bool isDeletable()
         {
-            return Grids.Count == 0 && Childeren.Count == 0;
+            return Grids.Count == 0 && Childeren.Count == 0 && LocationId != 1;
         }
     }
 }

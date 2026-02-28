@@ -25,5 +25,9 @@ namespace Backend.Domain
         public int Y { get; }
 
         public virtual ICollection<DBin> Bins { get; } = new List<DBin>();
+        public bool IsDeletable()
+        {
+            return Bins.Count == 0;
+        }
     }
 }

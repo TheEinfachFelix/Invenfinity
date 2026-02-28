@@ -57,7 +57,6 @@ namespace Backend.Domain
                 }
             }
             throw new Exception("Part not found in bin");
-
         }
     }
 }
