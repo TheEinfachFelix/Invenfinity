@@ -15,7 +15,7 @@ namespace Backend.Application.DTOs.Location
             var outp = new DTOTreeLocation(root.Name, root.LocationId, path+"/"+root.Name);
             foreach (var item in root.Childeren)
             {
-                outp.Children.Add(CreateLocation(item, outp.path+"/"+item.Name));
+                outp.Children.Add(CreateLocation(item, outp.path));
             }
             foreach (var item in root.Grids)
             {
@@ -23,5 +23,20 @@ namespace Backend.Application.DTOs.Location
             }
             return outp;
         }
+
+        public static DTOTreeItemEdit CreateEditItem(DGrid grid)
+        {
+            var gridSize = grid.getMinGridSize();
+            return new DTOTreeItemEdit
+                (grid.Name, grid.GridId, "Grid", grid.LocationId, true, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, true, grid.isDeletable());
+        }
+
+        public static DTOTreeItemEdit CreateEditItem(DLocation location)
+        {
+            var isParentEditable = location.LocationId != 1;
+            return new DTOTreeItemEdit
+                (location.Name, location.LocationId, "Location", location.ParentId,isParentEditable, 0, 0, 0, 0, false, location.isDeletable());
+        }
+
     }
 }

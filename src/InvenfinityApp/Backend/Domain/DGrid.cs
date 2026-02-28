@@ -148,6 +148,29 @@ namespace Backend.Domain
             }
             return true;
         }
+        public BinPos getMinGridSize()
+        {
+            var outp = new BinPos(1, 1);
+            for (int X = 0; X < Xmax; X++)
+            {
+                for (int Y = 0; Y < Ymax; Y++)
+                {
+                    var bin = Grid[X][Y];
+                    if (bin != null)
+                    {
+                        if(outp.Xpos < X) outp.Xpos = X;
+                        if(outp.Ypos < Y) outp.Ypos = Y;
+                    }
+                }
+            }
+            outp.Xpos++;
+            outp.Ypos++;
+            return outp;
+        }
+        public bool isDeletable()
+        {
+            return GetAllBinsInGrid().Count == 0;
+        }
     }
 
     internal record BinPos

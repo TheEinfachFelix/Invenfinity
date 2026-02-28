@@ -36,3 +36,8 @@
 
 - Bearbeiten vom Grid und Tree
 - Scanner Implementieren
+
+
+
+- Bug beim Updaten der DB gefixt
+- Location bearbeitung aktiviert

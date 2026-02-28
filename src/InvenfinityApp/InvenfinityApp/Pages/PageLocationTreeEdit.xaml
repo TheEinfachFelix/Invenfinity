@@ -5,28 +5,85 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:InvenfinityApp.Pages"
       xmlns:uc="clr-namespace:InvenfinityApp.Elements"
-
+      xmlns:dto="clr-namespace:Backend.Application.DTOs;assembly=Backend"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="White"
       Title="PageLocationTreeEdit">
-
-
+    
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!-- LEFT TREE -->
+
+        <!-- TREE -->
         <uc:LocationTree Grid.Column="0" x:Name="LocationTree"/>
 
-        <TextBlock Text="{Binding ElementName=LocationTree, Path=SelectedTreeItem, Converter={StaticResource TreePathConverter}}"
-                   
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Grid.Column="1"/>
+        <!-- EDIT PANEL -->
+        <Border Grid.Column="1"
+                Margin="15,0,0,0"
+                Padding="20"
+                BorderBrush="Gray"
+                BorderThickness="1">
+
+            <StackPanel DataContext="{Binding SelectedItemEdit}">
+
+                <TextBlock Text="Element bearbeiten"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <!-- Name -->
+                <TextBlock Text="Name"/>
+                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!-- Typ -->
+                <TextBlock Text="Typ" Margin="0,15,0,0"/>
+                <TextBox Text="{Binding Type}" IsEnabled="False"/>
+
+                <!-- Parent -->
+                <TextBlock Text="ParentId" Margin="0,15,0,0"/>
+                <TextBox Text="{Binding ParentId, Mode=TwoWay}"
+                         IsEnabled="{Binding IsParentEditable}" />
+
+                <!-- Grid Size -->
+                <TextBlock Text="X Size" Margin="0,15,0,0"/>
+                <xctk:IntegerUpDown
+                    Minimum="{Binding XminVal}"
+                    Maximum="20"
+                    Value="{Binding Xsize}"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    IsEnabled="{Binding XYisEditable}"/>
+
+                <TextBlock Text="Y Size" Margin="0,5,0,0"/>
+                <xctk:IntegerUpDown
+                    Minimum="{Binding YminVal}"
+                    Maximum="20"
+                    Value="{Binding Ysize}"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    IsEnabled="{Binding XYisEditable}"/>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+
+                    <Button Content="Speichern"
+                            Width="100"
+                            Margin="0,0,10,0"
+                            Click="Save_Click"/>
+
+                    <Button Content="Löschen"
+                            Width="100"
+                            IsEnabled="{Binding isDeletable}"
+                            Click="Delete_Click"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
     </Grid>
 
 

@@ -31,6 +31,31 @@ namespace Backend.Domain
 
         public virtual DLocation? Parent { get; }
 
+        public DLocation? getLocationByID (int id)
+        {
+            if (LocationId == id) return this;  
+            foreach (var child in Childeren)
+            {
+                var res = child.getLocationByID(id);
+                if (res != null) return res;
+            }
+            return null;
+        }
+
+        public DGrid? getGridByID(int id)
+        {
+            foreach (var grid in Grids)
+            {
+                if (grid.GridId == id) return grid;
+            }
+            foreach (var child in Childeren)
+            {
+                var res = child.getGridByID(id);
+                if (res != null) return res;
+            }
+            return null;
+        }
+
         public void AddGrid(DGrid inGrid)
         {
             if (Grids.Contains(inGrid)) throw new Exception("Grid already in location");
@@ -40,6 +65,11 @@ namespace Backend.Domain
         {
             if (Childeren.Contains(inLoc)) throw new Exception("Location already a child");
             Childeren.Add(inLoc);
+        }
+
+        public bool isDeletable()
+        {
+            return Grids.Count == 0 && Childeren.Count == 0;
         }
     }
 }
