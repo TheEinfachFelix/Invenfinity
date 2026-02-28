@@ -21,9 +21,9 @@ namespace Backend.Domain
         }
         public int LocationId { get; }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public int? ParentId { get; }
+        public int? ParentId { get; set; }
 
         public virtual ICollection<DGrid> Grids { get; set; } = new List<DGrid>();
 

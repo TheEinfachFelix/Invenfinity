@@ -28,14 +28,14 @@ namespace Backend.Application.DTOs.Location
         {
             var gridSize = grid.getMinGridSize();
             return new DTOTreeItemEdit
-                (grid.Name, grid.GridId, "Grid", grid.LocationId, true, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, true, grid.isDeletable());
+                (grid.Name, grid.GridId, typeof(DTOTreeGrid).Name, grid.LocationId, true, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, true, grid.isDeletable());
         }
 
         public static DTOTreeItemEdit CreateEditItem(DLocation location)
         {
             var isParentEditable = location.LocationId != 1;
             return new DTOTreeItemEdit
-                (location.Name, location.LocationId, "Location", location.ParentId,isParentEditable, 0, 0, 0, 0, false, location.isDeletable());
+                (location.Name, location.LocationId, typeof(DTOTreeLocation).Name, location.ParentId,isParentEditable, 0, 0, 0, 0, false, location.isDeletable());
         }
 
     }

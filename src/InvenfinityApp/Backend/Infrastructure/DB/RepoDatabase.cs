@@ -69,6 +69,24 @@ namespace Backend.Infrastructure.Datenbank
             }
         }
 
+        internal void ReloadLocationData(Dset data)
+        {
+            var inloc = context.Locations.Single(l => l.LocationId == 1);
+            LoadGridsRecursively(inloc);
+
+
+            if (inloc == null) throw new Exception("The root Location was not found");
+            data.Root = DBtoDomainMapper.mapLocation(inloc, null, data);
+        }
+
+        internal void UpdateSingleLocation(DLocation inDlocation)
+        {
+            var dbLocation = context.Locations.Find(inDlocation.LocationId) ?? throw new Exception($"Location with ID {inDlocation.LocationId} not found");
+            dbLocation.Name = inDlocation.Name;
+            dbLocation.MasterLocationId = inDlocation.ParentId;
+            context.SaveChanges();
+        }
+
         internal void UpdateLocation(DLocation inDlocation)
         {
             var dbLocation = context.Locations.Find(inDlocation.LocationId) ?? throw new Exception($"Location with ID {inDlocation.LocationId} not found");
@@ -84,15 +102,22 @@ namespace Backend.Infrastructure.Datenbank
             }
             context.SaveChanges();
         }
+
+        internal void UpdateSingleGrid(DGrid inDgrid)
+        {
+            var dbGrid = context.Grids.Find(inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");
+            dbGrid.LocationId = inDgrid.LocationId;
+            dbGrid.Name = inDgrid.Name;
+            dbGrid.Xmax = inDgrid.Xmax;
+            dbGrid.Ymax = inDgrid.Ymax;
+            context.SaveChanges();
+        }   
         internal void UpdateGrid(DGrid inDgrid)
         {
             var dbGrid = context.Grids
                 .Include(g => g.GridPos)
                 .FirstOrDefault(g => g.GridId == inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");
-            dbGrid.LocationId = inDgrid.LocationId;
-            dbGrid.Name = inDgrid.Name;
-            dbGrid.Xmax = inDgrid.Xmax;
-            dbGrid.Ymax = inDgrid.Ymax;
+            UpdateSingleGrid(inDgrid);
             // Grid Pos
             var dbGridPosList = dbGrid.GridPos;
             var inGridBin = inDgrid.GetAllBinsInGrid();

@@ -14,8 +14,16 @@ namespace InvenfinityApp.ViewModel
     {
         public readonly UcRoot _root;
 
-        public ObservableCollection<IDotTreeItem> RootItems { get; set; }
-
+        private ObservableCollection<IDotTreeItem> _rootItems;
+        public ObservableCollection<IDotTreeItem> RootItems
+        {
+            get => _rootItems;
+            set
+            {
+                _rootItems = value;
+                OnPropertyChanged(nameof(RootItems)); // <- sehr wichtig
+            }
+        }
         private DTOGrid _grid;
         public DTOGrid Grid
         {
@@ -57,9 +65,9 @@ namespace InvenfinityApp.ViewModel
         {
             _root = new UcRoot();
             RootItems = new ObservableCollection<IDotTreeItem>
-        {
-            _root.Locations.GetLocations()
-        };
+            {
+                _root.Locations.GetLocations()
+            };
 
             ReloadGrid();
         }
@@ -69,8 +77,21 @@ namespace InvenfinityApp.ViewModel
         {
             string itemType = item.GetType().Name;
             SelectedItemEdit = _root.Locations.GetEditItem(item.Id, itemType);
-
         }
+        public void SaveItemEdit()
+        {
+            if (SelectedItemEdit == null) return;
+            _root.Locations.EditItem(SelectedItemEdit);
+            ReloadGrid();
+        }
+        public void DeleteItemEdit()
+        {
+            if (SelectedItemEdit == null) return;
+            _root.Locations.DeleteItem(SelectedItemEdit);
+            SelectedItemEdit = null;
+            ReloadGrid();
+        }
+
         // Grid
         public void MoveBin(DTOBin bin, int newX, int newY)
         {
@@ -83,6 +104,10 @@ namespace InvenfinityApp.ViewModel
         }
         public void ReloadGrid()
         {
+            RootItems = new ObservableCollection<IDotTreeItem>
+            {
+                _root.Locations.GetLocations()
+            };
             if (SelectedGrid == null) return;
             Grid = _root.Grid.getGridByID((int)SelectedGrid);
         }

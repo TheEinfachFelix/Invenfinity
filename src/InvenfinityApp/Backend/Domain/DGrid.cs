@@ -41,9 +41,9 @@ namespace Backend.Domain
         }
         public int GridId { get; }
 
-        public int? LocationId { get; }
+        public int? LocationId { get; set; }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
         public int Xmax { get; set; }
 

@@ -37,6 +37,10 @@
                            Margin="0,0,0,20"/>
 
                 <!-- Name -->
+                <TextBlock Text="ID"/>
+                <TextBox Text="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+
+                <!-- Name -->
                 <TextBlock Text="Name"/>
                 <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

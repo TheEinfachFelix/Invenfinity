@@ -44,12 +44,12 @@ namespace InvenfinityApp.Pages
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            _vm.SaveItemEdit();
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            _vm.DeleteItemEdit();
         }
 
 
