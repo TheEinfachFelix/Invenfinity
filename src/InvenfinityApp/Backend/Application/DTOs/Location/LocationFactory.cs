@@ -24,18 +24,18 @@ namespace Backend.Application.DTOs.Location
             return outp;
         }
 
-        public static DTOTreeItemEdit CreateEditItem(DGrid grid)
+        public static DTOTreeEditGrid CreateEditItem(DGrid grid)
         {
-            var gridSize = grid.getMinGridSize();
-            return new DTOTreeItemEdit
-                (grid.Name, grid.GridId, typeof(DTOTreeGrid).Name, grid.LocationId, true, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, true, grid.isDeletable());
+            var gridSize = grid.GetMinRequiredGridSize();
+            return new DTOTreeEditGrid  
+                (grid.Name, grid.GridId, grid.LocationId, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, grid.isDeletable());
         }
 
-        public static DTOTreeItemEdit CreateEditItem(DLocation location)
+        public static DTOTreeEditLocation CreateEditItem(DLocation location)
         {
             var isParentEditable = location.LocationId != 1;
-            return new DTOTreeItemEdit
-                (location.Name, location.LocationId, typeof(DTOTreeLocation).Name, location.ParentId,isParentEditable, 0, 0, 0, 0, false, location.isDeletable());
+            return new DTOTreeEditLocation
+                (location.Name, location.LocationId, location.ParentId,isParentEditable, location.isDeletable());
         }
 
     }

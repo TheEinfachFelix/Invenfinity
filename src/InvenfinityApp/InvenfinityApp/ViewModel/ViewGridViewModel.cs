@@ -50,8 +50,8 @@ namespace InvenfinityApp.ViewModel
             }
         }
 
-        private DTOTreeItemEdit? _selectedItemEdit;
-        public DTOTreeItemEdit? SelectedItemEdit
+        private IDotTreeEditItem? _selectedItemEdit;
+        public IDotTreeEditItem? SelectedItemEdit
         {
             get => _selectedItemEdit;
             set
@@ -75,8 +75,7 @@ namespace InvenfinityApp.ViewModel
         // Edit
         public void UpdateItemEdit(IDotTreeItem item)
         {
-            string itemType = item.GetType().Name;
-            SelectedItemEdit = _root.Locations.GetEditItem(item.Id, itemType);
+            SelectedItemEdit = _root.Locations.GetEditItem(item);
         }
         public void SaveItemEdit()
         {

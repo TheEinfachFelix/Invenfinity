@@ -23,7 +23,7 @@ namespace Backend.Domain
 
             Location.AddGrid(this);
 
-            Grid = createGrid();
+            _grid = createGrid();
         }
 
         internal List<List<DBin?>> createGrid()
@@ -45,13 +45,25 @@ namespace Backend.Domain
 
         public string Name { get; set; }
 
-        public int Xmax { get; set; }
+        public int Xmax { get; private set; }
 
-        public int Ymax { get; set; }
+        public int Ymax { get; private set; }
 
         public virtual DLocation Location { get; }
 
-        public List<List<DBin?>> Grid { get; set; }
+        private List<List<DBin?>> _grid;
+        public IReadOnlyList<IReadOnlyList<DBin?>> Grid => _grid;
+
+        private IEnumerable<(int x, int y)> AllPositions()
+        {
+            for (int x = 0; x < Xmax; x++)
+            {
+                for (int y = 0; y < Ymax; y++)
+                {
+                    yield return (x, y);
+                }
+            }
+        }
 
         public BinPos GetBinPosInGrid(DBin inBin)
         {
@@ -64,54 +76,47 @@ namespace Backend.Domain
         public List<BinPos> GetAllBinPosInGrid(DBin inBin)
         {
             var outp = new List<BinPos>();
-            for (int X = 0; X < Xmax; X++)
+            foreach (var (x, y) in AllPositions())
             {
-                for (int Y = 0; Y < Ymax; Y++)
-                {
-                    var bin = Grid[X][Y];
-                    if (bin != null && bin.BinId == inBin.BinId)
+                var bin = Grid[x][y];
+                if (bin != null && bin.BinId == inBin.BinId)
                     {
-                        outp.Add(new(X, Y));
+                        outp.Add(new(x, y));
                     }
-                }
             }
             return outp;
         }
 
         public List<DBin> GetAllBinsInGrid()
         {
-            var outp = new List<DBin>();
-            for (int X = 0; X < Xmax; X++)
+            var set = new HashSet<int>();
+            var result = new List<DBin>();
+
+            foreach (var (x, y) in AllPositions())
             {
-                for (int Y = 0; Y < Ymax; Y++)
-                {
-                    var bin = Grid[X][Y];
-                    if (bin != null && !outp.Any(b => b.BinId == bin.BinId))
-                    {
-                        outp.Add(bin);
-                    }
-                }
+                var bin = Grid[x][y];
+                if (bin != null && set.Add(bin.BinId))
+                    result.Add(bin);
             }
-            return outp;
+            return result;
         }
 
         public void RemoveBin(DBin inBin)
         {
-            for (int X = 0; X < Xmax; X++)
+            foreach (var (x, y) in AllPositions())
             {
-                for (int Y = 0; Y < Ymax; Y++)
+                var bin = Grid[x][y];
+                if (bin != null && bin.BinId == inBin.BinId)
                 {
-                    var bin = Grid[X][Y];
-                    if (bin != null && bin.BinId == inBin.BinId)
-                    {
-                        Grid[X][Y] = null;
-                    }
+                    _grid[x][y] = null;
                 }
             }
             inBin.Grid = null;
         }
         public void AddBin(DBin inBin, int X, int Y)
         {
+            if (!IsAreaFree(X, Y, inBin.BinType, inBin.BinId))
+                throw new InvalidOperationException("Area not free");
             var width = inBin.BinType.X;
             var height = inBin.BinType.Y;
             for (int Xoffset = 0; Xoffset < width; Xoffset++)
@@ -119,7 +124,7 @@ namespace Backend.Domain
                 for (int Yoffset = 0; Yoffset < height; Yoffset++)
                 {
                     if (Grid[X + Xoffset][Y + Yoffset] != null) throw new Exception("Grid Pos already filled");
-                    Grid[X + Xoffset][Y + Yoffset] = inBin;
+                    _grid[X + Xoffset][Y + Yoffset] = inBin;
                 }
             }
             inBin.Grid = this;
@@ -127,10 +132,25 @@ namespace Backend.Domain
 
         public void MoveBin(DBin inBin, int newX, int newY)
         {
-            var pos = inBin.GetPos();
-            if (pos is null) throw new Exception("Bin not in grid");
+            if (!IsAreaFree(newX, newY, inBin.BinType, inBin.BinId))
+                throw new InvalidOperationException("Area not free");
+
+            var oldPositions = GetAllBinPosInGrid(inBin);
+
             RemoveBin(inBin);
-            AddBin(inBin, newX, newY);
+
+            try
+            {
+                AddBin(inBin, newX, newY);
+            }
+            catch
+            {
+                // rollback
+                foreach (var pos in oldPositions)
+                    _grid[pos.Xpos][pos.Ypos] = inBin;
+
+                throw;
+            }
         }
         public bool IsAreaFree(int X, int Y, DBinType inBinType, int binID)
         {
@@ -148,19 +168,16 @@ namespace Backend.Domain
             }
             return true;
         }
-        public BinPos getMinGridSize()
+        public BinPos GetMinRequiredGridSize()
         {
             var outp = new BinPos(1, 1);
-            for (int X = 0; X < Xmax; X++)
+            foreach (var (x, y) in AllPositions())
             {
-                for (int Y = 0; Y < Ymax; Y++)
+                var bin = Grid[x][y];
+                if (bin != null)
                 {
-                    var bin = Grid[X][Y];
-                    if (bin != null)
-                    {
-                        if(outp.Xpos < X) outp.Xpos = X;
-                        if(outp.Ypos < Y) outp.Ypos = Y;
-                    }
+                    if(outp.Xpos < x) outp.Xpos = x;
+                    if(outp.Ypos < y) outp.Ypos = y;
                 }
             }
             outp.Xpos++;
@@ -169,21 +186,21 @@ namespace Backend.Domain
         }
         public void ResizeGrid(int newXmax, int newYmax)
         {
+            var required = GetMinRequiredGridSize();
+            if (required.Xpos > newXmax || required.Ypos > newYmax)
+                throw new InvalidOperationException("Grid too small for existing bins");
             Xmax = newXmax;
             Ymax = newYmax;
             var newGrid = createGrid();
 
-            for (int x = 0; x < Grid.Count; x++)
+            for (int x = 0; x < Math.Min(Grid.Count, newXmax); x++)
             {
-                var row = Grid[x];
-                for (int y = 0; y < row.Count; y++)
+                for (int y = 0; y < Math.Min(Grid[x].Count, newYmax); y++)
                 {
-                    var item = row[y];
-                    if (item == null) continue;
-                    newGrid[x][y] = item;
+                    newGrid[x][y] = Grid[x][y];
                 }
             }
-            Grid = newGrid;
+            _grid = newGrid;
         }
         public bool isDeletable()
         {

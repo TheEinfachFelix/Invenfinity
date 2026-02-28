@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Backend.Application.DTOs;
 using Backend.Application.DTOs.Location;
+using Backend.Domain;
 using Backend.Infrastructure.Datenbank;
 using DBconnector.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backend.Application.UseCases
 {
@@ -17,89 +19,77 @@ namespace Backend.Application.UseCases
         {
             _root = root;
         }
+
         public DTOTreeLocation GetLocations()
         {
             return LocationFactory.CreateLocation(_root.Data.Root);
         }
 
-        public DTOTreeItemEdit GetEditItem(int id, string type)
+        public IDotTreeEditItem GetEditItem(IDotTreeItem item)
         {
-            if (type.Equals(typeof(DTOTreeLocation).Name))
+            return item switch
             {
-
-                var loc = _root.Data.Root.getLocationByID(id);
-                if (loc == null) throw new Exception("Location not found");
-                return LocationFactory.CreateEditItem(loc);
-            }
-            else if (type.Equals(typeof(DTOTreeGrid).Name))
-            {
-                var grid = _root.Data.Root.getGridByID(id);
-                if (grid == null) throw new Exception("Grid not found");
-                return LocationFactory.CreateEditItem(grid);
-            }
-            else
-            {
-                throw new Exception("Invalid type");
-            }
+                DTOTreeLocation => LocationFactory.CreateEditItem(
+                                       _root.Data.Root.getLocationByID(item.Id)
+                                       ?? throw new Exception()),
+                DTOTreeGrid => LocationFactory.CreateEditItem(
+                                           _root.Data.Root.getGridByID(item.Id)
+                                           ?? throw new Exception()),
+                _ => throw new InvalidOperationException()
+            };
         }
 
-        public void EditItem(DTOTreeItemEdit item)
+        public void EditItem(IDotTreeEditItem item)
         {
-            bool GridChanged = false;
-            if (item.Type.Equals(typeof(DTOTreeLocation).Name))
+            bool TreeOrderChanged = false;
+            switch (item)
             {
-                var loc = _root.Data.Root.getLocationByID(item.Id);
-                if (loc == null) throw new Exception("Location not found");
-                loc.Name = item.Name;
-                if (loc.ParentId != item.ParentId) GridChanged = true;
-
-                loc.ParentId = item.ParentId;
-                _root.RepoDatabase.UpdateSingleLocation(loc);
+                case DTOTreeEditLocation:
+                    var loc = _root.Data.Root.getLocationByID(item.Id) ?? throw new Exception();
+                    loc.Name = item.Name;
+                    if (loc.ParentId != item.ParentId) TreeOrderChanged = true;
+                    loc.ParentId = item.ParentId;
+                    _root.RepoDatabase.UpdateSingleLocation(loc);
+                    break;
+                case DTOTreeEditGrid:
+                    var grid = _root.Data.Root.getGridByID(item.Id) ?? throw new Exception();
+                    grid.Name = item.Name;
+                    if (grid.LocationId != item.ParentId) TreeOrderChanged = true;
+                    grid.LocationId = item.ParentId;
+                    if (grid.Xmax != item.Xsize || grid.Ymax != item.Ysize)
+                        grid.ResizeGrid(item.Xsize, item.Ysize);
+                    _root.RepoDatabase.UpdateSingleGrid(grid);
+                    break;
+                default:
+                    throw new Exception("Invalid type");
             }
-            else if (item.Type.Equals(typeof(DTOTreeGrid).Name))
-            {
-                var grid = _root.Data.Root.getGridByID(item.Id);
-                if (grid == null) throw new Exception("Grid not found");
-                grid.Name = item.Name;
-                if (grid.LocationId != item.ParentId) GridChanged = true;
-                grid.LocationId = item.ParentId;
-                if (grid.Xmax != item.Xsize && grid.Ymax != item.Ysize)
-                    grid.ResizeGrid(item.Xsize, item.Ysize);
-                _root.RepoDatabase.UpdateSingleGrid(grid);
-            }
-            else
-            {
-                throw new Exception("Invalid type");
-            }
-            if (GridChanged)
+            
+            if (TreeOrderChanged)
             {
                 _root.RepoDatabase.ReloadLocationData(_root.Data);
             }
-
         }
 
-        public void DeleteItem(DTOTreeItemEdit item)
+        public void DeleteItem(IDotTreeEditItem item)
         {
             var id = item.Id;
-            if (item.Type.Equals(typeof(DTOTreeLocation).Name))
+            switch (item)
             {
-                if (id == 1) throw new Exception("Cant delete the root");
-                var loc = _root.Data.Root.getLocationByID(id);
-                if (loc == null) throw new Exception("Location not found");
-                if (!loc.isDeletable()) throw new Exception("Location is not deletable");
-                _root.RepoDatabase.DeleteLocation(id);
+                case DTOTreeEditLocation:
+                    var loc = _root.Data.Root.getLocationByID(item.Id) ?? throw new Exception();
+                    if (id == 1) throw new Exception("Cant delete the root");
+                    if (!loc.isDeletable()) throw new Exception("Location is not deletable");
+                    _root.RepoDatabase.DeleteLocation(id);
+                    break;
+                case DTOTreeEditGrid:
+                    var grid = _root.Data.Root.getGridByID(item.Id) ?? throw new Exception();
+                    if (!grid.isDeletable()) throw new Exception("Grid is not deletable");
+                    _root.RepoDatabase.DeleteGrid(id);
+                    break;
+                default:
+                    throw new Exception("Invalid type");
             }
-            else if (item.Type.Equals(typeof(DTOTreeGrid).Name))
-            {
-                var grid = _root.Data.Root.getGridByID(id);
-                if (grid == null) throw new Exception("Grid not found");
-                if (!grid.isDeletable()) throw new Exception("Grid is not deletable");
-                _root.RepoDatabase.DeleteGrid(id);
-            }
-            else
-            {
-                throw new Exception("Invalid type");
-            }
+
             _root.RepoDatabase.ReloadLocationData(_root.Data);
         }
     }
