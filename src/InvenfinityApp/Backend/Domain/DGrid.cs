@@ -167,6 +167,24 @@ namespace Backend.Domain
             outp.Ypos++;
             return outp;
         }
+        public void ResizeGrid(int newXmax, int newYmax)
+        {
+            Xmax = newXmax;
+            Ymax = newYmax;
+            var newGrid = createGrid();
+
+            for (int x = 0; x < Grid.Count; x++)
+            {
+                var row = Grid[x];
+                for (int y = 0; y < row.Count; y++)
+                {
+                    var item = row[y];
+                    if (item == null) continue;
+                    newGrid[x][y] = item;
+                }
+            }
+            Grid = newGrid;
+        }
         public bool isDeletable()
         {
             return GetAllBinsInGrid().Count == 0;

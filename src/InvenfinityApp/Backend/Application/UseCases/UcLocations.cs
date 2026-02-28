@@ -63,8 +63,8 @@ namespace Backend.Application.UseCases
                 grid.Name = item.Name;
                 if (grid.LocationId != item.ParentId) GridChanged = true;
                 grid.LocationId = item.ParentId;
-                grid.Xmax = item.Xsize;
-                grid.Ymax = item.Ysize;
+                if (grid.Xmax != item.Xsize && grid.Ymax != item.Ysize)
+                    grid.ResizeGrid(item.Xsize, item.Ysize);
                 _root.RepoDatabase.UpdateSingleGrid(grid);
             }
             else
