@@ -78,7 +78,12 @@ namespace Backend.Infrastructure.Datenbank
             if (inloc == null) throw new Exception("The root Location was not found");
             data.Root = DBtoDomainMapper.mapLocation(inloc, null, data);
         }
-
+        internal void DeleteLocation(int locationId)
+        {
+            var dbLocation = context.Locations.Find(locationId) ?? throw new Exception($"Location with ID {locationId} not found");
+            context.Locations.Remove(dbLocation);
+            context.SaveChanges();
+        }
         internal void UpdateSingleLocation(DLocation inDlocation)
         {
             var dbLocation = context.Locations.Find(inDlocation.LocationId) ?? throw new Exception($"Location with ID {inDlocation.LocationId} not found");
@@ -102,7 +107,12 @@ namespace Backend.Infrastructure.Datenbank
             }
             context.SaveChanges();
         }
-
+        internal void DeleteGrid(int gridId)
+        {
+            var dbGrid = context.Grids.Find(gridId) ?? throw new Exception($"Grid with ID {gridId} not found");
+            context.Grids.Remove(dbGrid);
+            context.SaveChanges();
+        }   
         internal void UpdateSingleGrid(DGrid inDgrid)
         {
             var dbGrid = context.Grids.Find(inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");

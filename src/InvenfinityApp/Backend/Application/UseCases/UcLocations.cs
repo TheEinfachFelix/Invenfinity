@@ -80,7 +80,27 @@ namespace Backend.Application.UseCases
 
         public void DeleteItem(DTOTreeItemEdit item)
         {
-                       throw new NotImplementedException();
+            var id = item.Id;
+            if (item.Type.Equals(typeof(DTOTreeLocation).Name))
+            {
+                if (id == 1) throw new Exception("Cant delete the root");
+                var loc = _root.Data.Root.getLocationByID(id);
+                if (loc == null) throw new Exception("Location not found");
+                if (!loc.isDeletable()) throw new Exception("Location is not deletable");
+                _root.RepoDatabase.DeleteLocation(id);
+            }
+            else if (item.Type.Equals(typeof(DTOTreeGrid).Name))
+            {
+                var grid = _root.Data.Root.getGridByID(id);
+                if (grid == null) throw new Exception("Grid not found");
+                if (!grid.isDeletable()) throw new Exception("Grid is not deletable");
+                _root.RepoDatabase.DeleteGrid(id);
+            }
+            else
+            {
+                throw new Exception("Invalid type");
+            }
+            _root.RepoDatabase.ReloadLocationData(_root.Data);
         }
     }
 }
