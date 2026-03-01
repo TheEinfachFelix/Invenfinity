@@ -21,4 +21,10 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Windows\CreateGrid.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

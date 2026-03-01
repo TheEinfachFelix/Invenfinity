@@ -8,7 +8,8 @@ namespace InvenfinityApp
 {
     internal static class Global
     {
-        public static ViewGridViewModel ViewGridViewModel { get; } = new ViewGridViewModel();
         public static UcRoot UcRoot { get; } = new UcRoot();
+        public static ViewGridViewModel ViewGridViewModel { get; } = new ViewGridViewModel(UcRoot);
+        
     }
 }

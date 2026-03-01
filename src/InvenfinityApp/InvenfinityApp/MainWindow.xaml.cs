@@ -24,7 +24,7 @@ namespace InvenfinityApp
         public MainWindow()
         {
             InitializeComponent();
-            var data = new ViewGridViewModel();
+            var data = Global.ViewGridViewModel;
             DataContext = data;
         }
 

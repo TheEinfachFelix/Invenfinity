@@ -41,3 +41,47 @@ VALUES
   (2, 1, 0, 1, 1),
   (3, 0, 1, 2, 1)
 ON CONFLICT ("GridPosID") DO NOTHING;
+
+
+
+-- Location
+SELECT setval(
+    pg_get_serial_sequence('"Location"', 'LocationID'),
+    COALESCE((SELECT MAX("LocationID") FROM "Location"), 1),
+    true
+);
+
+-- Grid
+SELECT setval(
+    pg_get_serial_sequence('"Grid"', 'GridID'),
+    COALESCE((SELECT MAX("GridID") FROM "Grid"), 1),
+    true
+);
+
+-- BinType
+SELECT setval(
+    pg_get_serial_sequence('"BinType"', 'BinTypeID'),
+    COALESCE((SELECT MAX("BinTypeID") FROM "BinType"), 1),
+    true
+);
+
+-- Bin
+SELECT setval(
+    pg_get_serial_sequence('"Bin"', 'BinID'),
+    COALESCE((SELECT MAX("BinID") FROM "Bin"), 1),
+    true
+);
+
+-- Part
+SELECT setval(
+    pg_get_serial_sequence('"Part"', 'PartID'),
+    COALESCE((SELECT MAX("PartID") FROM "Part"), 1),
+    true
+);
+
+-- GridPos
+SELECT setval(
+    pg_get_serial_sequence('"GridPos"', 'GridPosID'),
+    COALESCE((SELECT MAX("GridPosID") FROM "GridPos"), 1),
+    true
+);

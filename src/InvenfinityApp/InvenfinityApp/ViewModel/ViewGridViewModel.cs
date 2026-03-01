@@ -61,9 +61,9 @@ namespace InvenfinityApp.ViewModel
             }
         }
 
-        public ViewGridViewModel()
+        public ViewGridViewModel(UcRoot root)
         {
-            _root = new UcRoot();
+            _root =root;
             RootItems = new ObservableCollection<IDotTreeItem>
             {
                 _root.Locations.GetLocations()

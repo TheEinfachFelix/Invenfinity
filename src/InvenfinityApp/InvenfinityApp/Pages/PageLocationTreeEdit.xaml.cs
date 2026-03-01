@@ -52,6 +52,17 @@ namespace InvenfinityApp.Pages
             _vm.DeleteItemEdit();
         }
 
+        private void NewLoc_Click(object sender, RoutedEventArgs e)
+        {
+            var createLocationWindow = new Windows.CreateLocation();
+            createLocationWindow.ShowDialog();
+        }
+
+        private void NewGrid_Click(object sender, RoutedEventArgs e)
+        {
+            var createGridWindow = new Windows.CreateGrid();
+            createGridWindow.ShowDialog();
+        }
 
 
     }
