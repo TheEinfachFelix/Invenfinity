@@ -75,18 +75,18 @@ namespace InvenfinityApp.ViewModel
         // Edit
         public void UpdateItemEdit(IDotTreeItem item)
         {
-            SelectedItemEdit = _root.Locations.GetEditItem(item);
+            SelectedItemEdit = _root.Locations.Edit.GetEditItem(item);
         }
         public void SaveItemEdit()
         {
             if (SelectedItemEdit == null) return;
-            _root.Locations.EditItem(SelectedItemEdit);
+            _root.Locations.Edit.EditItem(SelectedItemEdit);
             ReloadGrid();
         }
         public void DeleteItemEdit()
         {
             if (SelectedItemEdit == null) return;
-            _root.Locations.DeleteItem(SelectedItemEdit);
+            _root.Locations.Edit.DeleteItem(SelectedItemEdit);
             SelectedItemEdit = null;
             ReloadGrid();
         }

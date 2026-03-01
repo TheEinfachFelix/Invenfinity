@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace Backend.Infrastructure.Datenbank
 {
-    public class RepoDatabase
+    internal class RepoDatabase
     {
         AppDbContext context;
-        public RepoDatabase(AppDbContext context) { this.context = context; }
+        internal RepoDatabase(AppDbContext context) { this.context = context; }
 
         internal Dset GetData()
         {
@@ -84,6 +84,16 @@ namespace Backend.Infrastructure.Datenbank
             context.Locations.Remove(dbLocation);
             context.SaveChanges();
         }
+        internal void CreateLocation(string name, int parentID)
+        {
+            if (!context.Locations.Any(l => l.LocationId == parentID))
+            {
+                throw new Exception($"Location with ID {parentID} not found");
+            }
+            var newLoc = new Location() { Name = name, MasterLocationId = parentID};
+            context.Locations.Add(newLoc);
+            context.SaveChanges();
+        }
         internal void UpdateSingleLocation(DLocation inDlocation)
         {
             var dbLocation = context.Locations.Find(inDlocation.LocationId) ?? throw new Exception($"Location with ID {inDlocation.LocationId} not found");
@@ -105,6 +115,16 @@ namespace Backend.Infrastructure.Datenbank
             {
                 dbLocation.MasterLocationId = null;
             }
+            context.SaveChanges();
+        }
+        internal void CreateGrid(string name, int locationId, int xmax, int ymax)
+        {
+            if(!context.Locations.Any(l => l.LocationId == locationId))
+            {
+                throw new Exception($"Location with ID {locationId} not found");
+            }
+            var newGrid = new Grid() { Name = name, LocationId = locationId, Xmax = xmax, Ymax = ymax };
+            context.Grids.Add(newGrid);
             context.SaveChanges();
         }
         internal void DeleteGrid(int gridId)
