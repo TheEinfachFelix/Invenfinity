@@ -29,7 +29,7 @@ namespace Backend.Application.DTOs
 
         public static DTOBin CreateBin(DBin inBin)
         {
-            var Pos = inBin.GetPos();
+            var Pos = inBin.GetPosition();
             if (Pos == null) throw new Exception("Bin not in Grid");
             var type = inBin.BinType;
             var parts = CreatePartList(inBin.Slots);

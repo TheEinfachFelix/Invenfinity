@@ -29,30 +29,30 @@ namespace Backend.Domain
 
         public virtual ICollection<DGrid> Grids { get; set; } = new List<DGrid>();
 
-        public virtual ICollection<DLocation> Childeren { get; set; } = new List<DLocation>();
+        public virtual ICollection<DLocation> Children { get; set; } = new List<DLocation>();
 
         public virtual DLocation? Parent { get; }
 
-        public DLocation? getLocationByID (int id)
+        public DLocation? FindLocationByID (int id)
         {
             if (LocationId == id) return this;  
-            foreach (var child in Childeren)
+            foreach (var child in Children)
             {
-                var res = child.getLocationByID(id);
+                var res = child.FindLocationByID(id);
                 if (res != null) return res;
             }
             return null;
         }
 
-        public DGrid? getGridByID(int id)
+        public DGrid? FindGridByID(int id)
         {
             foreach (var grid in Grids)
             {
                 if (grid.GridId == id) return grid;
             }
-            foreach (var child in Childeren)
+            foreach (var child in Children)
             {
-                var res = child.getGridByID(id);
+                var res = child.FindGridByID(id);
                 if (res != null) return res;
             }
             return null;
@@ -65,13 +65,13 @@ namespace Backend.Domain
         }
         internal void AddChild(DLocation inLoc)
         {
-            if (Childeren.Contains(inLoc)) throw new Exception("Location already a child");
-            Childeren.Add(inLoc);
+            if (Children.Contains(inLoc)) throw new Exception("Location already a child");
+            Children.Add(inLoc);
         }
 
         public bool isDeletable()
         {
-            return Grids.Count == 0 && Childeren.Count == 0 && LocationId != 1;
+            return Grids.Count == 0 && Children.Count == 0 && LocationId != 1;
         }
     }
 }

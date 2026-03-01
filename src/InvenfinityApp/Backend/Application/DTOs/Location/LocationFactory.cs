@@ -13,7 +13,7 @@ namespace Backend.Application.DTOs.Location
         public static DTOTreeLocation CreateLocation (DLocation root, string path = "")
         {
             var outp = new DTOTreeLocation(root.Name, root.LocationId, path+"/"+root.Name);
-            foreach (var item in root.Childeren)
+            foreach (var item in root.Children)
             {
                 outp.Children.Add(CreateLocation(item, outp.path));
             }

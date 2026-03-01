@@ -1,5 +1,4 @@
 ﻿using Backend.Domain;
-using BackendTest;
 using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace Backend.Test.Domain
             Assert.That(loc.Parent, Is.Null);
             Assert.That(loc.ParentId, Is.Null);
             Assert.That(loc.Grids, Is.Empty);
-            Assert.That(loc.Childeren, Is.Empty);
+            Assert.That(loc.Children, Is.Empty);
             Assert.That(loc.isDeletable(), Is.False);
         }
 
@@ -37,12 +36,12 @@ namespace Backend.Test.Domain
             Assert.That(loc.Parent, Is.EqualTo(parent));
             Assert.That(loc.ParentId, Is.EqualTo(1));
             Assert.That(loc.Grids, Is.Empty);
-            Assert.That(loc.Childeren, Is.Empty);
+            Assert.That(loc.Children, Is.Empty);
             Assert.That(loc.isDeletable(), Is.True);
-            Assert.That(parent.Childeren, Has.Count.EqualTo(1));
-            Assert.That(parent.Childeren, Contains.Item(loc));
+            Assert.That(parent.Children, Has.Count.EqualTo(1));
+            Assert.That(parent.Children, Contains.Item(loc));
             Assert.That(parent.isDeletable(), Is.False);
-            Assert.That(parent.getLocationByID(2), Is.EqualTo(loc));
+            Assert.That(parent.FindLocationByID(2), Is.EqualTo(loc));
         }
         [Test]
         public void TestLocationAddChild()
@@ -50,7 +49,7 @@ namespace Backend.Test.Domain
             var parent = new DLocation(1, "parent", null);
             var child = new DLocation(2, "child", null);
             parent.AddChild(child);
-            Assert.That(parent.Childeren, Contains.Item(child));
+            Assert.That(parent.Children, Contains.Item(child));
         }
         [Test]
         public void TestGridAdd()
@@ -68,7 +67,7 @@ namespace Backend.Test.Domain
         {
             var parent = TestData.locRoot;
             var grid = TestData.grid(parent);
-            Assert.That(parent.getGridByID(grid.GridId), Is.EqualTo(grid));
+            Assert.That(parent.FindGridByID(grid.GridId), Is.EqualTo(grid));
         }
     }
 }

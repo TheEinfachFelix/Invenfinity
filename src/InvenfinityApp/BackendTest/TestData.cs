@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Backend.Domain;
 
-namespace BackendTest
+namespace Backend.Test
 {
     internal static class TestData
     {

@@ -1,5 +1,5 @@
 ﻿using Backend.Domain;
-using BackendTest;
+using DBconnector.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +21,7 @@ namespace Backend.Test.Domain
             Assert.That(bin1.BinType, Is.EqualTo(data));
             Assert.That(bin1.Slots, Is.Not.Null);
             Assert.That(bin1.Grid, Is.Null);
-            Assert.That(bin1.GetPos(), Is.Null);
+            Assert.Throws<Exception>(() => bin1.GetPosition());
             Assert.That(bin1.BinId, Is.EqualTo(1));
             Assert.That(bin1.Slots.Count, Is.EqualTo(2));
         }
@@ -34,7 +34,7 @@ namespace Backend.Test.Domain
             Assert.That(bin1.BinType, Is.EqualTo(data));
             Assert.That(bin1.Slots, Is.Not.Null);
             Assert.That(bin1.Grid, Is.Null);
-            Assert.That(bin1.GetPos(), Is.Null);
+            Assert.Throws<Exception>(() => bin1.GetPosition());
             Assert.That(bin1.BinId, Is.EqualTo(2));
             Assert.That(bin1.Slots.Count, Is.EqualTo(1));
         }

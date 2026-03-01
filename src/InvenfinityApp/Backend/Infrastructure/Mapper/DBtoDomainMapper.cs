@@ -37,7 +37,7 @@ namespace Backend.Infrastructure.Mapper
             var outp =  new DGrid(inGrid.GridId, inGrid.Name ?? "", parent, inGrid.Xmax, inGrid.Ymax);
             // Nachliefern von Bins da diese eine Referenz auf das Grid Objekt benötigen
             // Setup der Liste
-            var newGrid = outp.createGrid();
+            var newGrid = outp.CreateGridMatrix();
             // Hinzufügen der Bins zu einer temp Liste
             foreach (var item in inGrid.GridPos)
             {

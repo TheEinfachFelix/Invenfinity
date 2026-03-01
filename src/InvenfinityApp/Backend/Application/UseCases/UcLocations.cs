@@ -30,10 +30,10 @@ namespace Backend.Application.UseCases
             return item switch
             {
                 DTOTreeLocation => LocationFactory.CreateEditItem(
-                                       _root.Data.Root.getLocationByID(item.Id)
+                                       _root.Data.Root.FindLocationByID(item.Id)
                                        ?? throw new Exception()),
                 DTOTreeGrid => LocationFactory.CreateEditItem(
-                                           _root.Data.Root.getGridByID(item.Id)
+                                           _root.Data.Root.FindGridByID(item.Id)
                                            ?? throw new Exception()),
                 _ => throw new InvalidOperationException()
             };
@@ -45,14 +45,14 @@ namespace Backend.Application.UseCases
             switch (item)
             {
                 case DTOTreeEditLocation:
-                    var loc = _root.Data.Root.getLocationByID(item.Id) ?? throw new Exception();
+                    var loc = _root.Data.Root.FindLocationByID(item.Id) ?? throw new Exception();
                     loc.Name = item.Name;
                     if (loc.ParentId != item.ParentId) TreeOrderChanged = true;
                     loc.ParentId = item.ParentId;
                     _root.RepoDatabase.UpdateSingleLocation(loc);
                     break;
                 case DTOTreeEditGrid:
-                    var grid = _root.Data.Root.getGridByID(item.Id) ?? throw new Exception();
+                    var grid = _root.Data.Root.FindGridByID(item.Id) ?? throw new Exception();
                     grid.Name = item.Name;
                     if (grid.LocationId != item.ParentId) TreeOrderChanged = true;
                     grid.LocationId = item.ParentId;
@@ -76,13 +76,13 @@ namespace Backend.Application.UseCases
             switch (item)
             {
                 case DTOTreeEditLocation:
-                    var loc = _root.Data.Root.getLocationByID(item.Id) ?? throw new Exception();
+                    var loc = _root.Data.Root.FindLocationByID(item.Id) ?? throw new Exception();
                     if (id == 1) throw new Exception("Cant delete the root");
                     if (!loc.isDeletable()) throw new Exception("Location is not deletable");
                     _root.RepoDatabase.DeleteLocation(id);
                     break;
                 case DTOTreeEditGrid:
-                    var grid = _root.Data.Root.getGridByID(item.Id) ?? throw new Exception();
+                    var grid = _root.Data.Root.FindGridByID(item.Id) ?? throw new Exception();
                     if (!grid.isDeletable()) throw new Exception("Grid is not deletable");
                     _root.RepoDatabase.DeleteGrid(id);
                     break;

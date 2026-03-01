@@ -1,5 +1,5 @@
 ﻿using Backend.Domain;
-using BackendTest;
+using DBconnector.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -44,7 +44,7 @@ namespace Backend.Test.Domain
                     Assert.That(grid.Grid[x][y], Is.Null);
                 }
             }
-            var createdGrid = grid.createGrid();
+            var createdGrid = grid.CreateGridMatrix();
             Assert.That(createdGrid.Count, Is.EqualTo(5));
             for (int x = 0; x < grid.Xmax; x++)
             {
@@ -64,25 +64,24 @@ namespace Backend.Test.Domain
             var binType = TestData.binType2;
             var bin = TestData.bin1(binType);
             grid.AddBin(bin, 2, 3);
-            Assert.That(grid.GetBinPosInGrid(bin), Is.EqualTo(new BinPos(2, 3)));
+            Assert.That(bin.GetPosition(), Is.EqualTo(new BinPos(2, 3)));
             Assert.That(bin.Grid, Is.EqualTo(grid));
-            Assert.That(bin.GetPos(), Is.EqualTo(new BinPos(2, 3)));
+            Assert.That(bin.GetPosition(), Is.EqualTo(new BinPos(2, 3)));
             Assert.That(grid.Grid[2][3], Is.EqualTo(bin));
             Assert.That(grid.Grid[2][4], Is.EqualTo(bin));
-            Assert.That(grid.GetAllBinPosInGrid(bin), Is.EqualTo([new BinPos(2,3), new BinPos(2,4)]));
+            Assert.That(bin.GetAllPositions(), Is.EqualTo([new BinPos(2,3), new BinPos(2,4)]));
             Assert.That(grid.GetAllBinsInGrid(), Is.EqualTo([bin]));
             grid.MoveBin(bin, 0, 0);
-            Assert.That(grid.GetBinPosInGrid(bin), Is.EqualTo(new BinPos(0, 0)));
+            Assert.That(bin.GetPosition(), Is.EqualTo(new BinPos(0, 0)));
             Assert.That(grid.Grid[2][3], Is.Null);
             Assert.That(grid.Grid[2][4], Is.Null);
             Assert.That(grid.Grid[0][0], Is.EqualTo(bin));
             Assert.That(grid.Grid[0][1], Is.EqualTo(bin));
-            Assert.That(grid.GetAllBinPosInGrid(bin), Is.EqualTo([new BinPos(0, 0), new BinPos(0, 1)]));
+            Assert.That(bin.GetAllPositions(), Is.EqualTo([new BinPos(0, 0), new BinPos(0, 1)]));
             Assert.That(grid.GetAllBinsInGrid(), Is.EqualTo([bin]));
             grid.RemoveBin(bin);
-            Assert.Throws<Exception>(() => grid.GetBinPosInGrid(bin));
+            Assert.Throws<Exception>(() => bin.GetPosition());
             Assert.That(bin.Grid, Is.Null);
-            Assert.That(bin.GetPos(), Is.Null);
 
 
         }
@@ -95,12 +94,12 @@ namespace Backend.Test.Domain
             var bin = TestData.bin1(binType);
             Assert.Throws<InvalidOperationException>(() => grid.MoveBin(bin, 5, 6));
             grid.AddBin(bin, 2, 3);
-            Assert.That(grid.GetBinPosInGrid(bin), Is.EqualTo(new BinPos(2, 3)));
+            Assert.That(bin.GetPosition(), Is.EqualTo(new BinPos(2, 3)));
             Assert.That(bin.Grid, Is.EqualTo(grid));
-            Assert.That(bin.GetPos(), Is.EqualTo(new BinPos(2, 3)));
+            Assert.That(bin.GetPosition(), Is.EqualTo(new BinPos(2, 3)));
             Assert.That(grid.Grid[2][3], Is.EqualTo(bin));
             Assert.That(grid.Grid[2][4], Is.EqualTo(bin));
-            Assert.That(grid.GetAllBinPosInGrid(bin), Is.EqualTo([new BinPos(2, 3), new BinPos(2, 4)]));
+            Assert.That(bin.GetAllPositions(), Is.EqualTo([new BinPos(2, 3), new BinPos(2, 4)]));
             Assert.That(grid.GetAllBinsInGrid(), Is.EqualTo([bin]));
             Assert.Throws<InvalidOperationException>(() => grid.MoveBin(bin, 5, 6));
         }

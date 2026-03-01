@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using DBconnector.Models;
@@ -31,10 +32,28 @@ namespace Backend.Domain
         public virtual DBinType BinType { get; }
         public virtual DGrid? Grid { get; set; }
 
-        public BinPos? GetPos()
+        public BinPos GetPosition()
         {
-            if (Grid == null) return null;
-            return Grid.GetBinPosInGrid(this);
+            if (Grid == null) throw new Exception("Grid not set");
+            var pos = GetAllPositions();
+            if (pos.Count == 0)
+                throw new Exception("Bin not found in grid");
+            return pos[0];
+        }
+
+        public List<BinPos> GetAllPositions()
+        {
+            if (Grid == null) throw new Exception("Grid not set");
+            var outp = new List<BinPos>();
+            foreach (var (x, y) in Grid.AllPositions())
+            {
+                var bin = Grid.Grid[x][y];
+                if (bin != null && bin.BinId == BinId)
+                {
+                    outp.Add(new(x, y));
+                }
+            }
+            return outp;
         }
 
         public void AddPart(DPart inPart, int SlotNr)
@@ -57,6 +76,13 @@ namespace Backend.Domain
                 }
             }
             throw new Exception("Part not found in bin");
+        }
+
+        public bool IsDeletable()
+        {
+            if (Grid != null) return false;
+            if (Slots.Any(s => s != null)) return false;
+            return true;
         }
     }
 }

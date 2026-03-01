@@ -162,7 +162,7 @@ namespace Backend.Infrastructure.Datenbank
                 var dbGridPos = dbGrid.GridPos
                     .Where(gp => gp.BinId == inGridPos.BinId)
                     .ToList();
-                var inBinPos = inDgrid.GetAllBinPosInGrid(inGridPos);
+                var inBinPos = inGridPos.GetAllPositions();
                 if (dbGridPos.Count > inBinPos.Count)
                 {
                     var toRemove = dbGridPos.Last();
