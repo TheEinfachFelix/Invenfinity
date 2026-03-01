@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Backend.Application.UseCases;
+using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Grid;
+using InvenfinityApp.ViewModel.Tree;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +18,35 @@ namespace InvenfinityApp
     /// </summary>
     public partial class App : Application
     {
+        public static IServiceProvider? ServiceProvider { get; private set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var services = new ServiceCollection();
+
+            ConfigureServices(services);
+
+            ServiceProvider = services.BuildServiceProvider();
+
+            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            // Backend
+            services.AddSingleton<UcRoot>();
+
+            // ViewModels
+            services.AddSingleton<MainViewModel>();
+            services.AddTransient<GridViewModel>();
+            services.AddTransient<LocationTreeViewModel>();
+            services.AddTransient<LocationEditViewModel>();
+            services.AddTransient<CreateLocationViewModel>();
+            services.AddTransient<CreateGridViewModel>();
+
+            // Views
+            services.AddSingleton<MainWindow>();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Grid;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,8 +21,8 @@ namespace InvenfinityApp.Elements
     /// </summary>
     public partial class GridBoard : UserControl
     {
-        private ViewGridViewModel? VM =>
-            DataContext as ViewGridViewModel;
+        private GridViewModel? VM =>
+            DataContext as GridViewModel;
         public GridBoard()
         {
             InitializeComponent();
@@ -70,19 +71,12 @@ namespace InvenfinityApp.Elements
 
         private void VM_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewGridViewModel.Grid))
+            if (e.PropertyName == nameof(GridViewModel.Grid))
             {
                 // Grid neu zeichnen
                 BuildGrid(VM!.Grid);
             }
         }
-
-
-
-
-
-
-
 
         private void Grid_DragOver(object sender, DragEventArgs e)
         {

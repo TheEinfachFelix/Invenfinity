@@ -1,5 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Tree;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -22,14 +23,17 @@ namespace InvenfinityApp.Pages
     /// </summary>
     public partial class PageLocationTreeEdit : Page
     {
-        private readonly ViewGridViewModel _vm;
-        private IDotTreeItem? selectedItem;
+        private CreateLocationViewModel CreateLocViewModel;
+        private CreateGridViewModel CreateGridViewModel;
+        private readonly LocationEditViewModel vm;
 
-        public PageLocationTreeEdit()
+        public PageLocationTreeEdit(LocationEditViewModel vm, CreateLocationViewModel CreateLocViewModel, CreateGridViewModel CreateGridViewModel)
         {
             InitializeComponent();
-            _vm = Global.ViewGridViewModel;
-            DataContext = _vm; 
+            DataContext = vm;
+            this.vm = vm;
+            this.CreateLocViewModel = CreateLocViewModel;
+            this.CreateGridViewModel = CreateGridViewModel;
             LocationTree.SelectionChanged += LocationTree_SelectionChanged;
         }
 
@@ -37,30 +41,28 @@ namespace InvenfinityApp.Pages
         {
             var item = LocationTree.SelectedTreeItem;
             if (item == null) return;
-            _vm.UpdateItemEdit(item);
+            vm.UpdateItemEdit(item);
         }
-
-
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            _vm.SaveItemEdit();
+            vm.SaveItemEdit();
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _vm.DeleteItemEdit();
+            vm.DeleteItemEdit();
         }
 
         private void NewLoc_Click(object sender, RoutedEventArgs e)
         {
-            var createLocationWindow = new Windows.CreateLocation();
+            var createLocationWindow = new Windows.CreateLocation(CreateLocViewModel);
             createLocationWindow.ShowDialog();
         }
 
         private void NewGrid_Click(object sender, RoutedEventArgs e)
         {
-            var createGridWindow = new Windows.CreateGrid();
+            var createGridWindow = new Windows.CreateGrid(CreateGridViewModel);
             createGridWindow.ShowDialog();
         }
 

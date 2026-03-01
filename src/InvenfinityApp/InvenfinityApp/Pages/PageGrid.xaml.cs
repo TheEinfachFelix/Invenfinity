@@ -1,5 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Grid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,13 @@ namespace InvenfinityApp.Views
     public partial class ViewGrid : Page
     {
 
-        public ViewGrid()
+        public ViewGrid(GridViewModel gridViewModel)
         {
             InitializeComponent();
-            DataContext = Global.ViewGridViewModel;
-
+            DataContext = gridViewModel;
         }
 
-        
+
         private void EditLocations_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;

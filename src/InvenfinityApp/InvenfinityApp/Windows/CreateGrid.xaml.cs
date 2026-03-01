@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InvenfinityApp.ViewModel.Tree;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,10 +18,12 @@ namespace InvenfinityApp.Windows
     /// </summary>
     public partial class CreateGrid : Window
     {
-        public CreateGrid()
+        private CreateGridViewModel vm;
+        public CreateGrid(CreateGridViewModel vm)
         {
             InitializeComponent();
-            DataContext = Global.ViewGridViewModel;
+            this.vm = vm;
+            DataContext = vm;
             locTree.SelectionChanged += locTree_SelectionChanged;
             CreateBtn.IsEnabled = false;
         }
@@ -43,8 +46,7 @@ namespace InvenfinityApp.Windows
         {
             if (NameVal.Text != "" && int.TryParse(ParentVal.Text, out int parentID) && int.TryParse(XsizeVal.Text, out int Xsize) && int.TryParse(YsizeVal.Text, out int Ysize))
             {
-                Global.UcRoot.Locations.Edit.CreateGrid(NameVal.Text, parentID, Xsize, Ysize);
-                Global.ViewGridViewModel.ReloadGrid();
+                vm.CreateGrid(NameVal.Text, parentID, Xsize, Ysize);
                 this.Close();
             }
         }

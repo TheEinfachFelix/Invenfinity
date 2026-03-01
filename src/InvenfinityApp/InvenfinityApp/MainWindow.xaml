@@ -5,34 +5,16 @@
 
     <Grid>
 
-            <TabControl x:Name="MainTabControl">
-                <TabItem Header="Grid">
-                    <Frame Source="Pages/PageGrid.xaml"
-                    NavigationUIVisibility="Hidden"/>
-                </TabItem>
-
-            <TabItem Header="LocationEdit">
-                <Frame Source="Pages/PageLocationTreeEdit.xaml"
-        NavigationUIVisibility="Hidden"/>
+        <TabControl x:Name="MainTabControl">
+            
+            <TabItem Header="Grid">
+                <Frame x:Name="GridFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
 
-            <TabItem Header="Start">
-                    <StackPanel>
-                        <TextBlock Text="Startseite"/>
-                        <Button Content="Zu Einstellungen"
-                            Click="GoToSettings_Click"/>
-                    </StackPanel>
-                </TabItem>
-
-                <TabItem Header="Einstellungen">
-                    <TextBlock Text="Settings Page"/>
-                </TabItem>
-
-
-
+            <TabItem Header="LocationEdit">
+                <Frame x:Name="LocationEdit" NavigationUIVisibility="Hidden"/>
+            </TabItem>
 
         </TabControl>
-
     </Grid>
-
 </Window>

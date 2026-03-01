@@ -1,4 +1,8 @@
-﻿using InvenfinityApp.ViewModel;
+﻿using InvenfinityApp.Pages;
+using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Grid;
+using InvenfinityApp.ViewModel.Tree;
+using InvenfinityApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +25,20 @@ namespace InvenfinityApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainViewModel vm, GridViewModel gridVm, LocationEditViewModel locEdit, CreateLocationViewModel createLoc, CreateGridViewModel createGrid)
         {
             InitializeComponent();
-            var data = Global.ViewGridViewModel;
-            DataContext = data;
-        }
+            DataContext = vm;
 
 
-
-        private void GoToSettings_Click(object sender, RoutedEventArgs e)
-        {
-            MainTabControl.SelectedIndex = 1;
+            GridFrame.Content = new ViewGrid(gridVm)
+            {
+                DataContext = gridVm
+            };
+            LocationEdit.Content = new PageLocationTreeEdit(locEdit, createLoc, createGrid)
+            {
+                DataContext =locEdit
+            };
         }
     }
 }
