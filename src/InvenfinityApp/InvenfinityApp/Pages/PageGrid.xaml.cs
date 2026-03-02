@@ -1,6 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using InvenfinityApp.ViewModel;
 using InvenfinityApp.ViewModel.Grid;
+using InvenfinityApp.ViewModel.Tree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,10 @@ namespace InvenfinityApp.Views
     public partial class ViewGrid : Page
     {
 
-        public ViewGrid(GridViewModel gridViewModel)
+        public ViewGrid(GridViewModel gridViewModel, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
+            LocationTree.DataContext = LocTreeVM;
             DataContext = gridViewModel;
         }
 

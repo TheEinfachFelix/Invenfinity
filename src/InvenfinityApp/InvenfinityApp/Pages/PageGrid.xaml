@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- LEFT TREE -->
-        <uc:LocationTree Grid.Column="0"/>
+        <uc:LocationTree Grid.Column="0" x:Name="LocationTree"/>
         <Button Content="Edit Locations"
                 Grid.Column="0"
                 VerticalAlignment="Bottom"

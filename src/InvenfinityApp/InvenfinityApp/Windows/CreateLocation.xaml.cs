@@ -19,11 +19,12 @@ namespace InvenfinityApp.Windows
     public partial class CreateLocation : Window
     {
         private CreateLocationViewModel vm;
-        public CreateLocation(CreateLocationViewModel vm)
+        public CreateLocation(CreateLocationViewModel vm, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
             this.vm = vm;
             DataContext = vm;
+            locTree.DataContext = LocTreeVM;
             locTree.SelectionChanged += locTree_SelectionChanged;
             CreateBtn.IsEnabled = false;
         }

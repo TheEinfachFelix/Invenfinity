@@ -22,25 +22,12 @@ namespace InvenfinityApp.ViewModel.Tree
                 OnPropertyChanged(nameof(SelectedItemEdit));
             }
         }
-        private ObservableCollection<IDotTreeItem> _rootItems;
-        public ObservableCollection<IDotTreeItem> RootItems
-        {
-            get => _rootItems;
-            set
-            {
-                _rootItems = value;
-                OnPropertyChanged(nameof(RootItems));
-            }
-        }
 
-        public event Action? TreeCreated;
+
+        public event Action? TreeChanged;
         public LocationEditViewModel(UcRoot root)
         {
             _root = root;
-            _rootItems = new ObservableCollection<IDotTreeItem>
-            {
-                _root.Locations.GetLocations()
-            };
         }
 
         public void UpdateItemEdit(IDotTreeItem item)
@@ -51,23 +38,17 @@ namespace InvenfinityApp.ViewModel.Tree
         {
             if (SelectedItemEdit == null) return;
             _root.Locations.Edit.EditItem(SelectedItemEdit);
-            TreeCreated?.Invoke();
+            TreeChanged?.Invoke();
         }
         public void DeleteItemEdit()
         {
             if (SelectedItemEdit == null) return;
             _root.Locations.Edit.DeleteItem(SelectedItemEdit);
             SelectedItemEdit = null;
-            TreeCreated?.Invoke();
+            TreeChanged?.Invoke();
         }
 
-        public void ReloadTree()
-        {
-            RootItems = new ObservableCollection<IDotTreeItem>
-            {
-                _root.Locations.GetLocations()
-            };
-        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)

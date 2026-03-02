@@ -19,11 +19,12 @@ namespace InvenfinityApp.Windows
     public partial class CreateGrid : Window
     {
         private CreateGridViewModel vm;
-        public CreateGrid(CreateGridViewModel vm)
+        public CreateGrid(CreateGridViewModel vm, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
             this.vm = vm;
             DataContext = vm;
+            locTree.DataContext = LocTreeVM;
             locTree.SelectionChanged += locTree_SelectionChanged;
             CreateBtn.IsEnabled = false;
         }

@@ -26,14 +26,17 @@ namespace InvenfinityApp.Pages
         private CreateLocationViewModel CreateLocViewModel;
         private CreateGridViewModel CreateGridViewModel;
         private readonly LocationEditViewModel vm;
+        private LocationTreeViewModel LocTreeVM;
 
-        public PageLocationTreeEdit(LocationEditViewModel vm, CreateLocationViewModel CreateLocViewModel, CreateGridViewModel CreateGridViewModel)
+        public PageLocationTreeEdit(LocationEditViewModel vm, CreateLocationViewModel CreateLocViewModel, CreateGridViewModel CreateGridViewModel, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
             DataContext = vm;
             this.vm = vm;
             this.CreateLocViewModel = CreateLocViewModel;
             this.CreateGridViewModel = CreateGridViewModel;
+            this.LocTreeVM = LocTreeVM;
+            LocationTree.DataContext = LocTreeVM;
             LocationTree.SelectionChanged += LocationTree_SelectionChanged;
         }
 
@@ -56,13 +59,13 @@ namespace InvenfinityApp.Pages
 
         private void NewLoc_Click(object sender, RoutedEventArgs e)
         {
-            var createLocationWindow = new Windows.CreateLocation(CreateLocViewModel);
+            var createLocationWindow = new Windows.CreateLocation(CreateLocViewModel, LocTreeVM);
             createLocationWindow.ShowDialog();
         }
 
         private void NewGrid_Click(object sender, RoutedEventArgs e)
         {
-            var createGridWindow = new Windows.CreateGrid(CreateGridViewModel);
+            var createGridWindow = new Windows.CreateGrid(CreateGridViewModel, LocTreeVM);
             createGridWindow.ShowDialog();
         }
 

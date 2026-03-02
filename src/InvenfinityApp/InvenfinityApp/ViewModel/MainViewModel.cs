@@ -9,27 +9,31 @@ namespace InvenfinityApp.ViewModel
         public LocationEditViewModel LocationEditVM { get; }
         public CreateGridViewModel CreateGridVM { get; }
         public CreateLocationViewModel CreateLocationVM { get; }
+        public LocationTreeViewModel LocationTreeVM { get; }
 
         public MainViewModel(
             GridViewModel gridVm,
             LocationEditViewModel locEditVm,
             CreateGridViewModel createGridVm,
-            CreateLocationViewModel createLocationVm)
+            CreateLocationViewModel createLocationVm,
+            LocationTreeViewModel locationTreeViewModel)
         {
             GridVM = gridVm;
             LocationEditVM = locEditVm;
             CreateGridVM = createGridVm;
             CreateLocationVM = createLocationVm;
+            LocationTreeVM = locationTreeViewModel;
 
             CreateGridVM.GridCreated += ReloadAll;
             CreateLocationVM.LocationCreated += ReloadAll;
+            LocationEditVM.TreeChanged += ReloadAll;
             GridVM.GridUpdated += ReloadAll;
         }
 
         private void ReloadAll()
         {
             GridVM.ReloadGrid();
-            LocationEditVM.ReloadTree();
+            LocationTreeVM.ReloadTree();
         }
     }
 }

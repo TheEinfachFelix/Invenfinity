@@ -25,19 +25,19 @@ namespace InvenfinityApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel vm, GridViewModel gridVm, LocationEditViewModel locEdit, CreateLocationViewModel createLoc, CreateGridViewModel createGrid)
+        public MainWindow(MainViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;
 
 
-            GridFrame.Content = new ViewGrid(gridVm)
+            GridFrame.Content = new ViewGrid(vm.GridVM, vm.LocationTreeVM)
             {
-                DataContext = gridVm
+                DataContext = vm.GridVM
             };
-            LocationEdit.Content = new PageLocationTreeEdit(locEdit, createLoc, createGrid)
+            LocationEdit.Content = new PageLocationTreeEdit(vm.LocationEditVM, vm.CreateLocationVM, vm.CreateGridVM, vm.LocationTreeVM)
             {
-                DataContext =locEdit
+                DataContext = vm.LocationEditVM
             };
         }
     }
