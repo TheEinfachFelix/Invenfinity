@@ -1,5 +1,6 @@
 ﻿using InvenfinityApp.ViewModel.Grid;
 using InvenfinityApp.ViewModel.Part;
+using InvenfinityApp.Windows;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,37 +11,32 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace InvenfinityApp.Windows
+namespace InvenfinityApp.Pages
 {
     /// <summary>
-    /// Interaktionslogik für CreateBin.xaml
+    /// Interaktionslogik für PageGridEdit.xaml
     /// </summary>
-    public partial class CreateBin : Window
+    public partial class PageBinEdit : Page
     {
-        private CreateBinViewModel vm;
+        private EditBinViewModel vm;
+        private CreateBinViewModel createBinViewModel;
         private CreateBinTypeViewModel createBinTypeViewModel;
-        public CreateBin(CreateBinViewModel vm, CreateBinTypeViewModel createBinTypeViewModel)
+        public PageBinEdit(EditBinViewModel vm, CreateBinViewModel createBinViewModel,CreateBinTypeViewModel createBinTypeViewModel)
         {
             InitializeComponent();
             this.vm = vm;
             DataContext = vm;
+            this.createBinViewModel = createBinViewModel;
             this.createBinTypeViewModel = createBinTypeViewModel;
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        public void Create_Bin_Click(object sender, RoutedEventArgs e)
         {
-            if (vm.SelectedBinTypeId == 0 || vm.SelectedGridId == 0) return;
-
-            vm.CreateBin();
-            this.Close();
-        }
-
-        private void Create_BinType_Click(object sender, RoutedEventArgs e)
-        {
-            CreateBinType createBinTypeWindow = new CreateBinType(createBinTypeViewModel);
-            createBinTypeWindow.ShowDialog();
+            CreateBin createBinWindow = new CreateBin(createBinViewModel, createBinTypeViewModel);
+            createBinWindow.ShowDialog();
         }
     }
 }

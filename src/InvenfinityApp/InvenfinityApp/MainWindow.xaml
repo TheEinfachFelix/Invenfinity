@@ -15,6 +15,10 @@
                 <Frame x:Name="LocationEdit" NavigationUIVisibility="Hidden"/>
             </TabItem>
 
+            <TabItem Header="BinEdit">
+                <Frame x:Name="BinEdit" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

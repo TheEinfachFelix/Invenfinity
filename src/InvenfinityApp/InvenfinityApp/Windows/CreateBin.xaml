@@ -5,40 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvenfinityApp.Windows"
         mc:Ignorable="d"
+                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+
         Title="CreateBin" Height="450" Width="800">
-    <StackPanel>
-        <TextBlock Text="Part Erstellen"
+    <StackPanel Margin="15">
+        <TextBlock Text="Bin Erstellen"
            FontSize="20"
            FontWeight="Bold"
            Margin="0,0,0,20"/>
 
-        <TextBlock Text="Slot Count" Margin="0,15,0,0"/>
-        <xctk:IntegerUpDown
-                x:Name="Slotcnt"
-                Minimum="1"
-                Value="1"
-                Width="100"
-                HorizontalAlignment="Left"/>
-
-        <TextBlock Text="X size" Margin="0,15,0,0"/>
-        <xctk:IntegerUpDown
-                x:Name="Xsize"
-                Minimum="1"
-                Value="1"
-                Width="100"
-                HorizontalAlignment="Left"/>
-
+        <TextBlock Text="GridId" Margin="0,15,0,0"/>
+        <ComboBox ItemsSource="{Binding Grids}"
+                  Width="200"
+                  HorizontalAlignment="Left"
+                  DisplayMemberPath="Path"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding SelectedGridId, Mode=TwoWay}" />
+        <DockPanel>
+            <TextBlock Text="ID: "/>
+            <TextBlock Text="{Binding SelectedGridId}"/>
+        </DockPanel>
+        
         <TextBlock Text="Y size" Margin="0,15,0,0"/>
-        <xctk:IntegerUpDown
-                x:Name="Ysize"
-                Minimum="1"
-                Value="1"
-                Width="100"
-                HorizontalAlignment="Left"/>
-
-        <Button Content="Erstellen" x:Name="CreateBtn" HorizontalAlignment="Left"
+        <ComboBox ItemsSource="{Binding BinTypes}"
+                  Width="200"
+                  HorizontalAlignment="Left"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding SelectedBinTypeId, Mode=TwoWay}" />
+        <DockPanel Width="200" HorizontalAlignment="Left">
+            <TextBlock Text="ID: "/>
+            <TextBlock Text="{Binding SelectedBinTypeId}"/>
+            <Button Content="BinType Erstellen" HorizontalAlignment="Right"
             Width="100"
-            Margin="0,15,10,0"
+            Click="Create_BinType_Click"/>
+        </DockPanel>
+
+        <Button Content="Bin Erstellen" x:Name="CreateBtn" HorizontalAlignment="Left"
+            Width="100"
+            Margin="0,15,0,0"
             Click="Create_Click"/>
 
     </StackPanel>

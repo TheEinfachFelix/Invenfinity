@@ -190,6 +190,10 @@ namespace Backend.Domain
         {
             return GetAllBinsInGrid().Count == 0;
         }
+        public string GetPath()
+        {
+            return Location.GetPath() + "/" + Name;
+        }
     }
 
     internal record BinPos

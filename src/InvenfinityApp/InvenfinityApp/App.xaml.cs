@@ -1,6 +1,7 @@
 ﻿using Backend.Application.UseCases;
 using InvenfinityApp.ViewModel;
 using InvenfinityApp.ViewModel.Grid;
+using InvenfinityApp.ViewModel.Part;
 using InvenfinityApp.ViewModel.Tree;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -44,6 +45,12 @@ namespace InvenfinityApp
             services.AddTransient<LocationEditViewModel>();
             services.AddTransient<CreateLocationViewModel>();
             services.AddTransient<CreateGridViewModel>();
+            services.AddTransient<CreateBinTypeViewModel>();
+            services.AddTransient<CreateBinViewModel>();
+            services.AddTransient<CreateLocationViewModel>();
+            services.AddTransient<CreatePartViewModel>();
+            services.AddTransient<EditBinViewModel>();
+
 
             // Views
             services.AddSingleton<MainWindow>();

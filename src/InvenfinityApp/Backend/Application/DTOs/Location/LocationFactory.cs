@@ -10,16 +10,16 @@ namespace Backend.Application.DTOs.Location
 {
     internal static class LocationFactory
     {
-        public static DTOTreeLocation CreateLocation (DLocation root, string path = "")
+        public static DTOTreeLocation CreateLocation (DLocation root)
         {
-            var outp = new DTOTreeLocation(root.Name, root.LocationId, path+"/"+root.Name);
+            var outp = new DTOTreeLocation(root.Name, root.LocationId, root.GetPath());
             foreach (var item in root.Children)
             {
-                outp.Children.Add(CreateLocation(item, outp.path));
+                outp.Children.Add(CreateLocation(item));
             }
             foreach (var item in root.Grids)
             {
-                outp.Children.Add(new DTOTreeGrid(item.Name, item.GridId, outp.path+"/"+item.Name));
+                outp.Children.Add(new DTOTreeGrid(item.Name, item.GridId, item.GetPath()));
             }
             return outp;
         }
@@ -38,5 +38,14 @@ namespace Backend.Application.DTOs.Location
                 (location.Name, location.LocationId, location.ParentId,isParentEditable, location.isDeletable());
         }
 
+        public static List<DTOTreeGrid> CreateGridList(List<DGrid> inList)
+        {
+            List<DTOTreeGrid> outp = new List<DTOTreeGrid>();
+            foreach (var grid in inList)
+            {
+                outp.Add(new DTOTreeGrid(grid.Name, grid.GridId, grid.GetPath()));
+            }
+            return outp;
+        }
     }
 }

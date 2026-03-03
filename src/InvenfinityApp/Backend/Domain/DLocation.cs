@@ -33,9 +33,9 @@ namespace Backend.Domain
 
         public virtual DLocation? Parent { get; }
 
-        public DLocation? FindLocationByID (int id)
+        public DLocation? FindLocationByID(int id)
         {
-            if (LocationId == id) return this;  
+            if (LocationId == id) return this;
             foreach (var child in Children)
             {
                 var res = child.FindLocationByID(id);
@@ -72,6 +72,21 @@ namespace Backend.Domain
         public bool isDeletable()
         {
             return Grids.Count == 0 && Children.Count == 0 && LocationId != 1;
+        }
+        public List<DGrid> GetAllGrids()
+        {
+            List<DGrid> res = new List<DGrid>();
+            res.AddRange(Grids);
+            foreach (var child in Children)
+            {
+                res.AddRange(child.GetAllGrids());
+            }
+            return res;
+        }
+        public string GetPath()
+        {
+            if (Parent == null) return Name;
+            return Parent.GetPath() + "/" + Name;
         }
     }
 }

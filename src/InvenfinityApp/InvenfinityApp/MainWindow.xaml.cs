@@ -39,6 +39,10 @@ namespace InvenfinityApp
             {
                 DataContext = vm.LocationEditVM
             };
+            BinEdit.Content = new PageBinEdit(vm.GridEditVM, vm.CreateBinVM, vm.CreateBinTypeVM)
+            {
+                DataContext = vm.GridEditVM
+            };
         }
     }
 }

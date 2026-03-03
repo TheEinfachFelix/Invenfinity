@@ -33,7 +33,7 @@ namespace Backend.Domain
             foreach (var item in Types)
             {
                 var data = item.FindBinById(id);
-                if ( data != null ) return data;
+                if (data != null) return data;
             }
             throw new Exception("BinType not found");
         }

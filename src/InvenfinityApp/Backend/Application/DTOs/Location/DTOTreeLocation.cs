@@ -13,11 +13,11 @@ namespace Backend.Application.DTOs
         {
             this.Name = Name;
             Id = id;
-            this.path = path;
+            this.Path = path;
         }
         public string Name {  get; }
         public int Id { get; }
-        public string path { get; }
+        public string Path { get; }
         public List<IDotTreeItem> Children { get; set; } = new List<IDotTreeItem>();
         IEnumerable<IDotTreeItem> IDotTreeItem.Children => Children;
     }
