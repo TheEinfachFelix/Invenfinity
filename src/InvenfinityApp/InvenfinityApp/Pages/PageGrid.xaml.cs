@@ -22,10 +22,10 @@ namespace InvenfinityApp.Views
     /// <summary>
     /// Interaktionslogik für Grid.xaml
     /// </summary>
-    public partial class ViewGrid : Page
+    public partial class PageGrid : Page
     {
 
-        public ViewGrid(GridViewModel gridViewModel, LocationTreeViewModel LocTreeVM)
+        public PageGrid(GridViewModel gridViewModel, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
             LocationTree.DataContext = LocTreeVM;

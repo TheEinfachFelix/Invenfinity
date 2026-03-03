@@ -29,5 +29,13 @@ namespace Backend.Domain
         {
             return Bins.Count == 0;
         }
+        public DBin? FindBinById(int id)
+        {
+            foreach (var bin in Bins)
+            {
+                if (bin.BinId == id) return bin;
+            }
+            return null;
+        }
     }
 }

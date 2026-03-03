@@ -1,0 +1,46 @@
+﻿<Window x:Class="InvenfinityApp.Windows.CreateBinType"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InvenfinityApp.Windows"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="CreateBinType" Height="450" Width="800">
+    <StackPanel>
+        <TextBlock Text="Part Erstellen"
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="0,0,0,20"/>
+
+        <TextBlock Text="Slot Count" Margin="0,15,0,0"/>
+        <xctk:IntegerUpDown
+                    x:Name="Slotcnt"
+                    Minimum="1"
+                    Value="1"
+                    Width="100"
+                    HorizontalAlignment="Left"/>
+        
+        <TextBlock Text="X size" Margin="0,15,0,0"/>
+        <xctk:IntegerUpDown
+                    x:Name="Xsize"
+                    Minimum="1"
+                    Value="1"
+                    Width="100"
+                    HorizontalAlignment="Left"/>
+
+        <TextBlock Text="Y size" Margin="0,15,0,0"/>
+        <xctk:IntegerUpDown
+                    x:Name="Ysize"
+                    Minimum="1"
+                    Value="1"
+                    Width="100"
+                    HorizontalAlignment="Left"/>
+
+        <Button Content="Erstellen" x:Name="CreateBtn" HorizontalAlignment="Left"
+                Width="100"
+                Margin="0,15,10,0"
+                Click="Create_Click"/>
+
+    </StackPanel>
+</Window>

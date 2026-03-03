@@ -28,5 +28,14 @@ namespace Backend.Domain
             }
             throw new Exception("BinType not found");
         }
+        public DBin findBinbyId(int id)
+        {
+            foreach (var item in Types)
+            {
+                var data = item.FindBinById(id);
+                if ( data != null ) return data;
+            }
+            throw new Exception("BinType not found");
+        }
     }
 }

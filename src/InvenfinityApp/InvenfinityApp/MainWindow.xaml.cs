@@ -31,7 +31,7 @@ namespace InvenfinityApp
             DataContext = vm;
 
 
-            GridFrame.Content = new ViewGrid(vm.GridVM, vm.LocationTreeVM)
+            GridFrame.Content = new PageGrid(vm.GridVM, vm.LocationTreeVM)
             {
                 DataContext = vm.GridVM
             };

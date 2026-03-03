@@ -15,12 +15,22 @@
         Padding="4"
         AllowDrop="True"
         PreviewMouseMove="Bin_MouseMove">
-
         <StackPanel>
-            <TextBlock Text="Bin"
-                FontWeight="Bold"
-                Foreground="White"
-                Margin="0,0,0,5"/>
+            <DockPanel>
+                <TextBlock Text="Bin"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Margin="0,0,0,5"
+                           HorizontalAlignment="Right"/>
+                <DockPanel HorizontalAlignment="Right">
+                    <TextBlock Text="id: " FontWeight="Bold"
+                        Foreground="White"
+                        Margin="0,0,10,10" />
+                    <TextBlock Text="{Binding BinId}" FontWeight="Bold"
+                        Foreground="White"
+                        Margin="0,0,10,10"/>
+                </DockPanel>
+            </DockPanel>
 
             <!-- PARTS -->
             <ItemsControl ItemsSource="{Binding Parts}">
@@ -37,6 +47,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-
     </Border>
 </UserControl>

@@ -17,7 +17,7 @@
         <!-- LEFT TREE -->
         <uc:LocationTree Grid.Column="0" x:Name="locTree"/>
 
-        <StackPanel Grid.Column="1" DataContext="{Binding SelectedItemEdit}">
+        <StackPanel Grid.Column="1">
 
             <TextBlock Text="Location Erstellen"
                FontSize="20"
@@ -52,15 +52,10 @@
                     Width="100"
                     HorizontalAlignment="Left"/>
 
-            <!-- Buttons -->
-            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
-
-                <Button Content="Erstellen" x:Name="CreateBtn"
+                <Button Content="Erstellen" x:Name="CreateBtn" HorizontalAlignment="Left"
                 Width="100"
                 Margin="0,0,10,0"
                 Click="Create_Click"/>
-
-            </StackPanel>
 
         </StackPanel>
 

@@ -241,6 +241,18 @@ namespace Backend.Infrastructure.Datenbank
             }
 
         }
+        internal void CreateBinType(Dset data, int slotCount, int xSize, int ySize)
+        {
+            var type = new BinType()
+            {
+                SlotCount = slotCount,
+                X = xSize,
+                Y = ySize
+            };
+            context.BinTypes.Add(type);
+            context.SaveChanges();
+            data.Types.Add(DBtoDomainMapper.mapBinType(type));
+        }
         internal void UpdateBinType(DBinType inDBinType)
         {
             var dbBinType = context.BinTypes.Find(inDBinType.BinTypeId) ?? throw new Exception($"BinType with ID {inDBinType.BinTypeId} not found");
@@ -248,6 +260,16 @@ namespace Backend.Infrastructure.Datenbank
             dbBinType.X = inDBinType.X;
             dbBinType.Y = inDBinType.Y;
             // BinType
+        }
+        internal void CreatePart(Dset data, int? InvId)
+        {
+            var part = new Part()
+            {
+                InventreeId = InvId
+            };
+            context.Parts.Add(part);
+            context.SaveChanges();
+            data.Parts.Add(DBtoDomainMapper.mapPart(part));
         }
         internal void UpdatePart(DPart inDPart)
         {

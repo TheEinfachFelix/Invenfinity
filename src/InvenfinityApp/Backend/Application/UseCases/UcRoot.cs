@@ -16,14 +16,15 @@ namespace Backend.Application.UseCases
         internal AppDbContext dbContext;
         public UcLocations Locations;
         public UcGrid Grid;
+        public UcBin Bin;
         public UcRoot()
         {
             dbContext = new AppDbContext();
             RepoDatabase = new RepoDatabase(dbContext);
-            // GetData() liefert Task<Dset> -> synchron darauf warten und Ergebnis zuweisen
             Data = RepoDatabase.GetData();
             Locations = new UcLocations(this);
             Grid = new UcGrid(this);
+            Bin = new UcBin(this);
         }
         
     }
