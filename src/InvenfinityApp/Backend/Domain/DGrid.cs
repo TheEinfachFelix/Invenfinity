@@ -113,6 +113,21 @@ namespace Backend.Domain
             }
             inBin.Grid = this;
         }
+        public void AddBin(DBin inBin)
+        {
+            for (int x = 0; x <= Xmax - inBin.BinType.X; x++)
+            {
+                for (int y = 0; y <= Ymax - inBin.BinType.Y; y++)
+                {
+                    if (IsAreaFree(x, y, inBin.BinType, inBin.BinId))
+                    {
+                        AddBin(inBin, x, y);
+                        return;
+                    }
+                }
+            }
+            throw new InvalidOperationException("No space for bin");
+        }
 
         public void MoveBin(DBin inBin, int newX, int newY)
         {
@@ -185,6 +200,23 @@ namespace Backend.Domain
                 }
             }
             _grid = newGrid;
+        }
+        public BinPos? FindFreePosForBin(DBinType inBinType)
+        {
+            for (int x = Xmax - inBinType.X; x >= 0; x--)
+            {
+                for (int y = Ymax - inBinType.Y; y >= 0; y--)
+                {
+                    if (IsAreaFree(x, y, inBinType, -1))
+                        return new BinPos(x, y);
+                }
+            }
+            return null;
+        }
+
+        public bool HasSpaceForBin(DBinType inBinType)
+        {
+            return FindFreePosForBin(inBinType) != null;
         }
         public bool isDeletable()
         {

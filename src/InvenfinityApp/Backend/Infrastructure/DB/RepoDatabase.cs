@@ -209,7 +209,28 @@ namespace Backend.Infrastructure.Datenbank
 
             context.SaveChanges();
         }
-        
+        internal void CreateBin(int BinTypeID, int gridID, int Xpos, int Ypos)
+        {
+            var BinID = _CreateBin(BinTypeID);
+
+            var gridPos = new GridPo() { GridId = gridID, BinId = BinID, X = Xpos, Y = Ypos };
+            context.GridPos.Add(gridPos);
+            context.SaveChanges();
+        }
+        internal void CreateBin(int BinTypeID)
+        {
+            _CreateBin(BinTypeID);
+        }
+        private int _CreateBin(int BinTypeID)
+        {
+            var dbBin = new Bin()
+            {
+                BinTypeId = BinTypeID
+            };
+            context.Bins.Add(dbBin);
+            context.SaveChanges();
+            return dbBin.BinId;
+        }
         internal void UpdateBin(DBin inDBin)
         {
             var dbBin = context.Bins

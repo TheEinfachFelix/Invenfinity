@@ -1,8 +1,10 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.DTOs.Location;
+using Backend.Domain;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Backend.Application.UseCases
@@ -48,9 +50,43 @@ namespace Backend.Application.UseCases
 
         public void CreateBin(int BinTypeID, int? GridID)
         {
-            throw new NotImplementedException();
-                      // _root.RepoDatabase.CreateBin(_root.Data, BinTypeID, GridID);
+            if (GridID == null)
+            {
+                _root.RepoDatabase.CreateBin(BinTypeID);
+                return;
+            }
 
+            var grid = _root.Data.Root.FindGridByID((int)GridID);
+            if (grid == null)
+            {
+                throw new Exception("Grid not found");
+            }
+            var BinType = _root.Data.findBinTypebyID(BinTypeID);
+            var BinPos = grid.FindFreePosForBin(BinType);
+            if (BinPos == null)
+            {
+                throw new Exception("No free position for this bin in the grid");
+            }
+            _root.RepoDatabase.CreateBin(BinTypeID, (int)GridID, BinPos.Xpos, BinPos.Ypos);
+
+            _root.RepoDatabase.ReloadLocationData(_root.Data);
+        }
+        public bool CanCreateBin(int BinTypeID, int? GridID)
+        {
+            if (GridID == null)
+            {
+                return true;
+            }
+            var grid = _root.Data.Root.FindGridByID((int)GridID);
+            if (grid == null) return false;
+            var BinType = _root.Data.findBinTypebyID(BinTypeID);
+            var BinPos = grid.FindFreePosForBin(BinType);
+            return BinPos != null;
+        }
+
+        public DTOTreeGrid getEmtpyGrid()
+        {
+            return new("No Grid", -1, "No Grid");
         }
     }
 }

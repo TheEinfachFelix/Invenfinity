@@ -42,7 +42,7 @@ namespace InvenfinityApp.ViewModel
             LocationEditVM.TreeChanged += ReloadAll;
             GridVM.GridUpdated += ReloadAll;
             CreateBinTypeVM.BinTypeChanged += ReloadBinTypes;
-
+            CreateBinVM.BinsChanged += ReloadGrids;
         }
 
         private void ReloadAll()

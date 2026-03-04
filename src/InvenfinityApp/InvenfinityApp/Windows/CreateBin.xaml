@@ -14,7 +14,7 @@
            FontWeight="Bold"
            Margin="0,0,0,20"/>
 
-        <TextBlock Text="GridId" Margin="0,15,0,0"/>
+        <TextBlock Text="Grid" Margin="0,15,0,0"/>
         <ComboBox ItemsSource="{Binding Grids}"
                   Width="200"
                   HorizontalAlignment="Left"
@@ -26,7 +26,7 @@
             <TextBlock Text="{Binding SelectedGridId}"/>
         </DockPanel>
         
-        <TextBlock Text="Y size" Margin="0,15,0,0"/>
+        <TextBlock Text="Bin Type" Margin="0,15,0,0"/>
         <ComboBox ItemsSource="{Binding BinTypes}"
                   Width="200"
                   HorizontalAlignment="Left"
@@ -44,7 +44,8 @@
         <Button Content="Bin Erstellen" x:Name="CreateBtn" HorizontalAlignment="Left"
             Width="100"
             Margin="0,15,0,0"
-            Click="Create_Click"/>
+            Click="Create_Click"
+                IsEnabled="{Binding canCreate}"/>
 
     </StackPanel>
 </Window>

@@ -37,7 +37,15 @@
 - Bearbeiten vom Grid und Tree
 - Scanner Implementieren
 
+## Woche 3 - 0x.03.2026
 
+### Das habe ich geschaft
 
 - Bug beim Updaten der DB gefixt
-- Location bearbeitung aktiviert
+- Location bearbeitung (Name, Position im Baum)
+- Grid bearbeitung (Größe, Name, Position im Baum)
+- Grid und Location Erstellen
+- Bin mit BinType und Grid erstellen
+- BinType Erstellen (Slots und Größe)
+
+### Daran arbeite ich als nächstes

@@ -30,9 +30,9 @@ ON CONFLICT ("PartID") DO NOTHING;
 
 INSERT INTO "BinSlot" ("BinID", "SlotNr", "PartID")
 VALUES
-  (1, 1, 0),
-  (2, 2, 1),
-  (2, 1, 0)
+  (1, 0, 2),
+  (2, 1, 1),
+  (2, 0, 2)
 ON CONFLICT ("BinID", "SlotNr") DO NOTHING;
 
 INSERT INTO "GridPos" ("GridPosID", "X", "Y", "BinID", "GridID")

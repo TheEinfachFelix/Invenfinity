@@ -42,6 +42,7 @@ namespace InvenfinityApp.ViewModel.Part
             {
                 _SelectedBinTypeId = value;
                 OnPropertyChanged(nameof(SelectedBinTypeId));
+                CheckCanCreate();
             }
         }
 
@@ -53,6 +54,17 @@ namespace InvenfinityApp.ViewModel.Part
             {
                 _SelectedGridId = value;
                 OnPropertyChanged(nameof(SelectedGridId));
+                CheckCanCreate();
+            }
+        }
+        private bool _canCreate;
+        public bool canCreate
+        {
+            get => _canCreate;
+            set
+            {
+                _canCreate = value;
+                OnPropertyChanged(nameof(canCreate));
             }
         }
 
@@ -68,26 +80,40 @@ namespace InvenfinityApp.ViewModel.Part
         public event Action? BinsChanged;
         public void CreateBin()
         {
-            root.Bin.CreateBin(SelectedBinTypeId, SelectedGridId);
+            int? gridID = null;
+            if (SelectedGridId != -1)
+                gridID = SelectedGridId;
+            root.Bin.CreateBin(SelectedBinTypeId, gridID);
             BinsChanged?.Invoke();
         }
 
         public void ReloadGrids()
         {
-            _Grids = new ObservableCollection<DTOTreeGrid>();
+            Grids = new ObservableCollection<DTOTreeGrid>();
+            Grids.Add(root.Bin.getEmtpyGrid());
             foreach (var grid in root.Bin.GetAllGrids())
             {
-                _Grids.Add(grid);
+                Grids.Add(grid);
             }
+            CheckCanCreate();
         }
 
         public void ReloadBinTypes()
         {
-            _BinTypes = new ObservableCollection<DTOEditBinType>();
+            BinTypes = new ObservableCollection<DTOEditBinType>();
             foreach (var binType in root.Bin.GetAllBinTypes())
             {
-                _BinTypes.Add(binType);
+                BinTypes.Add(binType);
             }
+            CheckCanCreate();
+        }
+
+        public void CheckCanCreate()
+        {
+            int? gridID = null;
+            if (SelectedGridId != -1)
+                gridID = SelectedGridId;
+            canCreate = root.Bin.CanCreateBin(SelectedBinTypeId, gridID);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

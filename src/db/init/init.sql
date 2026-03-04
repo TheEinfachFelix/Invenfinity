@@ -92,7 +92,6 @@ ALTER TABLE "GridPos"
 ADD FOREIGN KEY("GridID") REFERENCES "Grid"("GridID")
 ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
 INSERT INTO "Location" ("LocationID", "name", "MasterLocationID")
 VALUES
   (1, 'Root', NULL),
@@ -125,9 +124,9 @@ ON CONFLICT ("PartID") DO NOTHING;
 
 INSERT INTO "BinSlot" ("BinID", "SlotNr", "PartID")
 VALUES
-  (1, 1, 0),
-  (2, 2, 1),
-  (2, 1, 0)
+  (1, 0, 2),
+  (2, 1, 1),
+  (2, 0, 2)
 ON CONFLICT ("BinID", "SlotNr") DO NOTHING;
 
 INSERT INTO "GridPos" ("GridPosID", "X", "Y", "BinID", "GridID")
