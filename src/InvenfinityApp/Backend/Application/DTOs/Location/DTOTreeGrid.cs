@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Application.DTOs
 {
-    public class DTOTreeGrid: IDotTreeItem
+    public class DTOTreeGrid: IDotTreeItem, IDtoDropdownElement
     {
         internal DTOTreeGrid(string Name, int Id, string path)
         {

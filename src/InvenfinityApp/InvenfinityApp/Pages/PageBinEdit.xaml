@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:InvenfinityApp.Pages"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
@@ -11,10 +12,36 @@
 
     <Grid>
         <StackPanel>
-        <Button Content="Bin Erstellen" HorizontalAlignment="Left"
-            Width="100"
-            Margin="0,15,10,0"
-            Click="Create_Bin_Click"/>
+            <TextBlock Text="Bin Bearbeiten"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+            <Button Content="Bin Erstellen" HorizontalAlignment="Left"
+                    Width="100"
+                    Margin="0,15,10,0"
+                    Click="Create_Bin_Click"/>
+
+            <TextBlock Text="Bin ID" Margin="0,15,0,0"/>
+            <xctk:IntegerUpDown
+                    Minimum="-1"
+                    Value="{Binding BinID}"
+                    Width="100"
+                    HorizontalAlignment="Left"/>
+
+
+            <TextBlock Text="Type:" Margin="0,15,0,0"/>
+            <TextBox Text="{Binding BinTypeName}"
+                     IsEnabled="False" />
+
+
+            <TextBlock Text="Grid ID" Margin="0,15,0,0"/>
+            <xctk:IntegerUpDown
+                    Minimum="-1"
+                    Value="{Binding GridID}"
+                    Width="100"
+                    HorizontalAlignment="Left"/>
+
+
         </StackPanel>
     </Grid>
 </Page>

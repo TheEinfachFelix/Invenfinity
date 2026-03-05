@@ -9,16 +9,20 @@ using System.Text;
 
 namespace Backend.Application.UseCases
 {
-    public class UcBin
+    public class UcBinCreate
     {
         private readonly UcRoot _root;
-        internal UcBin(UcRoot root)
+        internal UcBinCreate(UcRoot root)
         {
             _root = root;
         }
 
         public void CreateBinType(int slotCount, int xSize, int ySize)
         {
+            foreach (var binType in _root.Data.Types)
+            {
+                if (binType.SlotCount == slotCount && binType.X == xSize && binType.Y == ySize) return;
+            }
             _root.RepoDatabase.CreateBinType(_root.Data, slotCount, xSize, ySize);
         }
         public void CreatePart(int InventreeID)
@@ -29,6 +33,7 @@ namespace Backend.Application.UseCases
         public DTOEditBin GetBinById(int binId)
         {
             var bin = _root.Data.findBinbyId(binId);
+            if (bin == null) return GridEditFactory.CreateEmtyBin();
             return GridEditFactory.CreateBin(bin);
         }
 
@@ -88,5 +93,7 @@ namespace Backend.Application.UseCases
         {
             return new("No Grid", -1, "No Grid");
         }
+
+
     }
 }

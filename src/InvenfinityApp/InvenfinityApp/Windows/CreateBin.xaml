@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvenfinityApp.Windows"
+        xmlns:uc="clr-namespace:InvenfinityApp.Elements"
         mc:Ignorable="d"
                 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 
@@ -15,24 +16,20 @@
            Margin="0,0,0,20"/>
 
         <TextBlock Text="Grid" Margin="0,15,0,0"/>
-        <ComboBox ItemsSource="{Binding Grids}"
-                  Width="200"
-                  HorizontalAlignment="Left"
-                  DisplayMemberPath="Path"
-                  SelectedValuePath="Id"
-                  SelectedValue="{Binding SelectedGridId, Mode=TwoWay}" />
+        <uc:Dropdown
+                    ItemsSource="{Binding Grids}"
+                    SelectedId="{Binding SelectedGridId}"
+                    AllowEmpty="True" />
+        
         <DockPanel>
             <TextBlock Text="ID: "/>
             <TextBlock Text="{Binding SelectedGridId}"/>
         </DockPanel>
         
         <TextBlock Text="Bin Type" Margin="0,15,0,0"/>
-        <ComboBox ItemsSource="{Binding BinTypes}"
-                  Width="200"
-                  HorizontalAlignment="Left"
-                  DisplayMemberPath="Name"
-                  SelectedValuePath="Id"
-                  SelectedValue="{Binding SelectedBinTypeId, Mode=TwoWay}" />
+        <uc:Dropdown
+                    ItemsSource="{Binding BinTypes}"
+                    SelectedId="{Binding SelectedBinTypeId}" />
         <DockPanel Width="200" HorizontalAlignment="Left">
             <TextBlock Text="ID: "/>
             <TextBlock Text="{Binding SelectedBinTypeId}"/>

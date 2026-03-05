@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Application.DTOs.Grid.Edit
 {
-    public class DTOEditBinType
+    public class DTOEditBinType : IDtoDropdownElement
     {
         internal DTOEditBinType(int Id, int SlotCount, int xSize, int ySize) 
         { 

@@ -16,7 +16,8 @@ namespace Backend.Application.UseCases
         internal AppDbContext dbContext;
         public UcLocations Locations;
         public UcGrid Grid;
-        public UcBin Bin;
+        public UcBinCreate Bin;
+        public UcBinEdit BinEdit;
         public UcRoot()
         {
             dbContext = new AppDbContext();
@@ -24,7 +25,8 @@ namespace Backend.Application.UseCases
             Data = RepoDatabase.GetData();
             Locations = new UcLocations(this);
             Grid = new UcGrid(this);
-            Bin = new UcBin(this);
+            Bin = new UcBinCreate(this);
+            BinEdit = new UcBinEdit(this);
         }
         
     }

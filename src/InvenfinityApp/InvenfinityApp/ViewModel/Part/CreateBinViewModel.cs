@@ -89,22 +89,13 @@ namespace InvenfinityApp.ViewModel.Part
 
         public void ReloadGrids()
         {
-            Grids = new ObservableCollection<DTOTreeGrid>();
-            Grids.Add(root.Bin.getEmtpyGrid());
-            foreach (var grid in root.Bin.GetAllGrids())
-            {
-                Grids.Add(grid);
-            }
+            Grids = new ObservableCollection<DTOTreeGrid>(root.Bin.GetAllGrids());
             CheckCanCreate();
         }
 
         public void ReloadBinTypes()
         {
-            BinTypes = new ObservableCollection<DTOEditBinType>();
-            foreach (var binType in root.Bin.GetAllBinTypes())
-            {
-                BinTypes.Add(binType);
-            }
+            BinTypes = new ObservableCollection<DTOEditBinType>(root.Bin.GetAllBinTypes());
             CheckCanCreate();
         }
 
@@ -113,6 +104,11 @@ namespace InvenfinityApp.ViewModel.Part
             int? gridID = null;
             if (SelectedGridId != -1)
                 gridID = SelectedGridId;
+            if (SelectedBinTypeId == 0)
+            {
+                canCreate = false;
+                return;
+            }
             canCreate = root.Bin.CanCreateBin(SelectedBinTypeId, gridID);
         }
 

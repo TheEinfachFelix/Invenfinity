@@ -28,14 +28,23 @@ namespace Backend.Domain
             }
             throw new Exception("BinType not found");
         }
-        public DBin findBinbyId(int id)
+        public DBin? findBinbyId(int id)
         {
             foreach (var item in Types)
             {
                 var data = item.FindBinById(id);
                 if (data != null) return data;
             }
-            throw new Exception("BinType not found");
+            return null;
+        }
+        public List<DBin> GetAllBins()
+        {
+            List<DBin> bins = new List<DBin>();
+            foreach (var item in Types)
+            {
+                bins.AddRange(item.Bins);
+            }
+            return bins;
         }
     }
 }
