@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Application.DTOs.Grid.Edit
 {
-    public class DTOEditBin
+    public class DTOEditBin : IDtoDropdownElement
     {
         internal DTOEditBin(int Id, int? GridId, List<DTOEditPart> Parts, DTOEditBinType BinType)
         {
@@ -13,6 +13,7 @@ namespace Backend.Application.DTOs.Grid.Edit
             this.Parts = Parts;
             this.BinType = BinType;
         }
+        public string Name => Id.ToString();
         public int Id { get; }
         public int? GridId { get; }
         public List<DTOEditPart> Parts { get; }

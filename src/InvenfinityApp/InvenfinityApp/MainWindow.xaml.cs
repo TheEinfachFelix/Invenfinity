@@ -25,10 +25,12 @@ namespace InvenfinityApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainViewModel vm;
         public MainWindow(MainViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;
+            this.vm = vm;
 
 
             GridFrame.Content = new PageGrid(vm.GridVM, vm.LocationTreeVM)
@@ -39,10 +41,16 @@ namespace InvenfinityApp
             {
                 DataContext = vm.LocationEditVM
             };
-            BinEdit.Content = new PageBinEdit(vm.GridEditVM, vm.CreateBinVM, vm.CreateBinTypeVM)
+            BinEdit.Content = new PageBinEdit(vm.BinEditVM, vm.CreateBinVM, vm.CreateBinTypeVM)
             {
-                DataContext = vm.GridEditVM
+                DataContext = vm.BinEditVM
             };
+        }
+
+        public void OpenBinToEdit(int binID)
+        {
+            vm.BinEditVM.SelectedBinId = binID;
+            MainTabControl.SelectedIndex = 2;
         }
     }
 }

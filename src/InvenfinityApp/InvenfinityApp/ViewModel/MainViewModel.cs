@@ -14,7 +14,7 @@ namespace InvenfinityApp.ViewModel
         public CreateBinTypeViewModel CreateBinTypeVM { get; }
         public CreateBinViewModel CreateBinVM { get; }
         public CreatePartViewModel CreatePartVM { get; }
-        public EditBinViewModel GridEditVM { get; }
+        public EditBinViewModel BinEditVM { get; }
 
         public MainViewModel(
             GridViewModel gridVm,
@@ -25,7 +25,7 @@ namespace InvenfinityApp.ViewModel
             CreateBinTypeViewModel createBinTypeVM,
             CreateBinViewModel createBinVM,
             CreatePartViewModel createPartVM,
-            EditBinViewModel gridEditVM)
+            EditBinViewModel binEditVM)
         {
             GridVM = gridVm;
             LocationEditVM = locEditVm;
@@ -35,7 +35,7 @@ namespace InvenfinityApp.ViewModel
             CreateBinTypeVM = createBinTypeVM;
             CreateBinVM = createBinVM;
             CreatePartVM = createPartVM;
-            GridEditVM = gridEditVM;
+            BinEditVM = binEditVM;
 
             CreateGridVM.GridCreated += ReloadAll;
             CreateLocationVM.LocationCreated += ReloadAll;
@@ -43,6 +43,7 @@ namespace InvenfinityApp.ViewModel
             GridVM.GridUpdated += ReloadAll;
             CreateBinTypeVM.BinTypeChanged += ReloadBinTypes;
             CreateBinVM.BinsChanged += ReloadGrids;
+            
         }
 
         private void ReloadAll()
@@ -55,6 +56,8 @@ namespace InvenfinityApp.ViewModel
         {
             GridVM.ReloadGrid();
             CreateBinVM.ReloadGrids();
+            BinEditVM.ReloadGrids();
+            BinEditVM.ReloadBins();
         }
         public void ReloadBinTypes()
         {

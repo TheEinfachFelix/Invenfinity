@@ -1,6 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.UseCases;
+using DBconnector.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,18 +13,29 @@ namespace InvenfinityApp.ViewModel.Grid
     public class EditBinViewModel : INotifyPropertyChanged
     {
         private UcRoot root;
-        private int _binID;
-        public int BinID
+        private int _selectedBinId;
+        public int SelectedBinId
         {             
-            get { return _binID; }
+            get { return _selectedBinId; }
             set
             {
-                if (_binID != value)
+                if (_selectedBinId != value)
                 {
-                    _binID = value;
-                    OnPropertyChanged(nameof(BinID));
+                    _selectedBinId = value;
+                    OnPropertyChanged(nameof(SelectedBinId));
                     UpdateProps();
                 }
+            }
+        }
+
+        private ObservableCollection<DTOEditBin> _Bins;
+        public ObservableCollection<DTOEditBin> Bins
+        {
+            get => _Bins;
+            set
+            {
+                _Bins = value;
+                OnPropertyChanged(nameof(Bins));
             }
         }
 
@@ -41,17 +53,27 @@ namespace InvenfinityApp.ViewModel.Grid
             }
         }
 
-        private int _gridId;
-        public int GridID
+        private int _selectedGridId;
+        public int SelectedGridID
         {
-            get { return _gridId; }
+            get { return _selectedGridId; }
             set
             {
-                if (_gridId != value)
+                if (_selectedGridId != value)
                 {
-                    _gridId = value;
-                    OnPropertyChanged(nameof(GridID));
+                    _selectedGridId = value;
+                    OnPropertyChanged(nameof(SelectedGridID));
                 }
+            }
+        }
+        private ObservableCollection<DTOTreeGrid> _Grids;
+        public ObservableCollection<DTOTreeGrid> Grids
+        {
+            get => _Grids;
+            set
+            {
+                _Grids = value;
+                OnPropertyChanged(nameof(Grids));
             }
         }
         private ObservableCollection<DTOEditPart> _parts;
@@ -67,23 +89,38 @@ namespace InvenfinityApp.ViewModel.Grid
         public EditBinViewModel(UcRoot root)
         {
             this.root = root;
-            _binID = 1;
+            _selectedBinId = 1;
+            _Bins = new();
             _binTypeName = string.Empty;
-            _gridId = -1;
+            _selectedGridId = -1;
             _binTypeName = string.Empty;
-            _parts = new ObservableCollection<DTOEditPart>();
+            _Grids = new();
+            _parts = new();
             UpdateProps();
+
         }
 
         public void UpdateProps()
         {
-            var bin = root.Bin.GetBinById(BinID);
+            var bin = root.Bin.GetBinById(SelectedBinId);
             BinTypeName = bin.BinType.Name;
             var grid = bin.GridId;
-            if (grid == null) GridID = -1;
+            if (grid == null) SelectedGridID = -1;
             else
-                GridID = (int)grid;
-            Parts = new ObservableCollection<DTOEditPart>(bin.Parts);
+                SelectedGridID = (int)grid;
+            Parts = new(bin.Parts);
+            ReloadGrids();
+            ReloadBins();
+        }
+
+        public void ReloadGrids()
+        {
+            Grids = new(root.Bin.GetAllGrids());
+        }
+
+        public void ReloadBins()
+        {
+            Bins = new(root.BinEdit.getBins());
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

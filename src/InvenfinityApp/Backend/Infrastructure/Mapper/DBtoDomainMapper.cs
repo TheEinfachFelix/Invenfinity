@@ -12,6 +12,7 @@ namespace Backend.Infrastructure.Mapper
 {
     internal static class DBtoDomainMapper
     {
+        private static Dictionary<int, DBin> binCache = new();
         public static DLocation mapLocation(Location inlocation, DLocation? parent, Dset data)
         {
             // erstellen des Location Objekts
@@ -62,12 +63,18 @@ namespace Backend.Infrastructure.Mapper
             return outp;
         }
         public static DBin mapBin(Bin inBin, Dset data)
-        { 
+        {
+            if (binCache.TryGetValue(inBin.BinId, out var existing))
+            {
+                return existing;
+            }
             // referenzieren des BinTypes zu dem BinType Objekt des Bins
             var Bintype = data.findBinTypebyID(inBin.BinTypeId);
 
             // erstellen des Bin Objekts
             var outp = new DBin(inBin.BinId, Bintype);
+
+            binCache[inBin.BinId] = outp;
 
             // hinzufügen der Parts zu den Slots des Bin Objekts
             foreach (var item in inBin.BinSlots)

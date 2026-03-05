@@ -44,6 +44,7 @@ namespace Backend.Domain
             {
                 bins.AddRange(item.Bins);
             }
+            
             return bins;
         }
     }

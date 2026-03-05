@@ -8,6 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
+      xmlns:uc="clr-namespace:InvenfinityApp.Elements"
       Title="PageGridEdit">
 
     <Grid>
@@ -22,11 +23,9 @@
                     Click="Create_Bin_Click"/>
 
             <TextBlock Text="Bin ID" Margin="0,15,0,0"/>
-            <xctk:IntegerUpDown
-                    Minimum="-1"
-                    Value="{Binding BinID}"
-                    Width="100"
-                    HorizontalAlignment="Left"/>
+            <uc:Dropdown
+                    ItemsSource="{Binding Bins}"
+                    SelectedId="{Binding SelectedBinId}"/>
 
 
             <TextBlock Text="Type:" Margin="0,15,0,0"/>
@@ -35,11 +34,10 @@
 
 
             <TextBlock Text="Grid ID" Margin="0,15,0,0"/>
-            <xctk:IntegerUpDown
-                    Minimum="-1"
-                    Value="{Binding GridID}"
-                    Width="100"
-                    HorizontalAlignment="Left"/>
+            <uc:Dropdown
+                    ItemsSource="{Binding Grids}"
+                    SelectedId="{Binding SelectedGridID}"
+                    AllowEmpty="True" />
 
 
         </StackPanel>
