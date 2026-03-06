@@ -55,3 +55,5 @@
 ### Daran arbeite ich als nächstes
 
 - Bins Parts zuweisen
+- Bins Löschen
+- Labels Generieren
