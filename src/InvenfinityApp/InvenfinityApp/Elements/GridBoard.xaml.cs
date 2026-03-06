@@ -29,6 +29,9 @@ namespace InvenfinityApp.Elements
             Loaded += GridBoardControl_Loaded;
         }
 
+        
+
+
 
 
 
@@ -48,6 +51,8 @@ namespace InvenfinityApp.Elements
             foreach (var bin in gridDto.Bins)
             {
                 var binControl = new GridBin { DataContext = bin };
+                if (VM != null)
+                    binControl.ClickEdit += VM.invokeClickEdit;
                 Grid.SetColumn(binControl, bin.X);
                 Grid.SetRow(binControl, bin.Y);
                 Grid.SetColumnSpan(binControl, bin.WidthCells);

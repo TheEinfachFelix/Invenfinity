@@ -23,15 +23,37 @@ namespace InvenfinityApp.Elements
         {
             InitializeComponent();
         }
+        public event Action<int> ClickEdit;
+        private Point _dragStart;
+        // Damit auf den Button geklickt werden kann
+        private void Bin_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _dragStart = e.GetPosition(null);
+        }
+
         private void Bin_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed &&
-            DataContext is DTOBin bin)
+            if (e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            Point current = e.GetPosition(null);
+
+            if (Math.Abs(current.X - _dragStart.X) < SystemParameters.MinimumHorizontalDragDistance &&
+                Math.Abs(current.Y - _dragStart.Y) < SystemParameters.MinimumVerticalDragDistance)
+                return;
+
+            if (DataContext is DTOBin bin)
             {
-                DragDrop.DoDragDrop(this,
-                                    bin,
-                                    DragDropEffects.Move);
+                DragDrop.DoDragDrop(this, bin, DragDropEffects.Move);
             }
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            var data = DataContext as DTOBin;
+            if (data == null) throw new Exception("Wrong Data Context Type");
+            var id = data.BinId;
+            ClickEdit.Invoke(id);
         }
     }
 }

@@ -38,5 +38,13 @@ namespace InvenfinityApp.Pages
             CreateBin createBinWindow = new CreateBin(createBinViewModel, createBinTypeViewModel);
             createBinWindow.ShowDialog();
         }
+        public void Load_Gridless_Bin_Click(object sender, RoutedEventArgs a)
+        {
+            vm.TakeGridlessBin();
+        }
+        public void Save_Bin_Click(Object sender, RoutedEventArgs e)
+        {
+            vm.Update();
+        }
     }
 }

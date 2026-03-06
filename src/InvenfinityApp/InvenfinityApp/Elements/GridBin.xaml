@@ -14,15 +14,28 @@
         CornerRadius="4"
         Padding="4"
         AllowDrop="True"
+        PreviewMouseLeftButtonDown="Bin_MouseDown"
         PreviewMouseMove="Bin_MouseMove">
         <StackPanel>
-            <DockPanel>
-                <TextBlock Text="Bin"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                    Text="Bin"
                     FontWeight="Bold"
                     Foreground="White"
-                    Margin="0,0,0,5"
-                           HorizontalAlignment="Right"/>
-                <DockPanel HorizontalAlignment="Right">
+                    Margin="0,0,0,5"/>
+
+                <Button Content="Edit" 
+                        HorizontalAlignment="Center" 
+                        Grid.Column="1"
+                        Click="Edit_Click"
+                        Width="100"/>
+
+                <DockPanel Grid.Column="2" HorizontalAlignment="Right">
                     <TextBlock Text="id: " FontWeight="Bold"
                         Foreground="White"
                         Margin="0,0,10,10" />
@@ -30,7 +43,7 @@
                         Foreground="White"
                         Margin="0,0,10,10"/>
                 </DockPanel>
-            </DockPanel>
+            </Grid>
 
             <!-- PARTS -->
             <ItemsControl ItemsSource="{Binding Parts}">

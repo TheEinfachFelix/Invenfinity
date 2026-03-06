@@ -870,9 +870,9 @@
     {
       "id": "q-xRYVUjziaMzA_LDeiFU",
       "type": "text",
-      "x": 832.0448257629293,
-      "y": 581.4000473022461,
-      "width": 364.3101287475787,
+      "x": 816.4448501769918,
+      "y": 593.4000473022461,
+      "width": 255.7771453857422,
       "height": 109.59999084472656,
       "angle": 0,
       "strokeColor": "#e03131",
@@ -887,22 +887,182 @@
       "index": "aJ",
       "roundness": null,
       "seed": 1655266255,
-      "version": 118,
-      "versionNonce": 871266735,
+      "version": 261,
+      "versionNonce": 1507806857,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1772624056948,
+      "boundElements": [],
+      "updated": 1772788047640,
       "link": null,
       "locked": false,
-      "text": "Dropdown implementieren\nDropdown Nutzen für:\n    Create Bin 2x (Grid und Type)\n    Bin Edit 2x (Bins und Grid)",
+      "text": "Update\nLeere Bins Laden\n\nuse Cases grade machen",
       "fontSize": 21.919998168945312,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Dropdown implementieren\nDropdown Nutzen für:\n    Create Bin 2x (Grid und Type)\n    Bin Edit 2x (Bins und Grid)",
+      "originalText": "Update\nLeere Bins Laden\n\nuse Cases grade machen",
       "autoResize": true,
       "lineHeight": 1.25
+    },
+    {
+      "id": "WVX-BCbDatmZH_34RYtRu",
+      "type": "freedraw",
+      "x": 605.8000183105469,
+      "y": 648.2000122070312,
+      "width": 31.999969482421875,
+      "height": 24.000015258789062,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aK",
+      "roundness": null,
+      "seed": 1907325609,
+      "version": 32,
+      "versionNonce": 110135465,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1772787864717,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -0.39996337890625,
+          3.20001220703125
+        ],
+        [
+          0.399993896484375,
+          5.600006103515625
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          4.399993896484375,
+          10.4000244140625
+        ],
+        [
+          6.79998779296875,
+          11.20001220703125
+        ],
+        [
+          7.60003662109375,
+          12.800018310546875
+        ],
+        [
+          8.399993896484375,
+          12.800018310546875
+        ],
+        [
+          9.20001220703125,
+          12.800018310546875
+        ],
+        [
+          10,
+          12
+        ],
+        [
+          10,
+          11.20001220703125
+        ],
+        [
+          10.79998779296875,
+          9.600006103515625
+        ],
+        [
+          12.399993896484375,
+          7.20001220703125
+        ],
+        [
+          13.20001220703125,
+          4.800018310546875
+        ],
+        [
+          14,
+          3.20001220703125
+        ],
+        [
+          14.79998779296875,
+          2.4000244140625
+        ],
+        [
+          16.399993896484375,
+          1.600006103515625
+        ],
+        [
+          17.20001220703125,
+          0
+        ],
+        [
+          18.79998779296875,
+          0
+        ],
+        [
+          19.60003662109375,
+          0
+        ],
+        [
+          21.20001220703125,
+          -1.5999755859375
+        ],
+        [
+          22.79998779296875,
+          -2.399993896484375
+        ],
+        [
+          24.399993896484375,
+          -3.199981689453125
+        ],
+        [
+          24.399993896484375,
+          -4
+        ],
+        [
+          25.199981689453125,
+          -4
+        ],
+        [
+          26.000030517578125,
+          -4.79998779296875
+        ],
+        [
+          27.600006103515625,
+          -6.399993896484375
+        ],
+        [
+          30.000030517578125,
+          -8.79998779296875
+        ],
+        [
+          31.600006103515625,
+          -10.399993896484375
+        ],
+        [
+          31.600006103515625,
+          -11.199996948242188
+        ],
+        [
+          31.600006103515625,
+          -11.199996948242188
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        31.600006103515625,
+        -11.199996948242188
+      ]
     }
   ],
   "appState": {

@@ -22,11 +22,19 @@
                     Margin="0,15,10,0"
                     Click="Create_Bin_Click"/>
 
-            <TextBlock Text="Bin ID" Margin="0,15,0,0"/>
+            <TextBlock Text="Gridless Bins" Margin="0,15,0,0"/>
             <uc:Dropdown
-                    ItemsSource="{Binding Bins}"
-                    SelectedId="{Binding SelectedBinId}"/>
+                    ItemsSource="{Binding GridlessBins}"
+                    SelectedId="{Binding SelectedGridlessBinId}"/>
 
+            <Button Content="Gridless Bin Laden" HorizontalAlignment="Left"
+                    Width="100"
+                    Margin="0,15,10,0"
+                    Click="Load_Gridless_Bin_Click"/>
+
+            <TextBlock Text="Selected Bin ID" Margin="0,15,0,0"/>
+            <TextBox Text="{Binding SelectedBinId}"
+                     IsEnabled="False" />
 
             <TextBlock Text="Type:" Margin="0,15,0,0"/>
             <TextBox Text="{Binding BinTypeName}"
@@ -39,6 +47,10 @@
                     SelectedId="{Binding SelectedGridID}"
                     AllowEmpty="True" />
 
+            <Button Content="Speichern" HorizontalAlignment="Left"
+                    Width="100"
+                    Margin="0,15,10,0"
+                    Click="Save_Bin_Click"/>
 
         </StackPanel>
     </Grid>

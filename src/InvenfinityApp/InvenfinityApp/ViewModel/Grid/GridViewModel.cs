@@ -39,6 +39,11 @@ namespace InvenfinityApp.ViewModel.Grid
             }
         }
         public event Action? GridUpdated;
+        public event Action<int> ClickEdit;
+        public void invokeClickEdit(int id)
+        {
+            ClickEdit.Invoke(id);
+        }
 
         public GridViewModel(UcRoot root)
         {

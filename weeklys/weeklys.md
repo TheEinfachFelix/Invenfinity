@@ -37,7 +37,7 @@
 - Bearbeiten vom Grid und Tree
 - Scanner Implementieren
 
-## Woche 3 - 0x.03.2026
+## Woche 3 - 06.03.2026
 
 ### Das habe ich geschaft
 
@@ -47,5 +47,11 @@
 - Grid und Location Erstellen
 - Bin mit BinType und Grid erstellen
 - BinType Erstellen (Slots und Größe)
+- Bin Bearbeiten
+- Bin zwischen Grids verschieben
+- Tests für Domänenobjekte
+- View Models aufreumen
 
 ### Daran arbeite ich als nächstes
+
+- Bins Parts zuweisen

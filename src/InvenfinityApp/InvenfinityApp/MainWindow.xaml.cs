@@ -45,6 +45,7 @@ namespace InvenfinityApp
             {
                 DataContext = vm.BinEditVM
             };
+            vm.GridVM.ClickEdit += OpenBinToEdit;
         }
 
         public void OpenBinToEdit(int binID)

@@ -13,9 +13,22 @@ namespace InvenfinityApp.ViewModel.Grid
     public class EditBinViewModel : INotifyPropertyChanged
     {
         private UcRoot root;
+        private int _selectedGridlessBinId;
+        public int SelectedGridlessBinId
+        {             
+            get { return _selectedGridlessBinId; }
+            set
+            {
+                if (_selectedGridlessBinId != value)
+                {
+                    _selectedGridlessBinId = value;
+                    OnPropertyChanged(nameof(SelectedGridlessBinId));
+                }
+            }
+        }
         private int _selectedBinId;
         public int SelectedBinId
-        {             
+        {
             get { return _selectedBinId; }
             set
             {
@@ -28,14 +41,14 @@ namespace InvenfinityApp.ViewModel.Grid
             }
         }
 
-        private ObservableCollection<DTOEditBin> _Bins;
-        public ObservableCollection<DTOEditBin> Bins
+        private ObservableCollection<DTOEditBin> _gridlessBins;
+        public ObservableCollection<DTOEditBin> GridlessBins
         {
-            get => _Bins;
+            get => _gridlessBins;
             set
             {
-                _Bins = value;
-                OnPropertyChanged(nameof(Bins));
+                _gridlessBins = value;
+                OnPropertyChanged(nameof(GridlessBins));
             }
         }
 
@@ -63,7 +76,18 @@ namespace InvenfinityApp.ViewModel.Grid
                 {
                     _selectedGridId = value;
                     OnPropertyChanged(nameof(SelectedGridID));
+                    CheckMoveToGridPossigble();
                 }
+            }
+        }
+        private bool _updatePossible;
+        public bool UpdatePossible
+        {
+            get => _updatePossible;
+            set
+            {
+                _updatePossible = value;
+                OnPropertyChanged(nameof(UpdatePossible));
             }
         }
         private ObservableCollection<DTOTreeGrid> _Grids;
@@ -89,16 +113,18 @@ namespace InvenfinityApp.ViewModel.Grid
         public EditBinViewModel(UcRoot root)
         {
             this.root = root;
-            _selectedBinId = 1;
-            _Bins = new();
+            _selectedGridlessBinId = 1;
+            _gridlessBins = new();
             _binTypeName = string.Empty;
             _selectedGridId = -1;
             _binTypeName = string.Empty;
             _Grids = new();
             _parts = new();
             UpdateProps();
-
+            ReloadGrids();
+            ReloadBins();
         }
+        public event Action? BinsChanged;
 
         public void UpdateProps()
         {
@@ -109,8 +135,7 @@ namespace InvenfinityApp.ViewModel.Grid
             else
                 SelectedGridID = (int)grid;
             Parts = new(bin.Parts);
-            ReloadGrids();
-            ReloadBins();
+            CheckMoveToGridPossigble();
         }
 
         public void ReloadGrids()
@@ -120,7 +145,29 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void ReloadBins()
         {
-            Bins = new(root.BinEdit.getBins());
+            GridlessBins = new(root.BinEdit.getGridlessBins());
+        }
+
+        public void TakeGridlessBin()
+        {
+            SelectedBinId = SelectedGridlessBinId;
+            UpdateProps();
+        }
+
+        public void CheckMoveToGridPossigble()
+        {
+            var bin = root.Bin.GetBinById(SelectedBinId);
+            int? gridID = null;
+            if (SelectedGridID != -1)
+                gridID = SelectedGridID;
+            UpdatePossible = root.Bin.CanCreateBin(bin.BinType.Id, gridID);
+        }
+
+        public void Update()
+        {
+            if (!UpdatePossible) return;
+            BinsChanged?.Invoke();
+            throw new NotImplementedException();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
