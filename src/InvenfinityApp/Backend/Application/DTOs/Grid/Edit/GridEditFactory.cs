@@ -19,11 +19,11 @@ namespace Backend.Application.DTOs.Grid.Edit
                 parts.Add(newPart);
             }
             int? gridId = bin.Grid != null ? bin.Grid.GridId : null;
-            return new(bin.BinId, gridId, parts, type);
+            return new(bin.BinId, gridId, parts, type, bin.IsDeletable());
         }
         public static DTOEditBin CreateEmtyBin()
         {
-            return new(-1, -1, new(), CreateEmtyBinType());
+            return new(-1, -1, new(), CreateEmtyBinType(), false);
         }
         public static DTOEditBinType CreateBinType(DBinType binType)
         {

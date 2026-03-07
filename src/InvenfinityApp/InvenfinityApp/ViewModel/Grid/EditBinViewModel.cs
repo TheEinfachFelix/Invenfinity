@@ -163,11 +163,21 @@ namespace InvenfinityApp.ViewModel.Grid
             UpdatePossible = root.Bin.CanCreateBin(bin.BinType.Id, gridID);
         }
 
-        public void Update()
+        public void deleteBin()
+        {
+            if (!root.Bin.GetBinById(SelectedBinId).isDeletable) return;
+            root.BinEdit.deleteBin(SelectedBinId);
+            BinsChanged?.Invoke();
+        }
+
+        public void UpdateBin()
         {
             if (!UpdatePossible) return;
+            int? gridID = null;
+            if (SelectedGridID != -1)
+                gridID = SelectedGridID;
+            root.BinEdit.updateBin(SelectedBinId, [.. Parts], gridID);
             BinsChanged?.Invoke();
-            throw new NotImplementedException();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

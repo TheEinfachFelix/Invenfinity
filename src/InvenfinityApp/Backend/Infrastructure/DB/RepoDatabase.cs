@@ -23,6 +23,11 @@ namespace Backend.Infrastructure.Datenbank
         {
             var outp = new Dset();
             //  Get the bin Types
+            var bins = context.Bins
+                .Include(b => b.BinType)
+                .Include(b => b.BinSlots)
+                    .ThenInclude(bs => bs.Part)
+                .ToList();
             foreach (var item in context.BinTypes.ToList())
             {
                 outp.Types.Add(DBtoDomainMapper.mapBinType(item));
@@ -212,10 +217,7 @@ namespace Backend.Infrastructure.Datenbank
         internal void CreateBin(int BinTypeID, int gridID, int Xpos, int Ypos)
         {
             var BinID = _CreateBin(BinTypeID);
-
-            var gridPos = new GridPo() { GridId = gridID, BinId = BinID, X = Xpos, Y = Ypos };
-            context.GridPos.Add(gridPos);
-            context.SaveChanges();
+            CreateBinPos(BinID, gridID, Xpos, Ypos);
         }
         internal void CreateBin(int BinTypeID)
         {
@@ -230,6 +232,32 @@ namespace Backend.Infrastructure.Datenbank
             context.Bins.Add(dbBin);
             context.SaveChanges();
             return dbBin.BinId;
+        }
+        internal void CreateBinPos(int BinID, int gridID, int Xpos, int Ypos)
+        {
+            var GridPos = new GridPo()
+            {
+                BinId = BinID,
+                GridId = gridID,
+                X = Xpos,
+                Y = Ypos
+            };
+            context.GridPos.Add(GridPos);
+            context.SaveChanges();
+        }
+
+
+        internal void RemoveBinfromGrid(int BinId, int  GridID)
+        {
+            var binPos = context.GridPos.FirstOrDefault(b => b.BinId == BinId && b.GridId == GridID) ?? throw new Exception("BinPos not found");
+            context.GridPos.Remove(binPos);
+            context.SaveChanges();
+        }
+        internal void DeleteBin(int binId)
+        {
+            var dbBin = context.Bins.Find(binId) ?? throw new Exception("Bin Not found");
+            context.Bins.Remove(dbBin);
+            context.SaveChanges();
         }
         internal void UpdateBin(DBin inDBin)
         {

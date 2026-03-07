@@ -44,7 +44,12 @@ namespace InvenfinityApp.Pages
         }
         public void Save_Bin_Click(Object sender, RoutedEventArgs e)
         {
-            vm.Update();
+            vm.UpdateBin();
+        }
+
+        public void Del_Bin_Click(object sender, RoutedEventArgs e)
+        {
+            vm.deleteBin();
         }
     }
 }

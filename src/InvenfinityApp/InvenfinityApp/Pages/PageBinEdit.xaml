@@ -52,6 +52,11 @@
                     Margin="0,15,10,0"
                     Click="Save_Bin_Click"/>
 
+            <Button Content="Löschen" HorizontalAlignment="Left"
+                    Width="100"
+                    Margin="0,15,10,0"
+                    Click="Del_Bin_Click"/>
+
         </StackPanel>
     </Grid>
 </Page>
