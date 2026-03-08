@@ -25,11 +25,11 @@ namespace Backend.Application.DTOs.Grid.Edit
         {
             return new(-1, -1, new(), CreateEmtyBinType(), false);
         }
-        public static DTOEditBinType CreateBinType(DBinType binType)
+        public static DTOBinType CreateBinType(DBinType binType)
         {
             return new (binType.BinTypeId, binType.SlotCount, binType.X, binType.Y);
         }
-        public static DTOEditBinType CreateEmtyBinType()
+        public static DTOBinType CreateEmtyBinType()
         {
             return new (-1, -1, -1, -1);
         }

@@ -1,4 +1,5 @@
 ﻿using Backend.Application.DTOs;
+using Backend.Application.DTOs.Grid;
 using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.DTOs.Location;
 using Backend.Domain;
@@ -37,10 +38,10 @@ namespace Backend.Application.UseCases
             return GridEditFactory.CreateBin(bin);
         }
 
-        public List<DTOEditBinType> GetAllBinTypes()
+        public List<DTOBinType> GetAllBinTypes()
         {
             var binTypes = _root.Data.Types;
-            List<DTOEditBinType> dtoBinTypes = new List<DTOEditBinType>();
+            List<DTOBinType> dtoBinTypes = new List<DTOBinType>();
             foreach (var binType in binTypes)
             {
                 dtoBinTypes.Add(GridEditFactory.CreateBinType(binType));
@@ -88,12 +89,5 @@ namespace Backend.Application.UseCases
             var BinPos = grid.FindFreePosForBin(BinType);
             return BinPos != null;
         }
-
-        public DTOTreeGrid getEmtpyGrid()
-        {
-            return new("No Grid", -1, "No Grid");
-        }
-
-
     }
 }

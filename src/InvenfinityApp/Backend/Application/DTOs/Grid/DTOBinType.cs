@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Application.DTOs.Grid.Edit
+namespace Backend.Application.DTOs.Grid
 {
-    public class DTOEditBinType : IDtoDropdownElement
+    public class DTOBinType : IDtoDropdownElement
     {
-        internal DTOEditBinType(int Id, int SlotCount, int xSize, int ySize) 
+        internal DTOBinType(int Id, int SlotCount, int xSize, int ySize) 
         { 
             this.Id = Id;
             this.SlotCount = SlotCount;

@@ -1,4 +1,5 @@
 ﻿using Backend.Application.DTOs;
+using Backend.Application.DTOs.Grid;
 using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.DTOs.Location;
 using Backend.Application.UseCases;
@@ -13,8 +14,8 @@ namespace InvenfinityApp.ViewModel.Part
     public class CreateBinViewModel : INotifyPropertyChanged
     {
         private UcRoot root;
-        private ObservableCollection<DTOEditBinType> _BinTypes;
-        public ObservableCollection<DTOEditBinType> BinTypes
+        private ObservableCollection<DTOBinType> _BinTypes;
+        public ObservableCollection<DTOBinType> BinTypes
         {
             get => _BinTypes;
             set
@@ -23,8 +24,8 @@ namespace InvenfinityApp.ViewModel.Part
                 OnPropertyChanged(nameof(BinTypes));
             }
         }
-        private ObservableCollection<DTOTreeGrid> _Grids;
-        public ObservableCollection<DTOTreeGrid> Grids
+        private ObservableCollection<Backend.Application.DTOs.DTOTreeGrid> _Grids;
+        public ObservableCollection<Backend.Application.DTOs.DTOTreeGrid> Grids
         {
             get => _Grids;
             set
@@ -71,8 +72,8 @@ namespace InvenfinityApp.ViewModel.Part
         public CreateBinViewModel(UcRoot root)
         {
             this.root = root;
-            _BinTypes = new ObservableCollection<DTOEditBinType>();
-            _Grids = new ObservableCollection<DTOTreeGrid>();
+            _BinTypes = new ObservableCollection<DTOBinType>();
+            _Grids = new ObservableCollection<Backend.Application.DTOs.DTOTreeGrid>();
             ReloadBinTypes();
             ReloadGrids();
 
@@ -89,13 +90,13 @@ namespace InvenfinityApp.ViewModel.Part
 
         public void ReloadGrids()
         {
-            Grids = new ObservableCollection<DTOTreeGrid>(root.Bin.GetAllGrids());
+            Grids = new ObservableCollection<Backend.Application.DTOs.DTOTreeGrid>((List<Backend.Application.DTOs.DTOTreeGrid>)root.Bin.GetAllGrids());
             CheckCanCreate();
         }
 
         public void ReloadBinTypes()
         {
-            BinTypes = new ObservableCollection<DTOEditBinType>(root.Bin.GetAllBinTypes());
+            BinTypes = new ObservableCollection<DTOBinType>(root.Bin.GetAllBinTypes());
             CheckCanCreate();
         }
 

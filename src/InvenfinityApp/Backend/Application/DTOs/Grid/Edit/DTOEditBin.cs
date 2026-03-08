@@ -6,7 +6,7 @@ namespace Backend.Application.DTOs.Grid.Edit
 {
     public class DTOEditBin : IDtoDropdownElement
     {
-        internal DTOEditBin(int Id, int? GridId, List<DTOPart> Parts, DTOEditBinType BinType, bool isDeletable)
+        internal DTOEditBin(int Id, int? GridId, List<DTOPart> Parts, DTOBinType BinType, bool isDeletable)
         {
             this.Id = Id;
             this.GridId = GridId;
@@ -18,7 +18,7 @@ namespace Backend.Application.DTOs.Grid.Edit
         public int Id { get; }
         public int? GridId { get; }
         public List<DTOPart> Parts { get; }
-        public DTOEditBinType BinType { get; } 
+        public DTOBinType BinType { get; } 
         public bool isDeletable { get; }
     }
 }

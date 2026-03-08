@@ -12,30 +12,30 @@ namespace Backend.Application.DTOs.Location
     {
         public static DTOTreeLocation CreateLocation (DLocation root)
         {
-            var outp = new DTOTreeLocation(root.Name, root.LocationId, root.GetPath());
+            var outp = CreateLocationSingle(root);
             foreach (var item in root.Children)
             {
                 outp.Children.Add(CreateLocation(item));
             }
             foreach (var item in root.Grids)
             {
-                outp.Children.Add(new DTOTreeGrid(item.Name, item.GridId, item.GetPath()));
+                outp.Children.Add(CreateGrid(item));
             }
             return outp;
         }
 
-        public static DTOTreeEditGrid CreateEditItem(DGrid grid)
+        public static DTOTreeGrid CreateGrid(DGrid grid)
         {
             var gridSize = grid.GetMinRequiredGridSize();
-            return new DTOTreeEditGrid  
-                (grid.Name, grid.GridId, grid.LocationId, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, grid.isDeletable());
+            return new DTOTreeGrid  
+                (grid.Name, grid.GridId, grid.GetPath(), grid.LocationId, grid.Xmax, grid.Ymax, gridSize.Xpos, gridSize.Ypos, grid.isDeletable());
         }
 
-        public static DTOTreeEditLocation CreateEditItem(DLocation location)
+        public static DTOTreeLocation CreateLocationSingle(DLocation location)
         {
             var isParentEditable = location.LocationId != 1;
-            return new DTOTreeEditLocation
-                (location.Name, location.LocationId, location.ParentId,isParentEditable, location.isDeletable());
+            return new DTOTreeLocation
+                (location.Name, location.LocationId, location.GetPath(), location.ParentId,isParentEditable, location.isDeletable());
         }
 
         public static List<DTOTreeGrid> CreateGridList(List<DGrid> inList)
@@ -43,7 +43,7 @@ namespace Backend.Application.DTOs.Location
             List<DTOTreeGrid> outp = new List<DTOTreeGrid>();
             foreach (var grid in inList)
             {
-                outp.Add(new DTOTreeGrid(grid.Name, grid.GridId, grid.GetPath()));
+                outp.Add(CreateGrid(grid));
             }
             return outp;
         }
