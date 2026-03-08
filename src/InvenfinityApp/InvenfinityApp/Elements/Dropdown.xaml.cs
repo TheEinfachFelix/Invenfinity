@@ -71,7 +71,7 @@ namespace InvenfinityApp.Elements
 
 
 
-        public int SelectedId
+        public int? SelectedId
         {
             get { return (int)GetValue(SelectedIdProperty); }
             set { SetValue(SelectedIdProperty, value); }
@@ -79,9 +79,9 @@ namespace InvenfinityApp.Elements
 
         public static readonly DependencyProperty SelectedIdProperty =
             DependencyProperty.Register(nameof(SelectedId),
-                typeof(int),
+                typeof(int?),
                 typeof(Dropdown),
-                new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new FrameworkPropertyMetadata(default(int?), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
 
 
@@ -108,7 +108,7 @@ namespace InvenfinityApp.Elements
 
     class EmptyDropdownElement : IDtoDropdownElement
     {
-        public int Id => -1;
+        public int? DropdownId => null;
         public string Name => "Empty";
     }
 }

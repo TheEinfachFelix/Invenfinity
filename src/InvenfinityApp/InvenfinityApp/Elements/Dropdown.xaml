@@ -10,7 +10,7 @@
         <ComboBox
             ItemsSource="{Binding ItemsSourceInternal, ElementName=root}"
             DisplayMemberPath="Name"
-            SelectedValuePath="Id"
+            SelectedValuePath="DropdownId"
             SelectedValue="{Binding SelectedId, ElementName=root, Mode=TwoWay}" />
     </Grid>
 

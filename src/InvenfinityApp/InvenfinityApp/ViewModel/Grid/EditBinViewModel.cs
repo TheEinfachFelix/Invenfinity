@@ -1,6 +1,7 @@
 ﻿using Backend.Application.DTOs.Grid;
 using Backend.Application.DTOs.Location;
 using Backend.Application.UseCases;
+using Backend.Exceptions;
 using DBconnector.Models;
 using System;
 using System.Collections.Generic;
@@ -66,8 +67,8 @@ namespace InvenfinityApp.ViewModel.Grid
             }
         }
 
-        private int _selectedGridId;
-        public int SelectedGridID
+        private int? _selectedGridId;
+        public int? SelectedGridID
         {
             get { return _selectedGridId; }
             set
@@ -126,7 +127,7 @@ namespace InvenfinityApp.ViewModel.Grid
             _selectedGridlessBinId = 1;
             _gridlessBins = new();
             _binTypeName = string.Empty;
-            _selectedGridId = -1;
+            _selectedGridId = null;
             _binTypeName = string.Empty;
             _Grids = new();
             _parts = new();
@@ -142,9 +143,7 @@ namespace InvenfinityApp.ViewModel.Grid
             if (bin == null) return;
             BinTypeName = bin.BinType.Name;
             var grid = bin.GridId;
-            if (grid == null) SelectedGridID = -1;
-            else
-                SelectedGridID = (int)grid;
+            SelectedGridID = grid;
             Parts = new(bin.Parts);
             DelPossible = bin.isDeletable;
             CheckMoveToGridPossigble();
@@ -168,11 +167,8 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void CheckMoveToGridPossigble()
         {
-            var bin = root.Bins.GetBinById(SelectedBinId);
-            int? gridID = null;
-            if (SelectedGridID != -1)
-                gridID = SelectedGridID;
-            UpdatePossible = root.Bins.CanCreateBin(bin.BinType.Id, gridID);
+            var bin = root.Bins.GetBinById(SelectedBinId) ?? throw new NotFoundException("Bin", SelectedBinId);
+            UpdatePossible = root.Bins.CanCreateBin(bin.BinType.Id, SelectedGridID);
         }
 
         public void deleteBin()
@@ -186,10 +182,7 @@ namespace InvenfinityApp.ViewModel.Grid
         public void UpdateBin()
         {
             if (!UpdatePossible) return;
-            int? gridID = null;
-            if (SelectedGridID != -1)
-                gridID = SelectedGridID;
-            root.Bins.UpdateBin(SelectedBinId, [.. Parts], gridID);
+            root.Bins.UpdateBin(SelectedBinId, [.. Parts], SelectedGridID);
             BinsChanged?.Invoke();
         }
 

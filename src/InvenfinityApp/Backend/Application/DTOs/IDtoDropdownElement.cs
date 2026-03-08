@@ -7,6 +7,6 @@ namespace Backend.Application.DTOs
     public interface IDtoDropdownElement
     {
         public string Name { get; }
-        public int Id { get; }
+        public int? DropdownId { get; }
     }
 }

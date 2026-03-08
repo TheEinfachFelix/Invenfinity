@@ -19,6 +19,7 @@ namespace Backend.Application.DTOs.Grid
         }
         public string Name => $"Bin {Id}";
         public int Id { get; }
+        public int? DropdownId => Id;
         public int? GridId { get; }
         public DTOBinType BinType { get; }
         public bool isDeletable { get; }

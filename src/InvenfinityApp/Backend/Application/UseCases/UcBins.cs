@@ -127,7 +127,7 @@ namespace Backend.Application.UseCases
                 for (int i = 0; i < Parts.Count; i++)
                 {
                     var NewPart = Parts[i];
-                    if (NewPart.Id == int.MaxValue) NewPart = null;
+                    if (NewPart.DropdownId == null) NewPart = null;
                     var OldPart = bin.Slots[i];
                     if (NewPart == null || OldPart == null)
                     {
@@ -135,7 +135,7 @@ namespace Backend.Application.UseCases
                             UpdateParts = true;
                         continue;
                     }
-                    if (NewPart.Id != OldPart.PartId) UpdateParts = true;
+                    if (NewPart.DropdownId != OldPart.PartId) UpdateParts = true;
                 }
             }
 

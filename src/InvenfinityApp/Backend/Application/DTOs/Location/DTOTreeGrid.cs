@@ -24,6 +24,8 @@ namespace Backend.Application.DTOs.Location
 
         public string Name { get; set; }
         public int Id { get; set; }
+        public int? DropdownId => Id;
+
         public string Type => "Grid";
         public int? ParentId { get; set; }
         public bool IsParentEditable { get; } = true;

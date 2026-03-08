@@ -46,8 +46,8 @@ namespace InvenfinityApp.ViewModel.Part
             }
         }
 
-        private int _SelectedGridId;
-        public int SelectedGridId
+        private int? _SelectedGridId;
+        public int? SelectedGridId
         {
             get => _SelectedGridId;
             set
@@ -80,10 +80,7 @@ namespace InvenfinityApp.ViewModel.Part
         public event Action? BinsChanged;
         public void CreateBin()
         {
-            int? gridID = null;
-            if (SelectedGridId != -1)
-                gridID = SelectedGridId;
-            root.Bins.CreateBin(SelectedBinTypeId, gridID);
+            root.Bins.CreateBin(SelectedBinTypeId, SelectedGridId);
             BinsChanged?.Invoke();
         }
 
@@ -101,15 +98,12 @@ namespace InvenfinityApp.ViewModel.Part
 
         public void CheckCanCreate()
         {
-            int? gridID = null;
-            if (SelectedGridId != -1)
-                gridID = SelectedGridId;
             if (SelectedBinTypeId == 0)
             {
                 canCreate = false;
                 return;
             }
-            canCreate = root.Bins.CanCreateBin(SelectedBinTypeId, gridID);
+            canCreate = root.Bins.CanCreateBin(SelectedBinTypeId, SelectedGridId);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

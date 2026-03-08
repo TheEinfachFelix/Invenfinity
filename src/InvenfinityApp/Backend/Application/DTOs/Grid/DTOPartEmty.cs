@@ -10,7 +10,7 @@ namespace Backend.Application.DTOs.Grid
 
         private DTOPartEmpty() { }
 
-        public int Id => int.MaxValue;
+        public int? DropdownId => null;
         public string Name => "Leer";
         public string? ColorTag => "red";
     }

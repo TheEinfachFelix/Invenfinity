@@ -151,7 +151,7 @@ namespace Backend.Domain
                 throw;
             }
         }
-        public bool IsAreaFree(int X, int Y, DBinType inBinType, int binID)
+        public bool IsAreaFree(int X, int Y, DBinType inBinType, int? binID)
         {
             if (X + inBinType.X > Xmax || Y + inBinType.Y > Ymax) return false;
             if (X < 0 || Y < 0) return false;
@@ -207,7 +207,7 @@ namespace Backend.Domain
             {
                 for (int y = Ymax - inBinType.Y; y >= 0; y--)
                 {
-                    if (IsAreaFree(x, y, inBinType, -1))
+                    if (IsAreaFree(x, y, inBinType, null))
                         return new BinPos(x, y);
                 }
             }

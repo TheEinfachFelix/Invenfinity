@@ -14,6 +14,7 @@ namespace Backend.Application.DTOs.Grid
             this.YSize = ySize;
         }
         public int Id { get; }
+        public int? DropdownId => Id;
         public string Name => $"{XSize}x{YSize} Slots:{SlotCount}";
         public int SlotCount { get; }
         public int XSize { get; }

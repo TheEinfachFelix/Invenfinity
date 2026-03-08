@@ -12,6 +12,7 @@ namespace Backend.Application.DTOs.Grid
         }
 
         public int Id { get; }
+        public int? DropdownId => Id;
         public string Name { get; } = "Bauteil";
 
 
