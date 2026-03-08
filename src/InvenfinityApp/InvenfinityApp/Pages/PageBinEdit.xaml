@@ -55,6 +55,7 @@
             <Button Content="Löschen" HorizontalAlignment="Left"
                     Width="100"
                     Margin="0,15,10,0"
+                    IsEnabled="{Binding DelPossible}"
                     Click="Del_Bin_Click"/>
 
         </StackPanel>

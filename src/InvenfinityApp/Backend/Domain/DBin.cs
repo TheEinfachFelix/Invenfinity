@@ -12,25 +12,36 @@ namespace Backend.Domain
 {
     internal class DBin
     {
-        public DBin(int BinID, DBinType binType)
+        public DBin(int BinID)
         {
             this.BinId = BinID;
-            this.BinType = binType;
-
-            // Bei bintype registrieren
-            binType.Bins.Add(this);
 
             Slots = new List<DPart?>();
+        }
+        public DBin(int BinID, DBinType type)
+        {
+            this.BinId = BinID;
+
+            Slots = new List<DPart?>();
+            SetBinType(type);
+        }
+
+
+        public int BinId { get; }
+        public List<DPart?> Slots { get; }
+        public virtual DBinType BinType { get; private set; }
+        public virtual DGrid? Grid { get; set; }
+        private bool binSet = false;
+        public void SetBinType(DBinType BinType)
+        {
+            if (binSet) throw new Exception("Bintype already set");
+            this.BinType = BinType;
             for (int i = 0; i < BinType.SlotCount; i++)
             {
                 Slots.Add(null);
             }
+            binSet = true;
         }
-
-        public int BinId { get; }
-        public List<DPart?> Slots { get; }
-        public virtual DBinType BinType { get; }
-        public virtual DGrid? Grid { get; set; }
 
         public BinPos GetPosition()
         {

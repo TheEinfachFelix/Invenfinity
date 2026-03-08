@@ -31,10 +31,12 @@ namespace Backend.Application.UseCases
             if (bin == null) throw new Exception("Bin Not found");
             var binGrid = bin.Grid;
 
-            if ((binGrid != null && GridId == null) || (binGrid.GridId != GridId))
+            
+
+            if ((binGrid != null && GridId == null) || (binGrid != null && binGrid.GridId != GridId))
                 _root.RepoDatabase.RemoveBinfromGrid(BinId, binGrid.GridId);
 
-            if ((binGrid == null && GridId != null) || (binGrid.GridId != GridId && GridId != null))
+            if ((binGrid == null && GridId != null) || (binGrid == null && GridId != null) || (binGrid.GridId != GridId && GridId != null))
             {
                 var grid = _root.Data.Root.FindGridByID((int)GridId);
                 var BinPos = grid.FindFreePosForBin(bin.BinType);

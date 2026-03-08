@@ -1,18 +1,25 @@
-﻿using System;
+﻿using Backend.Domain;
+using DBconnector.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Backend.Domain;
-using DBconnector.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Backend.Infrastructure.Mapper
 {
     internal static class DBtoDomainMapper
     {
         private static Dictionary<int, DBin> binCache = new();
+        private static Dictionary<int, DBinType> binTypeCache = new();
+        internal static void ResetCaches()
+        {
+            binCache.Clear();
+            binTypeCache.Clear();
+        }
         public static DLocation mapLocation(Location inlocation, DLocation? parent, Dset data)
         {
             // erstellen des Location Objekts
@@ -44,7 +51,7 @@ namespace Backend.Infrastructure.Mapper
             {
                 if (newGrid[item.X][item.Y] != null) throw new Exception("Grid Pos already filled");
                 if (item.Bin == null) throw new Exception("Bin is null");
-                newGrid[item.X][item.Y] = mapBin(item.Bin, data);
+                newGrid[item.X][item.Y] = binCache[item.Bin.BinId];
             }
             // Iterieren über die temp liste und hinzufügen der Bins zum Grid Objekt
             var addedIds = new HashSet<int>();
@@ -62,36 +69,41 @@ namespace Backend.Infrastructure.Mapper
 
             return outp;
         }
-        public static DBin mapBin(Bin inBin, Dset data)
+        public static DBin mapBin(Bin inBin)
         {
             if (binCache.TryGetValue(inBin.BinId, out var existing))
             {
                 return existing;
             }
-            // referenzieren des BinTypes zu dem BinType Objekt des Bins
-            var Bintype = data.findBinTypebyID(inBin.BinTypeId);
 
             // erstellen des Bin Objekts
-            var outp = new DBin(inBin.BinId, Bintype);
+            var outp = new DBin(inBin.BinId);
+            outp.SetBinType(binTypeCache[inBin.BinTypeId]);
 
             binCache[inBin.BinId] = outp;
-
-            // hinzufügen der Parts zu den Slots des Bin Objekts
-            foreach (var item in inBin.BinSlots)
-            {
-                outp.AddPart(data.findPartbyID(item.PartId), item.SlotNr);
-            }
 
             return outp;
         }
 
         public static DBinType mapBinType(BinType inType)
         {
-            return new DBinType(inType.BinTypeId, inType.SlotCount, inType.X, inType.Y);
+            var outp = new DBinType(inType.BinTypeId, inType.SlotCount, inType.X, inType.Y);
+            binTypeCache[outp.BinTypeId] = outp;
+            foreach (var bin in inType.Bins)
+            {
+                outp.Bins.Add(mapBin(bin));
+            }
+            return outp;
         }
         public static DPart mapPart(Part inPart)
         {
-            return new DPart(inPart.PartId, inPart.InventreeId);
+            var outp = new DPart(inPart.PartId, inPart.InventreeId);
+            // Hinzufügen zu den Bins
+            foreach (var item in inPart.BinSlots)
+            {
+                binCache[item.BinId].AddPart(outp, item.SlotNr);
+            }
+            return outp;
         }
     }
 }

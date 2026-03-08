@@ -21,6 +21,7 @@ namespace Backend.Infrastructure.Datenbank
 
         internal Dset GetData()
         {
+            DBtoDomainMapper.ResetCaches();
             var outp = new Dset();
             //  Get the bin Types
             var bins = context.Bins
@@ -231,6 +232,7 @@ namespace Backend.Infrastructure.Datenbank
             };
             context.Bins.Add(dbBin);
             context.SaveChanges();
+            DBtoDomainMapper.mapBin(dbBin);
             return dbBin.BinId;
         }
         internal void CreateBinPos(int BinID, int gridID, int Xpos, int Ypos)

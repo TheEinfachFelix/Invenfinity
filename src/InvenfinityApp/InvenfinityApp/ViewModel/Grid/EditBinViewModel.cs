@@ -110,6 +110,16 @@ namespace InvenfinityApp.ViewModel.Grid
                 OnPropertyChanged(nameof(Parts));
             }
         }
+        private bool _delPossible;
+        public bool DelPossible
+        {
+            get => _delPossible;
+            set
+            {
+                _delPossible = value;
+                OnPropertyChanged(nameof(DelPossible));
+            }
+        }
         public EditBinViewModel(UcRoot root)
         {
             this.root = root;
@@ -135,6 +145,7 @@ namespace InvenfinityApp.ViewModel.Grid
             else
                 SelectedGridID = (int)grid;
             Parts = new(bin.Parts);
+            DelPossible = bin.isDeletable;
             CheckMoveToGridPossigble();
         }
 
