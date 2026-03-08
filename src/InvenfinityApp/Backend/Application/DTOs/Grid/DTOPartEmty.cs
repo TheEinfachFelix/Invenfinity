@@ -6,8 +6,8 @@ namespace Backend.Application.DTOs
 {
     public class DTOPartEmty : IDotPart
     {
-        public int PartId { get; } = int.MaxValue;
-        public string PartName { get; } = "Leer";
+        public int Id { get; } = int.MaxValue;
+        public string Name { get; } = "Leer";
         public string? ColorTag { get; } = "red";
     }
 }

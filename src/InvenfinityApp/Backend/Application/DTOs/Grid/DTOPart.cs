@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Backend.Application.DTOs
 {
-    public class DTOPart : IDotPart
+    public class DTOPart : IDotPart, IDtoDropdownElement
     {
         internal DTOPart(int PartId)
         {
-            this.PartId = PartId;
+            this.Id = PartId;
         }
 
-        public int PartId { get; }
-        public string PartName { get; } = "Bauteil";
+        public int Id { get; }
+        public string Name { get; } = "Bauteil";
 
 
 

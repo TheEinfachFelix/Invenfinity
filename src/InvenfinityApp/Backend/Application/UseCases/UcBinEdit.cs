@@ -1,5 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.DTOs.Grid.Edit;
+using Backend.Application.DTOs.Grid;
 using DBconnector.Models;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Backend.Application.UseCases
             }
             return data;
         }
-        public void updateBin(int BinId, List<DTOEditPart> Parts, int? GridId)
+        public void updateBin(int BinId, List<DTOPart> Parts, int? GridId)
         {
             var bin = _root.Data.findBinbyId(BinId);
             if (bin == null) throw new Exception("Bin Not found");

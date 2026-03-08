@@ -6,8 +6,8 @@ namespace Backend.Application.DTOs
 {
     public interface IDotPart
     {
-        public int PartId { get; }
-        public string PartName { get; }
+        public int Id { get; }
+        public string Name { get; }
         public string? ColorTag { get; }
     }
 }

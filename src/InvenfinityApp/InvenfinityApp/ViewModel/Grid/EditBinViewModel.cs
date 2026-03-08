@@ -100,8 +100,8 @@ namespace InvenfinityApp.ViewModel.Grid
                 OnPropertyChanged(nameof(Grids));
             }
         }
-        private ObservableCollection<DTOEditPart> _parts;
-        public ObservableCollection<DTOEditPart> Parts
+        private ObservableCollection<DTOPart> _parts;
+        public ObservableCollection<DTOPart> Parts
         {
             get => _parts;
             set

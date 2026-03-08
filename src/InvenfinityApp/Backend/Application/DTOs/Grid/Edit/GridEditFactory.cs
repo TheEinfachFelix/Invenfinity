@@ -10,7 +10,7 @@ namespace Backend.Application.DTOs.Grid.Edit
         public static DTOEditBin CreateBin(DBin bin)
         {
             var type = CreateBinType(bin.BinType);
-            var parts = new List<DTOEditPart>();
+            var parts = new List<DTOPart>();
             foreach (var item in bin.Slots)
             {
                 var newPart = CreateEmtyPart();
@@ -33,11 +33,11 @@ namespace Backend.Application.DTOs.Grid.Edit
         {
             return new (-1, -1, -1, -1);
         }
-        public static DTOEditPart CreateEmtyPart()
+        public static DTOPart CreateEmtyPart()
         {
             return new (0);
         }
-        public static DTOEditPart CreatePart(DPart part)
+        public static DTOPart CreatePart(DPart part)
         {
             return new (part.PartId);
         }
