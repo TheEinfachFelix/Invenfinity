@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Backend.Domain
+{
+    internal class DLocation
+    {
+        public DLocation(int LocationId, string Name, DLocation? Parent)
+        {
+            this.LocationId = LocationId;
+            this.Name = Name;
+            this.ParentId = null;
+            if (Parent != null)
+                this.ParentId = Parent.LocationId;
+            this.Parent = Parent;
+
+            if (Parent != null)
+                Parent.AddChild(this);
+        }
+        public int LocationId { get; }
+
+        public string Name { get; set; }
+
+        public int? ParentId { get; set; }
+
+        public virtual ICollection<DGrid> Grids { get; set; } = new List<DGrid>();
+
+        public virtual ICollection<DLocation> Children { get; set; } = new List<DLocation>();
+
+        public virtual DLocation? Parent { get; }
+
+        public DLocation? FindLocationByID(int id)
+        {
+            if (LocationId == id) return this;
+            foreach (var child in Children)
+            {
+                var res = child.FindLocationByID(id);
+                if (res != null) return res;
+            }
+            return null;
+        }
+
+        public DGrid? FindGridByID(int id)
+        {
+            foreach (var grid in Grids)
+            {
+                if (grid.GridId == id) return grid;
+            }
+            foreach (var child in Children)
+            {
+                var res = child.FindGridByID(id);
+                if (res != null) return res;
+            }
+            return null;
+        }
+
+        public void AddGrid(DGrid inGrid)
+        {
+            if (Grids.Contains(inGrid)) throw new Exception("Grid already in location");
+            Grids.Add(inGrid);
+        }
+        internal void AddChild(DLocation inLoc)
+        {
+            if (Children.Contains(inLoc)) throw new Exception("Location already a child");
+            Children.Add(inLoc);
+        }
+
+        public bool isDeletable()
+        {
+            return Grids.Count == 0 && Children.Count == 0 && LocationId != 1;
+        }
+        public List<DGrid> GetAllGrids()
+        {
+            List<DGrid> res = new List<DGrid>();
+            res.AddRange(Grids);
+            foreach (var child in Children)
+            {
+                res.AddRange(child.GetAllGrids());
+            }
+            return res;
+        }
+        public string GetPath()
+        {
+            if (Parent == null) return Name;
+            return Parent.GetPath() + "/" + Name;
+        }
+    }
+}

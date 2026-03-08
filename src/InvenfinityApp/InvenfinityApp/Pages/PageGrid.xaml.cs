@@ -1,0 +1,54 @@
+﻿using Backend.Application.DTOs;
+using InvenfinityApp.ViewModel;
+using InvenfinityApp.ViewModel.Grid;
+using InvenfinityApp.ViewModel.Tree;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace InvenfinityApp.Views
+{
+    /// <summary>
+    /// Interaktionslogik für Grid.xaml
+    /// </summary>
+    public partial class PageGrid : Page
+    {
+        private GridViewModel vm;
+        public PageGrid(GridViewModel gridViewModel, LocationTreeViewModel LocTreeVM)
+        {
+            InitializeComponent();
+            LocationTree.DataContext = LocTreeVM;
+            LocationTree.SelectionChanged += LocationTree_SelectionChanged;
+            vm = gridViewModel;
+            DataContext = gridViewModel;
+        }
+
+        private void LocationTree_SelectionChanged(object sender, EventArgs e)
+        {
+            var item = LocationTree.SelectedGridId;
+            vm.SelectedGrid = item;
+        }
+
+
+        private void EditLocations_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainTabControl.SelectedIndex = 1;
+            }
+        }
+
+    }
+}

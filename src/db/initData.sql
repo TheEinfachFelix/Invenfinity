@@ -5,9 +5,9 @@ VALUES
   (3, 'Testsschubladen', 2)
 ON CONFLICT ("LocationID") DO NOTHING;
 
-INSERT INTO "Grid" ("GridID", "LocationID", "Name")
+INSERT INTO "Grid" ("GridID", "LocationID", "Name", "Xmax", "Ymax")
 VALUES
-  (1, 2, 'Oberste Schublade')
+  (1, 2, 'Oberste Schublade',3,4)
 ON CONFLICT ("GridID") DO NOTHING;
 
 INSERT INTO "BinType" ("BinTypeID", "SlotCount", "X", "Y")
@@ -30,15 +30,58 @@ ON CONFLICT ("PartID") DO NOTHING;
 
 INSERT INTO "BinSlot" ("BinID", "SlotNr", "PartID")
 VALUES
-  (1, 1, 1),
-  (2, 2, 2),
-  (2, 1, 1)
+  (1, 0, 2),
+  (2, 1, 1),
+  (2, 0, 2)
 ON CONFLICT ("BinID", "SlotNr") DO NOTHING;
 
 INSERT INTO "GridPos" ("GridPosID", "X", "Y", "BinID", "GridID")
 VALUES
   (1, 0, 0, 1, 1),
   (2, 1, 0, 1, 1),
-  (3, 0, 1, 2, 1),
-  (4, 1, 1, NULL, 1)
+  (3, 0, 1, 2, 1)
 ON CONFLICT ("GridPosID") DO NOTHING;
+
+
+
+-- Location
+SELECT setval(
+    pg_get_serial_sequence('"Location"', 'LocationID'),
+    COALESCE((SELECT MAX("LocationID") FROM "Location"), 1),
+    true
+);
+
+-- Grid
+SELECT setval(
+    pg_get_serial_sequence('"Grid"', 'GridID'),
+    COALESCE((SELECT MAX("GridID") FROM "Grid"), 1),
+    true
+);
+
+-- BinType
+SELECT setval(
+    pg_get_serial_sequence('"BinType"', 'BinTypeID'),
+    COALESCE((SELECT MAX("BinTypeID") FROM "BinType"), 1),
+    true
+);
+
+-- Bin
+SELECT setval(
+    pg_get_serial_sequence('"Bin"', 'BinID'),
+    COALESCE((SELECT MAX("BinID") FROM "Bin"), 1),
+    true
+);
+
+-- Part
+SELECT setval(
+    pg_get_serial_sequence('"Part"', 'PartID'),
+    COALESCE((SELECT MAX("PartID") FROM "Part"), 1),
+    true
+);
+
+-- GridPos
+SELECT setval(
+    pg_get_serial_sequence('"GridPos"', 'GridPosID'),
+    COALESCE((SELECT MAX("GridPosID") FROM "GridPos"), 1),
+    true
+);

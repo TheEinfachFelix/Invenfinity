@@ -1,0 +1,113 @@
+﻿using Backend.Application.DTOs;
+using Backend.Application.UseCases;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Text;
+using Backend.Application.DTOs.Location;
+using Backend.Application.DTOs.Grid;
+
+namespace InvenfinityApp.ViewModel.Part
+{
+    public class CreateBinViewModel : INotifyPropertyChanged
+    {
+        private UcRoot root;
+        private ObservableCollection<DTOBinType> _BinTypes;
+        public ObservableCollection<DTOBinType> BinTypes
+        {
+            get => _BinTypes;
+            set
+            {
+                _BinTypes = value;
+                OnPropertyChanged(nameof(BinTypes));
+            }
+        }
+        private ObservableCollection<DTOTreeGrid> _Grids;
+        public ObservableCollection<DTOTreeGrid> Grids
+        {
+            get => _Grids;
+            set
+            {
+                _Grids = value;
+                OnPropertyChanged(nameof(Grids));
+            }
+        }
+
+        private int _SelectedBinTypeId;
+        public int SelectedBinTypeId
+        {
+            get => _SelectedBinTypeId;
+            set
+            {
+                _SelectedBinTypeId = value;
+                OnPropertyChanged(nameof(SelectedBinTypeId));
+                CheckCanCreate();
+            }
+        }
+
+        private int? _SelectedGridId;
+        public int? SelectedGridId
+        {
+            get => _SelectedGridId;
+            set
+            {
+                _SelectedGridId = value;
+                OnPropertyChanged(nameof(SelectedGridId));
+                CheckCanCreate();
+            }
+        }
+        private bool _canCreate;
+        public bool canCreate
+        {
+            get => _canCreate;
+            set
+            {
+                _canCreate = value;
+                OnPropertyChanged(nameof(canCreate));
+            }
+        }
+
+        public CreateBinViewModel(UcRoot root)
+        {
+            this.root = root;
+            _BinTypes = new ObservableCollection<DTOBinType>();
+            _Grids = new ObservableCollection<DTOTreeGrid>();
+            ReloadBinTypes();
+            ReloadGrids();
+
+        }
+        public event Action? BinsChanged;
+        public void CreateBin()
+        {
+            root.Bins.CreateBin(SelectedBinTypeId, SelectedGridId);
+            BinsChanged?.Invoke();
+        }
+
+        public void ReloadGrids()
+        {
+            Grids = new ObservableCollection<DTOTreeGrid>((List<DTOTreeGrid>)root.Bins.GetAllGrids());
+            CheckCanCreate();
+        }
+
+        public void ReloadBinTypes()
+        {
+            BinTypes = new ObservableCollection<DTOBinType>(root.Bins.GetAllBinTypes());
+            CheckCanCreate();
+        }
+
+        public void CheckCanCreate()
+        {
+            if (SelectedBinTypeId == 0)
+            {
+                canCreate = false;
+                return;
+            }
+            canCreate = root.Bins.CanCreateBin(SelectedBinTypeId, SelectedGridId);
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string name)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+}

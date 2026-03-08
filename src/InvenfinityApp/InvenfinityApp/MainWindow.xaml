@@ -1,0 +1,24 @@
+﻿<Window x:Class="InvenfinityApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Invenfinity" Height="600" Width="1000">
+
+    <Grid>
+
+        <TabControl x:Name="MainTabControl">
+            
+            <TabItem Header="Grid">
+                <Frame x:Name="GridFrame" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+            <TabItem Header="LocationEdit">
+                <Frame x:Name="LocationEdit" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+            <TabItem Header="BinEdit">
+                <Frame x:Name="BinEdit" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
