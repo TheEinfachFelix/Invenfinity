@@ -1,4 +1,6 @@
-﻿using Backend.Domain;
+﻿using Backend.Application.DTOs.Grid;
+using Backend.Domain;
+using DBconnector.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,13 +29,17 @@ namespace Backend.Application.DTOs
             return outp;
         }
 
-        public static DTOBin CreateBin(DBin inBin)
+        public static DTOBin CreateBin(DBin bin)
         {
-            var Pos = inBin.GetPosition();
-            if (Pos == null) throw new Exception("Bin not in Grid");
-            var type = inBin.BinType;
-            var parts = CreatePartList(inBin.Slots);
-            return new DTOBin(inBin.BinId, Pos.Xpos, Pos.Ypos, type.X, type.Y, parts);
+            var type = CreateBinType(bin.BinType);
+            var parts = CreatePartList(bin.Slots);
+            int? gridId = bin.Grid != null ? bin.Grid.GridId : null;
+            var binPos = bin.Grid != null ? bin.GetPosition() : new BinPos(0,0);
+            return new(bin.BinId, gridId, binPos.Xpos, binPos.Ypos, parts, type, bin.IsDeletable());
+        }
+        public static DTOBinType CreateBinType(DBinType binType)
+        {
+            return new(binType.BinTypeId, binType.SlotCount, binType.X, binType.Y);
         }
 
         public static DTOGrid CreateGrid(DGrid inGrid)

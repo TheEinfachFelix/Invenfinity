@@ -1,5 +1,4 @@
 ﻿using Backend.Application.DTOs;
-using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.DTOs.Grid;
 using DBconnector.Models;
 using System;
@@ -16,17 +15,17 @@ namespace Backend.Application.UseCases
             _root = root;
         }
 
-        public List<DTOEditBin> getGridlessBins()
+        public List<DTOBin> getGridlessBins()
         {
-            var data = new List<DTOEditBin>();
+            var data = new List<DTOBin>();
             foreach (var bin in _root.Data.GetAllBins())
             {
                 if (bin.Grid != null) continue;
-                data.Add(GridEditFactory.CreateBin(bin));
+                data.Add(GridFactory.CreateBin(bin));
             }
             return data;
         }
-        public void updateBin(int BinId, List<DTOPart> Parts, int? GridId)
+        public void updateBin(int BinId, List<IDotPart> Parts, int? GridId)
         {
             var bin = _root.Data.findBinbyId(BinId);
             if (bin == null) throw new Exception("Bin Not found");

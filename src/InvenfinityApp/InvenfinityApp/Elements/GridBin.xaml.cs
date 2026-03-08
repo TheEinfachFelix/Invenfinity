@@ -52,7 +52,7 @@ namespace InvenfinityApp.Elements
         {
             var data = DataContext as DTOBin;
             if (data == null) throw new Exception("Wrong Data Context Type");
-            var id = data.BinId;
+            var id = data.Id;
             ClickEdit.Invoke(id);
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.DTOs.Grid;
-using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.DTOs.Location;
 using Backend.Domain;
 using System;
@@ -31,11 +30,11 @@ namespace Backend.Application.UseCases
             _root.RepoDatabase.CreatePart(_root.Data, InventreeID);
         }
 
-        public DTOEditBin GetBinById(int binId)
+        public DTOBin? GetBinById(int binId)
         {
             var bin = _root.Data.findBinbyId(binId);
-            if (bin == null) return GridEditFactory.CreateEmtyBin();
-            return GridEditFactory.CreateBin(bin);
+            if (bin == null) return null;
+            return GridFactory.CreateBin(bin);
         }
 
         public List<DTOBinType> GetAllBinTypes()
@@ -44,7 +43,7 @@ namespace Backend.Application.UseCases
             List<DTOBinType> dtoBinTypes = new List<DTOBinType>();
             foreach (var binType in binTypes)
             {
-                dtoBinTypes.Add(GridEditFactory.CreateBinType(binType));
+                dtoBinTypes.Add(GridFactory.CreateBinType(binType));
             }
             return dtoBinTypes;
         }

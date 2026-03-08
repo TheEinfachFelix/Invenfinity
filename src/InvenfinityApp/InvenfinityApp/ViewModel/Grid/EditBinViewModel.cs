@@ -1,5 +1,4 @@
 ﻿using Backend.Application.DTOs;
-using Backend.Application.DTOs.Grid.Edit;
 using Backend.Application.UseCases;
 using DBconnector.Models;
 using System;
@@ -41,8 +40,8 @@ namespace InvenfinityApp.ViewModel.Grid
             }
         }
 
-        private ObservableCollection<DTOEditBin> _gridlessBins;
-        public ObservableCollection<DTOEditBin> GridlessBins
+        private ObservableCollection<DTOBin> _gridlessBins;
+        public ObservableCollection<DTOBin> GridlessBins
         {
             get => _gridlessBins;
             set
@@ -100,8 +99,8 @@ namespace InvenfinityApp.ViewModel.Grid
                 OnPropertyChanged(nameof(Grids));
             }
         }
-        private ObservableCollection<DTOPart> _parts;
-        public ObservableCollection<DTOPart> Parts
+        private ObservableCollection<IDotPart> _parts;
+        public ObservableCollection<IDotPart> Parts
         {
             get => _parts;
             set
@@ -139,6 +138,7 @@ namespace InvenfinityApp.ViewModel.Grid
         public void UpdateProps()
         {
             var bin = root.Bin.GetBinById(SelectedBinId);
+            if (bin == null) return;
             BinTypeName = bin.BinType.Name;
             var grid = bin.GridId;
             if (grid == null) SelectedGridID = -1;

@@ -22,7 +22,7 @@ namespace Backend.Application.UseCases
         public void moveBinInGrid(DTOGrid grid, DTOBin inBin, int X, int Y)
         {
             var Dgrid = _root.Data.Root.FindGridByID(grid.GridId) ?? throw new Exception("Grid not found");
-            var Dbin = Dgrid.FindBinByID(inBin.BinId);
+            var Dbin = Dgrid.FindBinByID(inBin.Id);
             if (Dbin == null) throw new Exception("Bin not found in grid");
             Dgrid.MoveBin(Dbin, X, Y);
             _root.RepoDatabase.UpdateGrid(Dgrid);
@@ -30,9 +30,9 @@ namespace Backend.Application.UseCases
         public bool isBinMovePossible(DTOGrid grid, DTOBin inBin, int X, int Y)
         {
             var Dgrid = _root.Data.Root.FindGridByID(grid.GridId) ?? throw new Exception("Grid not found");
-            var Dbin = Dgrid.FindBinByID(inBin.BinId);
+            var Dbin = Dgrid.FindBinByID(inBin.Id);
             if (Dbin == null) throw new Exception("Bin not found in grid");
-            return Dgrid.IsAreaFree(X, Y, Dbin.BinType, inBin.BinId);
+            return Dgrid.IsAreaFree(X, Y, Dbin.BinType, inBin.Id);
         }
     }
 }

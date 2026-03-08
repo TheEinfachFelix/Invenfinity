@@ -14,13 +14,11 @@ namespace Backend.Application.DTOs
             this.GridId = GridId;
             this.WidthCells = WidthCells;
             this.HeightCells = HeightCells;
-           // this.CellSizeMm = CellSizeMm;
             this.Bins = Bins;
         }
         public int GridId { get; }
         public int WidthCells { get; }
         public int HeightCells { get; }
-        //public double CellSizeMm { get; }
         public IReadOnlyList< DTOBin > Bins { get; }
     }
 }

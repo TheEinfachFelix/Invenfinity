@@ -1,25 +1,33 @@
-﻿using System;
+﻿using Backend.Application.DTOs.Grid;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Backend.Application.DTOs
 {
-    public class DTOBin
+    public class DTOBin : IDtoDropdownElement 
     {
-        internal DTOBin(int BinId, int Xpos, int Ypos, int Width, int Height, List<IDotPart> Parts)
+        internal DTOBin(int Id, int? GridId, int Xpos, int Ypos, List<IDotPart> Parts, DTOBinType BinType, bool isDeletable)
         {
-            this.BinId = BinId;
+            this.Id = Id;
+            this.GridId = GridId;
             this.X = Xpos;
             this.Y = Ypos;
-            this.WidthCells = Width;
-            this.HeightCells = Height;
             this.Parts = Parts;
+            this.BinType = BinType;
+            this.isDeletable = isDeletable;
         }
-        public int BinId { get; }
-        public int X { get;}                      // Top-left Spalte (0-basiert)
-        public int Y { get; }                      // Top-left Reihe (0-basiert)
-        public int WidthCells { get; }             // Breite in Zellen
-        public int HeightCells { get; }            // Höhe in Zellen
+        public string Name => Id.ToString();
+        public int Id { get; }
+        public int? GridId { get; }
+        public DTOBinType BinType { get; }
+        public bool isDeletable { get; }
+
+        // Grid Drawing
+        public int X { get;}
+        public int Y { get; }
+        public int WidthCells => BinType.xSize;
+        public int HeightCells => BinType.ySize;
         public List<IDotPart> Parts { get; }
 
         // Visual hints (keine Domain-Logik, nur für UI)
