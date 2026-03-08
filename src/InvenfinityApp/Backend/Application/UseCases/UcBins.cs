@@ -84,13 +84,20 @@ namespace Backend.Application.UseCases
             if (GridID == null)
             {
                 _repo.CreateBin(BinTypeID);
+                var newDataa = _repo.GetData();
+                _data.Parts = newDataa.Parts;
+                _data.Types = newDataa.Types;
+                _data.Root = newDataa.Root;
                 return;
             }
             var BinPos = FindFreePosition(BinTypeID, (int)GridID) ?? throw new Exception("No free position for this bin in the grid or Grid not found");
 
             _repo.CreateBin(BinTypeID, (int)GridID, BinPos.Xpos, BinPos.Ypos);
 
-            _repo.ReloadLocationData(_data);
+            var newData = _repo.GetData();
+            _data.Parts = newData.Parts;
+            _data.Types = newData.Types;
+            _data.Root = newData.Root;
         }
         
         private BinPos? FindFreePosition(int binTypeId, int gridId)

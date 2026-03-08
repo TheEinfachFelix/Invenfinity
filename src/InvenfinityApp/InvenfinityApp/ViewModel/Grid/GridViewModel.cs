@@ -34,7 +34,8 @@ namespace InvenfinityApp.ViewModel.Grid
                 {
                     _selectedGrid = value;
                     OnPropertyChanged(nameof(SelectedGrid));
-                    GridUpdated?.Invoke();
+                    ReloadGrid();
+                    //GridUpdated?.Invoke();
                 }
             }
         }

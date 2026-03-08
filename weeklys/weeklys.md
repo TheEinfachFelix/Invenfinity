@@ -62,9 +62,10 @@
 
 ### Das habe ich geschaft
 
-- DTOs Gerade machen
+- DTOs Refactorn
 - Bins zwischen Grids verschieben
 - Bins Löschen
+- Use Cases Refactorn 
 
 
 ### Daran arbeite ich als nächstes

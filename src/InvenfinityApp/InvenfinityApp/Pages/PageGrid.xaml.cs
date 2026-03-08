@@ -24,12 +24,20 @@ namespace InvenfinityApp.Views
     /// </summary>
     public partial class PageGrid : Page
     {
-
+        private GridViewModel vm;
         public PageGrid(GridViewModel gridViewModel, LocationTreeViewModel LocTreeVM)
         {
             InitializeComponent();
             LocationTree.DataContext = LocTreeVM;
+            LocationTree.SelectionChanged += LocationTree_SelectionChanged;
+            vm = gridViewModel;
             DataContext = gridViewModel;
+        }
+
+        private void LocationTree_SelectionChanged(object sender, EventArgs e)
+        {
+            var item = LocationTree.SelectedGridId;
+            vm.SelectedGrid = item;
         }
 
 
