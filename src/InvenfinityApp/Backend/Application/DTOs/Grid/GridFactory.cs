@@ -19,7 +19,7 @@ namespace Backend.Application.DTOs
             {
                 if (item is null) 
                 { 
-                    outp.Add(new DTOPartEmty()); 
+                    outp.Add(DTOPartEmpty.Instance); 
                     continue;
                 }
                 outp.Add(CreatePart(item));

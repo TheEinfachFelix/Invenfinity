@@ -4,10 +4,14 @@ using System.Text;
 
 namespace Backend.Application.DTOs
 {
-    public class DTOPartEmty : IDotPart
+    public sealed class DTOPartEmpty : IDotPart
     {
-        public int Id { get; } = int.MaxValue;
-        public string Name { get; } = "Leer";
-        public string? ColorTag { get; } = "red";
+        public static readonly DTOPartEmpty Instance = new();
+
+        private DTOPartEmpty() { }
+
+        public int Id => int.MaxValue;
+        public string Name => "Leer";
+        public string? ColorTag => "red";
     }
 }
