@@ -21,7 +21,7 @@ namespace Backend.Application.UseCases
             foreach (var bin in _root.Data.GetAllBins())
             {
                 if (bin.Grid != null) continue;
-                data.Add(GridFactory.CreateBin(bin));
+                data.Add(bin.toDto());
             }
             return data;
         }

@@ -17,7 +17,7 @@ namespace Backend.Application.UseCases
             var Dgrid = _root.Data.Root.FindGridByID(id);
             if (Dgrid == null) throw new Exception("Grid not found");
 
-            return GridFactory.CreateGrid(Dgrid);
+            return Dgrid.ToDto();
         }
         public void moveBinInGrid(DTOGrid grid, DTOBin inBin, int X, int Y)
         {

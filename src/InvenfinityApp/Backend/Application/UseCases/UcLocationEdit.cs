@@ -17,12 +17,10 @@ namespace Backend.Application.UseCases
         {
             return item switch
             {
-                DTOTreeLocation => LocationFactory.CreateLocationSingle(
-                                       _root.Data.Root.FindLocationByID(item.Id)
-                                       ?? throw new Exception()),
-                DTOTreeGrid => LocationFactory.CreateGrid(
-                                           _root.Data.Root.FindGridByID(item.Id)
-                                           ?? throw new Exception()),
+                DTOTreeLocation => (_root.Data.Root.FindLocationByID(item.Id)
+                                       ?? throw new Exception()).ToSingleTreeDto(),
+                DTOTreeGrid => (_root.Data.Root.FindGridByID(item.Id)
+                                           ?? throw new Exception()).ToTreeDto(),
                 _ => throw new InvalidOperationException()
             };
         }

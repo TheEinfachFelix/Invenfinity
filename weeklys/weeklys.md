@@ -57,3 +57,15 @@
 - Bins Parts zuweisen
 - Bins Löschen
 - Labels Generieren
+
+## Woche 4 - xx.03.2026
+
+### Das habe ich geschaft
+
+- DTOs Gerade machen
+- Bins zwischen Grids verschieben
+- Bins Löschen
+
+
+### Daran arbeite ich als nächstes
+

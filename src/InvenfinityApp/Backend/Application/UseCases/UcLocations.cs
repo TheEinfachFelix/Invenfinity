@@ -24,7 +24,7 @@ namespace Backend.Application.UseCases
 
         public DTOTreeLocation GetLocations()
         {
-            return LocationFactory.CreateLocation(_root.Data.Root);
+            return _root.Data.Root.ToTreeDto();
         }
 
 

@@ -34,7 +34,7 @@ namespace Backend.Application.UseCases
         {
             var bin = _root.Data.findBinbyId(binId);
             if (bin == null) return null;
-            return GridFactory.CreateBin(bin);
+            return bin.toDto();
         }
 
         public List<DTOBinType> GetAllBinTypes()
@@ -43,14 +43,14 @@ namespace Backend.Application.UseCases
             List<DTOBinType> dtoBinTypes = new List<DTOBinType>();
             foreach (var binType in binTypes)
             {
-                dtoBinTypes.Add(GridFactory.CreateBinType(binType));
+                dtoBinTypes.Add(binType.ToDto());
             }
             return dtoBinTypes;
         }
         public List<DTOTreeGrid> GetAllGrids()
         {
             var grids = _root.Data.Root.GetAllGrids();
-            return LocationFactory.CreateGridList(grids);
+            return grids.ToTreeDto();
         }
 
         public void CreateBin(int BinTypeID, int? GridID)
