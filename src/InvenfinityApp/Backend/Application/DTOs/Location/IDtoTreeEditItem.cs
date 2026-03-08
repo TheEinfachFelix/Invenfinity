@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Backend.Application.DTOs.Location
 {
-    public interface IDotTreeEditItem
+    public interface IDtoTreeEditItem
     {
         public string Name { get; set; }
         public int Id { get; set; }
-        public string Type { get; set; }
+        public string Type { get; }
         public int? ParentId { get; set; }
         public bool IsParentEditable { get; }
 

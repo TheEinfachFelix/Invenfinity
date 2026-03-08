@@ -1,4 +1,4 @@
-﻿using Backend.Application.DTOs;
+﻿using Backend.Application.DTOs.Location;
 using Backend.Application.UseCases;
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,8 @@ namespace InvenfinityApp.ViewModel.Tree
     {
         private UcRoot _root;
 
-        private ObservableCollection<IDotTreeItem> _rootItems;
-        public ObservableCollection<IDotTreeItem> RootItems
+        private ObservableCollection<IDtoTreeItem> _rootItems;
+        public ObservableCollection<IDtoTreeItem> RootItems
         {
             get => _rootItems;
             set
@@ -25,7 +25,7 @@ namespace InvenfinityApp.ViewModel.Tree
         public LocationTreeViewModel(UcRoot root)
         {
             _root = root;
-            _rootItems = new ObservableCollection<IDotTreeItem>
+            _rootItems = new ObservableCollection<IDtoTreeItem>
             {
                 _root.Locations.GetLocations()
             };
@@ -33,7 +33,7 @@ namespace InvenfinityApp.ViewModel.Tree
 
         public void ReloadTree()
         {
-            RootItems = new ObservableCollection<IDotTreeItem>
+            RootItems = new ObservableCollection<IDtoTreeItem>
             {
                 _root.Locations.GetLocations()
             };

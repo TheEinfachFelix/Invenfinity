@@ -1,12 +1,12 @@
 ﻿using Backend.Application.DTOs;
-using Backend.Application.DTOs.Grid;
-using Backend.Application.DTOs.Location;
 using Backend.Application.UseCases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using Backend.Application.DTOs.Location;
+using Backend.Application.DTOs.Grid;
 
 namespace InvenfinityApp.ViewModel.Part
 {
@@ -23,8 +23,8 @@ namespace InvenfinityApp.ViewModel.Part
                 OnPropertyChanged(nameof(BinTypes));
             }
         }
-        private ObservableCollection<Backend.Application.DTOs.DTOTreeGrid> _Grids;
-        public ObservableCollection<Backend.Application.DTOs.DTOTreeGrid> Grids
+        private ObservableCollection<DTOTreeGrid> _Grids;
+        public ObservableCollection<DTOTreeGrid> Grids
         {
             get => _Grids;
             set
@@ -72,7 +72,7 @@ namespace InvenfinityApp.ViewModel.Part
         {
             this.root = root;
             _BinTypes = new ObservableCollection<DTOBinType>();
-            _Grids = new ObservableCollection<Backend.Application.DTOs.DTOTreeGrid>();
+            _Grids = new ObservableCollection<DTOTreeGrid>();
             ReloadBinTypes();
             ReloadGrids();
 
@@ -89,7 +89,7 @@ namespace InvenfinityApp.ViewModel.Part
 
         public void ReloadGrids()
         {
-            Grids = new ObservableCollection<Backend.Application.DTOs.DTOTreeGrid>((List<Backend.Application.DTOs.DTOTreeGrid>)root.Bin.GetAllGrids());
+            Grids = new ObservableCollection<DTOTreeGrid>((List<DTOTreeGrid>)root.Bin.GetAllGrids());
             CheckCanCreate();
         }
 

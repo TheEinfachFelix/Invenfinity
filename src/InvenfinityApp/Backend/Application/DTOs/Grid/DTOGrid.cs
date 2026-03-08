@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Grid
 {
     public class DTOGrid
     {

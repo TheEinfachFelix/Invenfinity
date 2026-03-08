@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Location
 {
-    public class DTOTreeLocation : IDotTreeItem, IDotTreeEditItem
+    public class DTOTreeLocation : IDtoTreeItem, IDtoTreeEditItem
     {
         internal DTOTreeLocation(string Name, int Id, string path, int? ParentId, bool IsParentEditable, bool isDeletable)
         {
@@ -21,7 +21,7 @@ namespace Backend.Application.DTOs
 
         public string Name { get; set; }
         public int Id { get; set; }
-        public string Type { get; set; } = "Location";
+        public string Type => "Location";
         public int? ParentId { get; set; }
         public bool IsParentEditable { get; }
 
@@ -37,7 +37,7 @@ namespace Backend.Application.DTOs
 
 
         public string Path { get; }
-        public List<IDotTreeItem> Children { get; set; } = new List<IDotTreeItem>();
-        IEnumerable<IDotTreeItem> IDotTreeItem.Children => Children;
+        public List<IDtoTreeItem> Children { get; set; } = new List<IDtoTreeItem>();
+        IEnumerable<IDtoTreeItem> IDtoTreeItem.Children => Children;
     }
 }

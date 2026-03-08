@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Location
 {
-    public class DTOTreeGrid: IDotTreeItem, IDtoDropdownElement, IDotTreeEditItem
+    public class DTOTreeGrid: IDtoTreeItem, IDtoDropdownElement, IDtoTreeEditItem
     {
         internal DTOTreeGrid(string Name, int Id, string path, int? ParentId, int Xsize, int Ysize, int XminVal, int YminVal, bool isDeletable)
         {
@@ -24,7 +24,7 @@ namespace Backend.Application.DTOs
 
         public string Name { get; set; }
         public int Id { get; set; }
-        public string Type { get; set; } = "Grid";
+        public string Type => "Grid";
         public int? ParentId { get; set; }
         public bool IsParentEditable { get; } = true;
 
@@ -38,6 +38,6 @@ namespace Backend.Application.DTOs
         public bool isDeletable { get; }
 
         public string Path { get; }
-        public IEnumerable<IDotTreeItem>? Children => null;
+        public IEnumerable<IDtoTreeItem>? Children => null;
     }
 }

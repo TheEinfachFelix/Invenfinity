@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Grid
 {
-    public sealed class DTOPartEmpty : IDotPart
+    public sealed class DTOPartEmpty : IDtoPart
     {
         public static readonly DTOPartEmpty Instance = new();
 

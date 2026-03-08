@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Grid
 {
-    public class DTOPart : IDotPart, IDtoDropdownElement
+    public class DTOPart : IDtoPart
     {
         internal DTOPart(int PartId)
         {

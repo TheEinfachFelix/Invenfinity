@@ -1,4 +1,4 @@
-﻿using Backend.Application.DTOs;
+﻿using Backend.Application.DTOs.Grid;
 using Backend.Application.UseCases;
 using System;
 using System.Collections.Generic;

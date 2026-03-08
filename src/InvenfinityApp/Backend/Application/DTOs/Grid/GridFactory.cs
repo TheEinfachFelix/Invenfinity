@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Grid
 {
     internal static class GridFactory
     {
@@ -14,9 +14,9 @@ namespace Backend.Application.DTOs
             return new DTOPart(inPart.PartId);
         }
 
-        public static List<IDotPart> CreatePartList(List<DPart?> inParts)
+        public static List<IDtoPart> CreatePartList(List<DPart?> inParts)
         {
-            var outp = new List<IDotPart>();
+            var outp = new List<IDtoPart>();
             foreach (var item in inParts)
             {
                 if (item is null) 

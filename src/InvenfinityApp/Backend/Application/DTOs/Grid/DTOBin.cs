@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Grid
 {
     public class DTOBin : IDtoDropdownElement 
     {
-        internal DTOBin(int Id, int? GridId, int Xpos, int Ypos, List<IDotPart> Parts, DTOBinType BinType, bool isDeletable)
+        internal DTOBin(int Id, int? GridId, int Xpos, int Ypos, List<IDtoPart> Parts, DTOBinType BinType, bool isDeletable)
         {
             this.Id = Id;
             this.GridId = GridId;
@@ -17,7 +17,7 @@ namespace Backend.Application.DTOs
             this.BinType = BinType;
             this.isDeletable = isDeletable;
         }
-        public string Name => Id.ToString();
+        public string Name => $"Bin {Id}";
         public int Id { get; }
         public int? GridId { get; }
         public DTOBinType BinType { get; }
@@ -26,13 +26,9 @@ namespace Backend.Application.DTOs
         // Grid Drawing
         public int X { get;}
         public int Y { get; }
-        public int WidthCells => BinType.xSize;
-        public int HeightCells => BinType.ySize;
-        public List<IDotPart> Parts { get; }
+        public int WidthCells => BinType.XSize;
+        public int HeightCells => BinType.YSize;
+        public List<IDtoPart> Parts { get; }
 
-        // Visual hints (keine Domain-Logik, nur für UI)
-        public int ZIndex { get; } = 0;            // Rendering-Ebene
-        public string? BackgroundBrushKey { get; } // z.B. "BinBackgroundBrush"
-        public string? BorderBrushKey { get; }     // z.B. "BinBorderBrush"
     }
 }

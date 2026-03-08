@@ -1,4 +1,4 @@
-﻿using Backend.Application.DTOs;
+﻿using Backend.Application.DTOs.Grid;
 using System;
 using System.Collections.Generic;
 using System.Text;

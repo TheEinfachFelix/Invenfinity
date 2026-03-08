@@ -25,7 +25,7 @@ namespace Backend.Application.UseCases
             }
             return data;
         }
-        public void updateBin(int BinId, List<IDotPart> Parts, int? GridId)
+        public void updateBin(int BinId, List<IDtoPart> Parts, int? GridId)
         {
             var bin = _root.Data.findBinbyId(BinId);
             if (bin == null) throw new Exception("Bin Not found");
@@ -55,7 +55,7 @@ namespace Backend.Application.UseCases
                 for (int i = 0; i < Parts.Count; i++) 
                 {
                     var NewPart = Parts[i];
-                    if (NewPart.Id == 0) NewPart = null;
+                    if (NewPart.Id == int.MaxValue) NewPart = null;
                     var OldPart = bin.Slots[i];
                     if (NewPart == null || OldPart == null)
                     {

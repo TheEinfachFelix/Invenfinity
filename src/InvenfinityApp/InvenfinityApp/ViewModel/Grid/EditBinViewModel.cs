@@ -1,4 +1,5 @@
-﻿using Backend.Application.DTOs;
+﻿using Backend.Application.DTOs.Grid;
+using Backend.Application.DTOs.Location;
 using Backend.Application.UseCases;
 using DBconnector.Models;
 using System;
@@ -99,8 +100,8 @@ namespace InvenfinityApp.ViewModel.Grid
                 OnPropertyChanged(nameof(Grids));
             }
         }
-        private ObservableCollection<IDotPart> _parts;
-        public ObservableCollection<IDotPart> Parts
+        private ObservableCollection<IDtoPart> _parts;
+        public ObservableCollection<IDtoPart> Parts
         {
             get => _parts;
             set

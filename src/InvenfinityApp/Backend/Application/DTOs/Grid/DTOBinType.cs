@@ -10,13 +10,13 @@ namespace Backend.Application.DTOs.Grid
         { 
             this.Id = Id;
             this.SlotCount = SlotCount;
-            this.xSize = xSize;
-            this.ySize = ySize;
+            this.XSize = xSize;
+            this.YSize = ySize;
         }
         public int Id { get; }
-        public string Name { get { return xSize.ToString() + "x" + ySize.ToString() + " Slots:" + SlotCount.ToString(); } }
+        public string Name => $"{XSize}x{YSize} Slots:{SlotCount}";
         public int SlotCount { get; }
-        public int xSize { get; }
-        public int ySize { get; }
+        public int XSize { get; }
+        public int YSize { get; }
     }
 }

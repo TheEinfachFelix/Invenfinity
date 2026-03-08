@@ -13,14 +13,14 @@ namespace Backend.Application.UseCases
         {
             _root = root;
         }
-        public IDotTreeEditItem GetEditItem(IDotTreeItem item)
+        public IDtoTreeEditItem GetEditItem(IDtoTreeItem item)
         {
             return item switch
             {
-                DTOs.DTOTreeLocation => LocationFactory.CreateLocationSingle(
+                DTOTreeLocation => LocationFactory.CreateLocationSingle(
                                        _root.Data.Root.FindLocationByID(item.Id)
                                        ?? throw new Exception()),
-                DTOs.DTOTreeGrid => LocationFactory.CreateGrid(
+                DTOTreeGrid => LocationFactory.CreateGrid(
                                            _root.Data.Root.FindGridByID(item.Id)
                                            ?? throw new Exception()),
                 _ => throw new InvalidOperationException()
@@ -36,7 +36,7 @@ namespace Backend.Application.UseCases
             _root.RepoDatabase.CreateGrid(name, parentID, xsize, ysize);
             _root.RepoDatabase.ReloadLocationData(_root.Data);
         }
-        public void EditItem(IDotTreeEditItem item)
+        public void EditItem(IDtoTreeEditItem item)
         {
             bool TreeOrderChanged = false;
             switch (item)
@@ -67,7 +67,7 @@ namespace Backend.Application.UseCases
             }
         }
 
-        public void DeleteItem(IDotTreeEditItem item)
+        public void DeleteItem(IDtoTreeEditItem item)
         {
             var id = item.Id;
             switch (item)

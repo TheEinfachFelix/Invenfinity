@@ -1,4 +1,5 @@
 ﻿using Backend.Application.DTOs;
+using Backend.Application.DTOs.Location;
 using InvenfinityApp.ViewModel.Tree;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace InvenfinityApp.Elements
     {
         public int? SelectedGridId { get; private set; }
         public int? SelectedLocationId { get; private set; }
-        public IDotTreeItem? SelectedTreeItem { get; private set; }
+        public IDtoTreeItem? SelectedTreeItem { get; private set; }
         public event EventHandler? SelectionChanged;
         public LocationTree()
         {
@@ -35,7 +36,7 @@ namespace InvenfinityApp.Elements
         {
             SelectedGridId = null;
             SelectedLocationId = null;
-            SelectedTreeItem = (IDotTreeItem?)e.NewValue;
+            SelectedTreeItem = (IDtoTreeItem?)e.NewValue;
 
             if (e.NewValue is DTOTreeGrid grid)
             {

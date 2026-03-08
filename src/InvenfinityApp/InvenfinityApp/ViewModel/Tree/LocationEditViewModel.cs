@@ -12,8 +12,8 @@ namespace InvenfinityApp.ViewModel.Tree
     public class LocationEditViewModel : INotifyPropertyChanged
     {
         private readonly UcRoot _root;
-        private IDotTreeEditItem? _selectedItemEdit;
-        public IDotTreeEditItem? SelectedItemEdit
+        private IDtoTreeEditItem? _selectedItemEdit;
+        public IDtoTreeEditItem? SelectedItemEdit
         {
             get => _selectedItemEdit;
             set
@@ -30,7 +30,7 @@ namespace InvenfinityApp.ViewModel.Tree
             _root = root;
         }
 
-        public void UpdateItemEdit(IDotTreeItem item)
+        public void UpdateItemEdit(IDtoTreeItem item)
         {
             SelectedItemEdit = _root.Locations.Edit.GetEditItem(item);
         }

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.Application.DTOs
+namespace Backend.Application.DTOs.Location
 {
-    public interface IDotTreeItem
+    public interface IDtoTreeItem
     {
         public string Name { get; }
         public int Id { get; }
         public string Path { get; }
-        public IEnumerable<IDotTreeItem>? Children { get; }
+        public IEnumerable<IDtoTreeItem>? Children { get; }
     }
 }

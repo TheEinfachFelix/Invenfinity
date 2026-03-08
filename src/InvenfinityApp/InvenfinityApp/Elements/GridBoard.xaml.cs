@@ -1,4 +1,5 @@
 ﻿using Backend.Application.DTOs;
+using Backend.Application.DTOs.Grid;
 using InvenfinityApp.ViewModel;
 using InvenfinityApp.ViewModel.Grid;
 using System;
@@ -57,7 +58,6 @@ namespace InvenfinityApp.Elements
                 Grid.SetRow(binControl, bin.Y);
                 Grid.SetColumnSpan(binControl, bin.WidthCells);
                 Grid.SetRowSpan(binControl, bin.HeightCells);
-                Panel.SetZIndex(binControl, bin.ZIndex);
 
                 DrawGrid.Children.Add(binControl);
             }

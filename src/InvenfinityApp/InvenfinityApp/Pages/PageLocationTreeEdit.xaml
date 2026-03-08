@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:InvenfinityApp.Pages"
       xmlns:uc="clr-namespace:InvenfinityApp.Elements"
-      xmlns:dto="clr-namespace:Backend.Application.DTOs;assembly=Backend"
+      xmlns:dto="clr-namespace:Backend.Application.DTOs.Location;assembly=Backend"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -46,7 +46,7 @@
 
                 <!-- Typ -->
                 <TextBlock Text="Typ" Margin="0,15,0,0"/>
-                <TextBox Text="{Binding Type}" IsEnabled="False"/>
+                <TextBox Text="{Binding Type , Mode=OneWay}" IsEnabled="False"/>
 
                 <!-- Parent -->
                 <TextBlock Text="ParentId" Margin="0,15,0,0"/>
