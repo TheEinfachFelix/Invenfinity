@@ -32,18 +32,18 @@ namespace InvenfinityApp.ViewModel.Tree
 
         public void UpdateItemEdit(IDtoTreeItem item)
         {
-            SelectedItemEdit = _root.Locations.Edit.GetEditItem(item);
+            SelectedItemEdit = _root.Locations.GetEditItem(item);
         }
         public void SaveItemEdit()
         {
             if (SelectedItemEdit == null) return;
-            _root.Locations.Edit.EditItem(SelectedItemEdit);
+            _root.Locations.EditItem(SelectedItemEdit);
             TreeChanged?.Invoke();
         }
         public void DeleteItemEdit()
         {
             if (SelectedItemEdit == null) return;
-            _root.Locations.Edit.DeleteItem(SelectedItemEdit);
+            _root.Locations.DeleteItem(SelectedItemEdit);
             SelectedItemEdit = null;
             TreeChanged?.Invoke();
         }

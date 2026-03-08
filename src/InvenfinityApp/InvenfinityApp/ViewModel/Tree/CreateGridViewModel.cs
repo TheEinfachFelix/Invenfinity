@@ -18,7 +18,7 @@ namespace InvenfinityApp.ViewModel.Tree
 
         public void CreateGrid(string name, int parentID, int xSize, int ySize)
         {
-            _root.Locations.Edit.CreateGrid(name, parentID, xSize, ySize);
+            _root.Locations.CreateGrid(name, parentID, xSize, ySize);
             GridCreated?.Invoke();
         }
     }

@@ -83,19 +83,19 @@ namespace InvenfinityApp.ViewModel.Part
             int? gridID = null;
             if (SelectedGridId != -1)
                 gridID = SelectedGridId;
-            root.Bin.CreateBin(SelectedBinTypeId, gridID);
+            root.Bins.CreateBin(SelectedBinTypeId, gridID);
             BinsChanged?.Invoke();
         }
 
         public void ReloadGrids()
         {
-            Grids = new ObservableCollection<DTOTreeGrid>((List<DTOTreeGrid>)root.Bin.GetAllGrids());
+            Grids = new ObservableCollection<DTOTreeGrid>((List<DTOTreeGrid>)root.Bins.GetAllGrids());
             CheckCanCreate();
         }
 
         public void ReloadBinTypes()
         {
-            BinTypes = new ObservableCollection<DTOBinType>(root.Bin.GetAllBinTypes());
+            BinTypes = new ObservableCollection<DTOBinType>(root.Bins.GetAllBinTypes());
             CheckCanCreate();
         }
 
@@ -109,7 +109,7 @@ namespace InvenfinityApp.ViewModel.Part
                 canCreate = false;
                 return;
             }
-            canCreate = root.Bin.CanCreateBin(SelectedBinTypeId, gridID);
+            canCreate = root.Bins.CanCreateBin(SelectedBinTypeId, gridID);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

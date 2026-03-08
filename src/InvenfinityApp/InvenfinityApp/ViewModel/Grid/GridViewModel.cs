@@ -53,17 +53,17 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void MoveBin(DTOBin bin, int newX, int newY)
         {
-            _root.Grid.moveBinInGrid(Grid, bin, newX, newY);
+            _root.Grid.MoveBinInGrid(Grid.GridId, bin, newX, newY);
             GridUpdated?.Invoke();
         }
         public bool isAreaFree(int x, int y, DTOBin bin)
         {
-            return _root.Grid.isBinMovePossible(Grid, bin, x, y);
+            return _root.Grid.IsBinMovePossible(Grid, bin, x, y);
         }
         public void ReloadGrid()
         {
             if (SelectedGrid == null) return;
-            Grid = _root.Grid.getGridByID((int)SelectedGrid);
+            Grid = _root.Grid.GetGridByID((int)SelectedGrid);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

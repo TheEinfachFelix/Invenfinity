@@ -12,22 +12,21 @@ namespace Backend.Application.UseCases
     public class UcRoot
     {
         internal Dset Data;
-        internal RepoDatabase RepoDatabase;
+        internal RepoDatabase Repo;
         internal AppDbContext dbContext;
         public UcLocations Locations;
-        public UcGrid Grid;
-        public UcBinCreate Bin;
-        public UcBinEdit BinEdit;
+        public UcGrids Grid;
+        public UcBins Bins;
         public UcRoot()
         {
             dbContext = new AppDbContext();
-            RepoDatabase = new RepoDatabase(dbContext);
-            Data = RepoDatabase.GetData();
-            Locations = new UcLocations(this);
-            Grid = new UcGrid(this);
-            Bin = new UcBinCreate(this);
-            BinEdit = new UcBinEdit(this);
+            Repo = new RepoDatabase(dbContext);
+            Data = Repo.GetData();
+            Locations = new UcLocations(Repo, Data);
+            Grid = new UcGrids(Repo, Data);
+            Bins = new UcBins(Repo, Data);
+
         }
-        
+
     }
 }

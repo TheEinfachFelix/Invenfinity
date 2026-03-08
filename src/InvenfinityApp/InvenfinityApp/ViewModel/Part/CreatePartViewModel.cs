@@ -15,7 +15,7 @@ namespace InvenfinityApp.ViewModel.Part
         public event Action? PartsChanged;
         public void CreatePart(int InventreeID)
         {
-            root.Bin.CreatePart(InventreeID);
+            root.Bins.CreatePart(InventreeID);
             PartsChanged?.Invoke();
         }
     }

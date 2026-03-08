@@ -138,7 +138,7 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void UpdateProps()
         {
-            var bin = root.Bin.GetBinById(SelectedBinId);
+            var bin = root.Bins.GetBinById(SelectedBinId);
             if (bin == null) return;
             BinTypeName = bin.BinType.Name;
             var grid = bin.GridId;
@@ -152,12 +152,12 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void ReloadGrids()
         {
-            Grids = new(root.Bin.GetAllGrids());
+            Grids = new(root.Bins.GetAllGrids());
         }
 
         public void ReloadBins()
         {
-            GridlessBins = new(root.BinEdit.getGridlessBins());
+            GridlessBins = new(root.Bins.GetGridlessBins());
         }
 
         public void TakeGridlessBin()
@@ -168,17 +168,18 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void CheckMoveToGridPossigble()
         {
-            var bin = root.Bin.GetBinById(SelectedBinId);
+            var bin = root.Bins.GetBinById(SelectedBinId);
             int? gridID = null;
             if (SelectedGridID != -1)
                 gridID = SelectedGridID;
-            UpdatePossible = root.Bin.CanCreateBin(bin.BinType.Id, gridID);
+            UpdatePossible = root.Bins.CanCreateBin(bin.BinType.Id, gridID);
         }
 
         public void deleteBin()
         {
-            if (!root.Bin.GetBinById(SelectedBinId).isDeletable) return;
-            root.BinEdit.deleteBin(SelectedBinId);
+            var bin = root.Bins.GetBinById(SelectedBinId);
+            if (bin == null || !bin.isDeletable) return;
+            root.Bins.DeleteBin(SelectedBinId);
             BinsChanged?.Invoke();
         }
 
@@ -188,7 +189,7 @@ namespace InvenfinityApp.ViewModel.Grid
             int? gridID = null;
             if (SelectedGridID != -1)
                 gridID = SelectedGridID;
-            root.BinEdit.updateBin(SelectedBinId, [.. Parts], gridID);
+            root.Bins.UpdateBin(SelectedBinId, [.. Parts], gridID);
             BinsChanged?.Invoke();
         }
 

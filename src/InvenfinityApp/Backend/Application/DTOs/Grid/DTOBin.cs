@@ -28,7 +28,7 @@ namespace Backend.Application.DTOs.Grid
         public int Y { get; }
         public int WidthCells => BinType.XSize;
         public int HeightCells => BinType.YSize;
-        public List<IDtoPart> Parts { get; }
+        public IReadOnlyList<IDtoPart> Parts { get; }
 
     }
 }

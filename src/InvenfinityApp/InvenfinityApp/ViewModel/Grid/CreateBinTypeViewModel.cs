@@ -16,7 +16,7 @@ namespace InvenfinityApp.ViewModel.Grid
 
         public void CreateBinType(int slotCount, int xSize, int ySize)
         {
-            root.Bin.CreateBinType(slotCount, xSize, ySize);
+            root.Bins.CreateBinType(slotCount, xSize, ySize);
             BinTypeChanged?.Invoke();
         }
     }

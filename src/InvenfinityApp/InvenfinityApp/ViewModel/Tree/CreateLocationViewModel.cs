@@ -17,7 +17,7 @@ namespace InvenfinityApp.ViewModel.Tree
 
         public void CreateLocation(string name, int parentID)
         {
-            _root.Locations.Edit.CreateLocation(name, parentID);
+            _root.Locations.CreateLocation(name, parentID);
             LocationCreated?.Invoke();
         }
     }
