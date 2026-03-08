@@ -201,13 +201,13 @@ namespace Backend.Domain
             }
             _grid = newGrid;
         }
-        public BinPos? FindFreePosForBin(DBinType inBinType)
+        public BinPos? FindFreePosForBin(DBinType inBinType, int? BinId = null)
         {
             for (int x = Xmax - inBinType.X; x >= 0; x--)
             {
                 for (int y = Ymax - inBinType.Y; y >= 0; y--)
                 {
-                    if (IsAreaFree(x, y, inBinType, null))
+                    if (IsAreaFree(x, y, inBinType, BinId))
                         return new BinPos(x, y);
                 }
             }

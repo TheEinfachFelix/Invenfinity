@@ -9,7 +9,7 @@ namespace Backend.Application.DTOs.Grid
         public static readonly DTOPartEmpty Instance = new();
 
         private DTOPartEmpty() { }
-
+        public int Id => -1;
         public int? DropdownId => null;
         public string Name => "Leer";
         public string? ColorTag => "red";

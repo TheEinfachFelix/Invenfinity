@@ -1,4 +1,5 @@
-﻿using InvenfinityApp.ViewModel.Grid;
+﻿using Backend.Application.DTOs.Grid;
+using InvenfinityApp.ViewModel.Grid;
 using InvenfinityApp.ViewModel.Part;
 using InvenfinityApp.Windows;
 using System;
@@ -9,10 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace InvenfinityApp.Pages
 {
@@ -54,6 +52,32 @@ namespace InvenfinityApp.Pages
             vm.deleteBin();
             vm.UpdateProps();
             vm.ReloadBins();
+        }
+
+        private void MovePartUp_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is IDtoPart part)
+                vm.MovePartUp(part);
+        }
+
+        private void MovePartDown_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is IDtoPart part)
+                vm.MovePartDown(part);
+        }
+
+        private void RemovePart_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is IDtoPart part)
+                vm.RemovePart(part);
+        }
+
+        private void AddPart_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListBox list && list.SelectedItem is IDtoPart part)
+            {
+                vm.AddPart(part);
+            }
         }
     }
 }

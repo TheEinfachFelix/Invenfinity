@@ -11,28 +11,51 @@
       xmlns:uc="clr-namespace:InvenfinityApp.Elements"
       Title="PageGridEdit">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Bin Bearbeiten"
+    <StackPanel>
+        <TextBlock Text="Bin Bearbeiten"
                        FontSize="20"
                        FontWeight="Bold"
-                       Margin="0,0,0,20"/>
-            <Button Content="Bin Erstellen" HorizontalAlignment="Left"
+                       Margin="0,0,0,10"/>
+
+        <Grid Margin="10" Height="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                    Content="Bin Erstellen" 
+                    HorizontalAlignment="Left"
                     Width="100"
-                    Margin="0,15,10,0"
+                    Grid.Column="0"
+                    Height="20"
+                    Margin="0,0,10,0"
                     Click="Create_Bin_Click"/>
 
-            <TextBlock Text="Gridless Bins" Margin="0,15,0,0"/>
+            <TextBlock 
+                    Text="Gridless Bins" 
+                    Grid.Column="1" 
+                    Margin="0,0,10,0"/>
+            
             <uc:Dropdown
+                    Grid.Column="2"
+                    Margin="0,0,10,0"
                     ItemsSource="{Binding GridlessBins}"
                     SelectedId="{Binding SelectedGridlessBinId}"/>
 
-            <Button Content="Gridless Bin Laden" HorizontalAlignment="Left"
-                    Width="100"
-                    Margin="0,15,10,0"
+            <Button Content="Gridless Bin Laden" HorizontalAlignment="Right"
+                    Grid.Column="3"
                     Click="Load_Gridless_Bin_Click"/>
+        </Grid>
 
-            <TextBlock Text="Selected Bin ID" Margin="0,15,0,0"/>
+        <DockPanel>
+            <StackPanel MinWidth="200" Margin="10">
+
+
+
+            <TextBlock Text="Selected Bin ID"/>
             <TextBox Text="{Binding SelectedBinId}"
                      IsEnabled="False" />
 
@@ -47,9 +70,11 @@
                     SelectedId="{Binding SelectedGridID}"
                     AllowEmpty="True" />
 
+
             <Button Content="Speichern" HorizontalAlignment="Left"
                     Width="100"
                     Margin="0,15,10,0"
+                    IsEnabled="{Binding UpdatePossible}"
                     Click="Save_Bin_Click"/>
 
             <Button Content="Löschen" HorizontalAlignment="Left"
@@ -59,5 +84,64 @@
                     Click="Del_Bin_Click"/>
 
         </StackPanel>
-    </Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,10,10">
+                <StackPanel>
+                    <TextBlock Text="Slots"/>
+
+                    <ListBox ItemsSource="{Binding Parts}" 
+                         SelectedIndex="{Binding SelectedSlotIndex}" 
+                         Height="Auto">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Padding="5" Margin="0,0,5,0">
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Border>
+
+                                    <Button Grid.Column="1"
+                                        Content="↑"
+                                        Tag="{Binding}"
+                                        Click="MovePartUp_Click"/>
+
+                                    <Button Grid.Column="2"
+                                        Content="↓"
+                                        Tag="{Binding}"
+                                        Click="MovePartDown_Click"/>
+                                    <Button Grid.Column="3"
+                                        Content="Entfernen"
+                                        Tag="{Binding}"
+                                        Click="RemovePart_Click"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBlock Text="Part hinzufügen" Margin="0,15,0,0"/>
+
+                    <TextBox Text="{Binding PartSearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ListBox ItemsSource="{Binding SearchResults}" 
+                         Height="150"
+                         MouseDoubleClick="AddPart_DoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Padding="5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+        
+    </StackPanel>
 </Page>

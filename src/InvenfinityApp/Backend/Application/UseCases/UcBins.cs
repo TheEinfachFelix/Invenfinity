@@ -39,6 +39,11 @@ namespace Backend.Application.UseCases
             _repo.CreateBinType(_data, slotCount, xSize, ySize);
         }
 
+        public List<IDtoPart> GetAllParts()
+        {
+            return _data.Parts!.ToDto();
+        }
+
         public void CreatePart(int InventreeID)
         {
             _repo.CreatePart(_data, InventreeID);
@@ -69,13 +74,13 @@ namespace Backend.Application.UseCases
             return data;
         }
 
-        public bool CanCreateBin(int BinTypeID, int? GridID)
+        public bool CanCreateBin(int BinTypeID, int? GridID, int? BinId = null)
         {
             if (GridID == null)
             {
                 return true;
             }
-            var BinPos = FindFreePosition(BinTypeID, (int)GridID);
+            var BinPos = FindFreePosition(BinTypeID, (int)GridID, BinId);
             return BinPos != null;
         }
 
@@ -84,83 +89,91 @@ namespace Backend.Application.UseCases
             if (GridID == null)
             {
                 _repo.CreateBin(BinTypeID);
-                var newDataa = _repo.GetData();
-                _data.Parts = newDataa.Parts;
-                _data.Types = newDataa.Types;
-                _data.Root = newDataa.Root;
+                reload();
                 return;
             }
             var BinPos = FindFreePosition(BinTypeID, (int)GridID) ?? throw new Exception("No free position for this bin in the grid or Grid not found");
 
             _repo.CreateBin(BinTypeID, (int)GridID, BinPos.Xpos, BinPos.Ypos);
 
-            var newData = _repo.GetData();
-            _data.Parts = newData.Parts;
-            _data.Types = newData.Types;
-            _data.Root = newData.Root;
+            reload();
         }
         
-        private BinPos? FindFreePosition(int binTypeId, int gridId)
+        private BinPos? FindFreePosition(int binTypeId, int gridId, int? BinId = null)
         {
             var grid = _data.Root.FindGridByID(gridId);
             if (grid == null) return null;
             var BinType = _data.findBinTypebyID(binTypeId);
-            var BinPos = grid.FindFreePosForBin(BinType);
+            var BinPos = grid.FindFreePosForBin(BinType, BinId);
             return BinPos;
         }
 
-        public void UpdateBin(int BinId, List<IDtoPart> Parts, int? GridId)
+        public void UpdateBin(int BinId, List<IDtoPart> Parts, int? newGridId)
         {
             var bin = _data.findBinbyId(BinId) ?? throw new NotFoundException("Bin", BinId);
-            var binGrid = bin.Grid;
+            var oldBinGrid = bin.Grid;
 
 
 
-            if ((binGrid != null && GridId == null) || (binGrid != null && binGrid.GridId != GridId))
-                _repo.RemoveBinfromGrid(BinId, binGrid.GridId);
+            if ((oldBinGrid != null && newGridId == null) || (oldBinGrid != null && oldBinGrid.GridId != newGridId))
+                _repo.RemoveBinfromGrid(BinId, oldBinGrid.GridId);
 
-            if (GridId != null && (binGrid == null || binGrid.GridId != GridId))
+            if (newGridId != null && (oldBinGrid == null || oldBinGrid.GridId != newGridId))
             {
-                var grid = _data.Root.FindGridByID((int)GridId) ?? throw new NotFoundException("Grid", GridId);
-                var BinPos = grid.FindFreePosForBin(bin.BinType)?? throw new Exception("No free position for this bin in the grid");
-                _repo.CreateBinPos(BinId, (int)GridId, BinPos.Xpos, BinPos.Ypos);
+                var grid = _data.Root.FindGridByID((int)newGridId) ?? throw new NotFoundException("Grid", newGridId);
+                var BinPos = grid.FindFreePosForBin(bin.BinType, BinId)?? throw new Exception("No free position for this bin in the grid");
+                _repo.CreateBinPos(BinId, (int)newGridId, BinPos.Xpos, BinPos.Ypos);
             }
 
-            // Check Partlist
-            bool UpdateParts = false;
-            if (bin.Slots.Count != Parts.Count) UpdateParts = true;
-            else
+            var changedSlots = GetChangedSlots(bin, Parts);
+
+            if (changedSlots.Count > 0)
             {
-                for (int i = 0; i < Parts.Count; i++)
-                {
-                    var NewPart = Parts[i];
-                    if (NewPart.DropdownId == null) NewPart = null;
-                    var OldPart = bin.Slots[i];
-                    if (NewPart == null || OldPart == null)
-                    {
-                        if ((NewPart == null) != (OldPart == null))
-                            UpdateParts = true;
-                        continue;
-                    }
-                    if (NewPart.DropdownId != OldPart.PartId) UpdateParts = true;
-                }
+                UpdateSlots(BinId, changedSlots);
             }
 
-            if (UpdateParts)
-            {
-                throw new NotImplementedException();
-            }
-
-            var newData = _repo.GetData();
-            _data.Parts = newData.Parts;
-            _data.Types = newData.Types;
-            _data.Root = newData.Root;
+            reload();
         }
-        
+
+        private List<(int SlotIndex, int? PartId)> GetChangedSlots(DBin bin, List<IDtoPart> newParts)
+        {
+            var result = new List<(int, int?)>();
+
+            for (int i = 0; i < newParts.Count; i++)
+            {
+                var newPart = newParts[i];
+                int? newPartId = newPart is DTOPartEmpty ? null : newPart.Id;
+
+                var oldSlot = bin.Slots[i];
+                int? oldPartId = oldSlot?.PartId;
+
+                if (newPartId != oldPartId)
+                    result.Add((i, newPartId));
+            }
+
+            return result;
+        }
+
+        private void UpdateSlots(int binId, List<(int SlotIndex, int? PartId)> changes)
+        {
+            foreach (var change in changes)
+            {
+                _repo.UpdateBinSlot(
+                    binId,
+                    change.SlotIndex,
+                    change.PartId
+                );
+            }
+        }
+
         public void DeleteBin(int binID)
         {
             _repo.DeleteBin(binID);
+            reload();
+        }
 
+        private void reload()
+        {
             var newData = _repo.GetData();
             _data.Parts = newData.Parts;
             _data.Types = newData.Types;

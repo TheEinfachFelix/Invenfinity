@@ -6,6 +6,7 @@ namespace Backend.Application.DTOs.Grid
 {
     public interface IDtoPart: IDtoDropdownElement
     {
+        public int Id { get; }
         public string? ColorTag { get; }
     }
 }

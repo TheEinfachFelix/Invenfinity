@@ -1,4 +1,5 @@
 ﻿using Backend.Domain;
+using Backend.Exceptions;
 using Backend.Infrastructure.Mapper;
 using DBconnector;
 using DBconnector.Models;
@@ -96,7 +97,7 @@ namespace Backend.Infrastructure.Datenbank
             {
                 throw new Exception($"Location with ID {parentID} not found");
             }
-            var newLoc = new Location() { Name = name, MasterLocationId = parentID};
+            var newLoc = new Location() { Name = name, MasterLocationId = parentID };
             context.Locations.Add(newLoc);
             context.SaveChanges();
         }
@@ -125,7 +126,7 @@ namespace Backend.Infrastructure.Datenbank
         }
         internal void CreateGrid(string name, int locationId, int xmax, int ymax)
         {
-            if(!context.Locations.Any(l => l.LocationId == locationId))
+            if (!context.Locations.Any(l => l.LocationId == locationId))
             {
                 throw new Exception($"Location with ID {locationId} not found");
             }
@@ -138,7 +139,7 @@ namespace Backend.Infrastructure.Datenbank
             var dbGrid = context.Grids.Find(gridId) ?? throw new Exception($"Grid with ID {gridId} not found");
             context.Grids.Remove(dbGrid);
             context.SaveChanges();
-        }   
+        }
         internal void UpdateSingleGrid(DGrid inDgrid)
         {
             var dbGrid = context.Grids.Find(inDgrid.GridId) ?? throw new Exception($"Grid with ID {inDgrid.GridId} not found");
@@ -147,7 +148,7 @@ namespace Backend.Infrastructure.Datenbank
             dbGrid.Xmax = inDgrid.Xmax;
             dbGrid.Ymax = inDgrid.Ymax;
             context.SaveChanges();
-        }   
+        }
         internal void UpdateGrid(DGrid inDgrid)
         {
             var dbGrid = context.Grids
@@ -248,8 +249,7 @@ namespace Backend.Infrastructure.Datenbank
             context.SaveChanges();
         }
 
-
-        internal void RemoveBinfromGrid(int BinId, int  GridID)
+        internal void RemoveBinfromGrid(int BinId, int GridID)
         {
             var binPos = context.GridPos.FirstOrDefault(b => b.BinId == BinId && b.GridId == GridID) ?? throw new Exception("BinPos not found");
             context.GridPos.Remove(binPos);
@@ -266,7 +266,7 @@ namespace Backend.Infrastructure.Datenbank
             var dbBin = context.Bins
                 .Include(b => b.BinSlots)
                 .FirstOrDefault(b => b.BinId == inDBin.BinId)
-                ?? throw new Exception($"Bin with ID {inDBin.BinId} not found");
+                ?? throw new NotFoundException("DBBin",inDBin.BinId);
             dbBin.BinTypeId = inDBin.BinType.BinTypeId;
             UpdateBinType(inDBin.BinType);
             for (int i = 0; i < inDBin.BinType.SlotCount; i++)
@@ -327,6 +327,71 @@ namespace Backend.Infrastructure.Datenbank
             var dbPart = context.Parts.Find(inDPart.PartId) ?? throw new Exception($"Part with ID {inDPart.PartId} not found");
             dbPart.InventreeId = inDPart.InventreeId;
             // Part
+        }
+        internal void UpdateBinSlot(int binId, int slotIndex, int? partId)
+        {
+            var dbBin = context.Bins
+                .Include(b => b.BinSlots)
+                .Include(b => b.BinType)
+                .FirstOrDefault(b => b.BinId == binId)
+                ?? throw new NotFoundException("DBBin", binId);
+
+            if (slotIndex < 0 || slotIndex >= dbBin.BinType.SlotCount)
+                throw new Exception("Invalid slot index");
+
+            var slots = dbBin.BinSlots;
+
+            var slot = slots.FirstOrDefault(s => s.SlotNr == slotIndex);
+
+            if (partId == null)
+            {
+                if (slot != null)
+                    context.BinSlots.Remove(slot);
+
+                context.SaveChanges();
+                return;
+            }
+
+            if (slot != null)
+            {
+                slot.PartId = partId.Value;
+                context.SaveChanges();
+                return;
+            }
+
+            var existingPartSlot = slots.FirstOrDefault(s => s.PartId == partId);
+
+            if (existingPartSlot != null)
+            {
+                var targetSlot = slots.FirstOrDefault(s => s.SlotNr == slotIndex);
+
+                if (targetSlot != null)
+                    context.BinSlots.Remove(targetSlot);
+
+                context.BinSlots.Remove(existingPartSlot);
+                context.SaveChanges();
+
+                context.BinSlots.Add(new BinSlot
+                {
+                    BinId = binId,
+                    SlotNr = slotIndex,
+                    PartId = (int)partId
+                });
+
+                context.SaveChanges();
+
+                context.SaveChanges();
+                return;
+            }
+
+            context.BinSlots.Add(new BinSlot
+            {
+                BinId = binId,
+                SlotNr = slotIndex,
+                PartId = partId.Value
+            });
+
+            context.SaveChanges();
         }
 
     }

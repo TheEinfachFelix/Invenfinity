@@ -121,6 +121,52 @@ namespace InvenfinityApp.ViewModel.Grid
                 OnPropertyChanged(nameof(DelPossible));
             }
         }
+
+        ///////////////////// Parts
+        private int _selectedSlotIndex;
+        public int SelectedSlotIndex
+        {
+            get => _selectedSlotIndex;
+            set
+            {
+                _selectedSlotIndex = value;
+                OnPropertyChanged(nameof(SelectedSlotIndex));
+            }
+        }
+        private string _partSearchText = "";
+        public string PartSearchText
+        {
+            get => _partSearchText;
+            set
+            {
+                if (_partSearchText != value)
+                {
+                    _partSearchText = value;
+                    OnPropertyChanged(nameof(PartSearchText));
+                    UpdateSearch();
+                }
+            }
+        }
+        private ObservableCollection<IDtoPart> _availableParts = new();
+        public ObservableCollection<IDtoPart> AvailableParts
+        {
+            get => _availableParts;
+            set
+            {
+                _availableParts = value;
+                OnPropertyChanged(nameof(AvailableParts));
+            }
+        }
+        private ObservableCollection<IDtoPart> _searchResults = new();
+        public ObservableCollection<IDtoPart> SearchResults
+        {
+            get => _searchResults;
+            set
+            {
+                _searchResults = value;
+                OnPropertyChanged(nameof(SearchResults));
+            }
+        }
         public EditBinViewModel(UcRoot root)
         {
             this.root = root;
@@ -134,6 +180,7 @@ namespace InvenfinityApp.ViewModel.Grid
             UpdateProps();
             ReloadGrids();
             ReloadBins();
+            LoadParts();
         }
         public event Action? BinsChanged;
 
@@ -168,7 +215,7 @@ namespace InvenfinityApp.ViewModel.Grid
         public void CheckMoveToGridPossigble()
         {
             var bin = root.Bins.GetBinById(SelectedBinId) ?? throw new NotFoundException("Bin", SelectedBinId);
-            UpdatePossible = root.Bins.CanCreateBin(bin.BinType.Id, SelectedGridID);
+            UpdatePossible = root.Bins.CanCreateBin(bin.BinType.Id, SelectedGridID, SelectedBinId);
         }
 
         public void deleteBin()
@@ -186,6 +233,68 @@ namespace InvenfinityApp.ViewModel.Grid
             BinsChanged?.Invoke();
         }
 
+        // Parts
+
+        private void UpdateSearch()
+        {
+            SearchResults.Clear();
+
+            if (string.IsNullOrWhiteSpace(PartSearchText))
+                return;
+
+            foreach (var part in AvailableParts)
+            {
+                if (part.Name.Contains(PartSearchText, StringComparison.OrdinalIgnoreCase))
+                    SearchResults.Add(part);
+            }
+        }
+
+        public void MovePartUp(IDtoPart part)
+        {
+            int index = Parts.IndexOf(part);
+            if (index <= 0) return;
+
+            (Parts[index - 1], Parts[index]) =
+            (Parts[index], Parts[index - 1]);
+
+            OnPropertyChanged(nameof(Parts));
+        }
+
+        public void MovePartDown(IDtoPart part)
+        {
+            int index = Parts.IndexOf(part);
+            if (index < 0 || index >= Parts.Count - 1) return;
+
+            (Parts[index + 1], Parts[index]) =
+            (Parts[index], Parts[index + 1]);
+
+            OnPropertyChanged(nameof(Parts));
+        }
+
+        public void RemovePart(IDtoPart part)
+        {
+            int index = Parts.IndexOf(part);
+            if (index < 0) return;
+
+            Parts[index] = DTOPartEmpty.Instance;
+            OnPropertyChanged(nameof(Parts));
+        }
+
+        public void AddPart(IDtoPart part)
+        {
+            int index = Parts.IndexOf(DTOPartEmpty.Instance);
+
+            if (index < 0)
+                index = 0;
+
+            Parts[index] = part;
+
+            OnPropertyChanged(nameof(Parts));
+        }
+        private void LoadParts()
+        {
+            AvailableParts = new(root.Bins.GetAllParts());
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
