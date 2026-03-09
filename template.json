@@ -1,0 +1,46 @@
+{
+    "version":1,
+    "data":["Thread","Length","Head","Drive","Id"],
+
+    "elements": [
+    {
+      "type": "image",
+      "value":"{Head}",
+      "widthMm": 10,
+      "padding":5
+    },
+
+    {
+      "type": "image",
+      "value":"{Drive}",
+      "widthMm": 20,
+      "padding":5
+    },
+
+    {
+        "type": "text",
+        "value": "{Thread}",
+        "widthMm": 40,
+        "padding":5
+    },
+        {
+        "type": "text",
+        "value": "x",
+        "widthMm": 40,
+        "padding":5
+    },
+        {
+        "type": "text",
+        "value": "{Length}",
+        "widthMm": 40,
+        "padding":5
+    },
+
+    {
+      "type": "qrcode",
+      "value": "{Id}",
+      "widthMm": 60,
+      "padding":5
+    }
+  ]
+}
