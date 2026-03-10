@@ -23,11 +23,9 @@ namespace LabelMaker.Rendering
         public void Print(LabelRoot label, IPrinter Printer)
         {
             double labelHeightUnits = Converter.mmtoUnits(Math.Min(12,Printer.MaxYSize));
-            var test = Converter.mmtoUnits(label.LabelLength);
+            double labelWidthUnits = Converter.mmtoUnits(label.LabelLength);
 
             var vector = label.BuildVector(labelHeightUnits);
-
-            double actualContentWidth = vector.Bounds.Width + Printer.XOffset;
 
             // Erstelle ein Visual, das wir manuell verschieben können
             DrawingVisual visual = new DrawingVisual();
@@ -51,7 +49,6 @@ namespace LabelMaker.Rendering
 
             var ticket = pd.PrintTicket;
             ticket.PageOrientation = System.Printing.PageOrientation.Landscape;
-            ticket.PageMediaSize = new System.Printing.PageMediaSize(actualContentWidth, labelHeightUnits);
             pd.PrintTicket = ticket;
 
             if (pd.ShowDialog() == true)
