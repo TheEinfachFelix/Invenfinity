@@ -7,40 +7,35 @@
       "type": "image",
       "value":"{Head}",
       "widthMm": 10,
-      "padding":5
+      "padding":1
     },
 
     {
       "type": "image",
       "value":"{Drive}",
-      "widthMm": 20,
-      "padding":5
+      "widthMm": 20
     },
 
     {
         "type": "text",
         "value": "{Thread}",
-        "widthMm": 40,
-        "padding":5
+        "widthMm": 40
     },
         {
         "type": "text",
         "value": "x",
-        "widthMm": 40,
-        "padding":5
+        "widthMm": 40
     },
         {
         "type": "text",
         "value": "{Length}",
-        "widthMm": 40,
-        "padding":5
+        "widthMm": 40
     },
 
     {
       "type": "qrcode",
       "value": "{Id}",
-      "widthMm": 60,
-      "padding":5
+      "widthMm": 60
     }
   ]
 }

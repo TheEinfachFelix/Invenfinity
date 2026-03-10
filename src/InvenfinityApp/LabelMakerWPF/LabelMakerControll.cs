@@ -21,13 +21,15 @@ namespace LabelMaker
             this.AssetPath = assetPath;
         }
 
-        public RenderTargetBitmap test(string path, BinDataModel bin, PartDataModel part)
+        public DrawingImage test(string path, BinDataModel bin, PartDataModel part, int height)
         {
             var data = JsonTemplateLoader.LoadJson(path);
 
             LabelRoot label = Converter.ToLabel(AssetPath, data, bin, part);
 
-            return new LabelRenderEngine().Preview(label);
+            LabelMakerControll var = new(AssetPath);
+            return new DrawingImage(label.BuildVector(height));
+
         }
     }
 }

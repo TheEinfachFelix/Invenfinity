@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TestWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel x:Name="Page">
+    <StackPanel x:Name="Page" Background="Aqua">
         <Image x:Name="img" Margin="10" />
 
     </StackPanel>

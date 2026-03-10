@@ -1,6 +1,8 @@
-﻿using System;
+﻿using LabelMaker.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Media;
 
 namespace LabelMaker.Models.Label
 {
@@ -11,6 +13,29 @@ namespace LabelMaker.Models.Label
         public LabelRoot(double labelLength) 
         {
             LabelLength = labelLength;
+        }
+
+        public DrawingGroup BuildVector(double labelHeight)
+        {
+            var group = new DrawingGroup();
+
+            double xOffset = 0;
+
+            foreach (var element in Elements)
+            {
+                if (element.MinWidthMm.HasValue &&
+                    LabelLength < element.MinWidthMm)
+                    continue;
+
+                element.Render(group, xOffset, labelHeight);
+
+                xOffset += element.GetWidth(labelHeight);
+
+                if (element.Padding.HasValue)
+                    xOffset += Converter.mmtoUnits(element.Padding.Value);
+            }
+
+            return group;
         }
     }
 }
