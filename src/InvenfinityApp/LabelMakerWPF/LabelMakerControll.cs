@@ -7,6 +7,7 @@ using LabelMaker.Templates.Json;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,14 +22,20 @@ namespace LabelMaker
             this.AssetPath = assetPath;
         }
 
-        public DrawingImage test(string path, BinDataModel bin, PartDataModel part, int height)
+        public DrawingImage test(string path, BinDataModel bin, PartDataModel part)
         {
             var data = JsonTemplateLoader.LoadJson(path);
 
             LabelRoot label = Converter.ToLabel(AssetPath, data, bin, part);
 
             LabelMakerControll var = new(AssetPath);
-            return new DrawingImage(label.BuildVector(height));
+            var outp = new DrawingImage(label.BuildVector(Converter.mmtoUnits(12)));
+
+            Trace.WriteLine(bin.SlotLableLength);
+            Trace.WriteLine(Converter.UnitsToMm(outp.Width));
+            Trace.WriteLine(Converter.UnitsToMm(outp.Height));
+
+            return outp;
 
         }
     }

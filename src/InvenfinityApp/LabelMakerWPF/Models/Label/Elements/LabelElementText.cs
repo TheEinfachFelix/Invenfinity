@@ -17,46 +17,84 @@ namespace LabelMaker.Models.Label.Elements
                 FontStretches.Normal);
         public string Text { get; private set; }
         public int? MinWidthMm { get; private set; }
-        public int? Padding { get; private set; }
+        public double? Padding { get; private set; }
+        public double minScale { get; private set; }
+        public double maxScale { get; private set; }
+        public string? splitChar { get; private set; }
         public static string Name => "text";
-        public LabelElementText(string text, int? widthMm, int? padding) 
+        public LabelElementText(string text, int? widthMm, double? padding, double minScale, double maxScale, string? splitChar) 
         { 
             this.Text = text;
             this.MinWidthMm = widthMm;
             this.Padding = padding;
-
+            this.minScale = minScale;
+            this.maxScale = maxScale;
+            this.splitChar = splitChar;
         }
-
-        public double GetWidth(double labelHeight)
+        private FormattedText GetText(double labelHeight, double scale)
         {
-            double fontSize = labelHeight * 0.6;
+            if (scale < minScale || scale > maxScale) throw new ArgumentOutOfRangeException(nameof(scale));
+            double fontSize = labelHeight * scale;
+            var thisText = Text;
+            if (scale <= 0.45 &&  splitChar != null)
+            {
+                int middleIndex = -1;
+                int count = 0;
 
-            var formatted = new FormattedText(
-                Text,
+                // Zähle, wie viele splitChar vorkommen
+                for (int i = 0; i < thisText.Length; i++)
+                {
+                    if (thisText[i].ToString() == splitChar)
+                        count++;
+                }
+
+                if (count > 0)
+                {
+                    int targetOccurrence = (count + 1) / 2; // mittlere Occurrence
+                    int occurrence = 0;
+
+                    // finde die Position des mittleren splitChar
+                    for (int i = 0; i < thisText.Length; i++)
+                    {
+                        if (thisText[i].ToString() == splitChar)
+                        {
+                            occurrence++;
+                            if (occurrence == targetOccurrence)
+                            {
+                                middleIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (middleIndex >= 0)
+                    {
+                        // mittleren splitChar durch \n ersetzen
+                        thisText = thisText.Substring(0, middleIndex) + "\n" + splitChar + thisText.Substring(middleIndex + 1);
+                    }
+                }
+            }
+
+
+            return new(
+                thisText,
                 CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
                 typeface,
                 fontSize,
                 Brushes.Black,
                 96);
+        }
+        public double GetWidth(double labelHeight, double scale)
+        {
 
-            return formatted.Width;
+
+            return GetText(labelHeight,scale).Width;
         }
 
-        public void Render(DrawingGroup group, double x, double labelHeight)
+        public void Render(DrawingGroup group, double x, double labelHeight, double scale)
         {
-            double fontSize = labelHeight * 0.6;
-
-
-
-            var formatted = new FormattedText(
-                Text,
-                CultureInfo.InvariantCulture,
-                FlowDirection.LeftToRight,
-                typeface,
-                fontSize,
-                Brushes.Black,
-                96);
+            var formatted = GetText(labelHeight,scale);
 
             var drawing = new GeometryDrawing(
                 Brushes.Black,
@@ -66,5 +104,5 @@ namespace LabelMaker.Models.Label.Elements
 
             group.Children.Add(drawing);
         }
-        }
+    }
 }

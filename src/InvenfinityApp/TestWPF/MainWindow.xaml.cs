@@ -25,8 +25,8 @@ namespace TestWPF
 
             var Bin = new BinDataModel()
             {
-                UnitLength = 6,
-                SlotCount = 1,
+                UnitLength = 2,
+                SlotCount = 2,
             };
             var Part = new PartDataModel()
             {
@@ -38,7 +38,7 @@ namespace TestWPF
             var path = "C:\\Github\\Invenfinity\\template.json";
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
             LabelMakerControll var = new(assetPath);
-            img.Source = var.test(path, Bin, Part, 20);
+            img.Source = var.test(path, Bin, Part);
         }
     }
 }

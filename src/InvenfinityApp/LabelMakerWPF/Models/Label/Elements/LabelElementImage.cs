@@ -15,70 +15,71 @@ namespace LabelMaker.Models.Label.Elements
         private string type;
         private string name;
         public int? MinWidthMm { get; private set; }
-        public int? Padding { get; private set; }
+        public double? Padding { get; private set; }
         public static string Name => "image";
         public string Path => path + type + "/" + name + ".svg";
-        public LabelElementImage(string path,string type, string name, int? widthMm, int? padding)
+        public double minScale { get; private set; }
+        public double maxScale { get; private set; }
+        public LabelElementImage(string path,string type, string name, int? widthMm, double? padding, double minScale, double maxScale)
         {
             this.path = path;
             this.type = type;
             this.name = name;
             this.MinWidthMm = widthMm;
             this.Padding = padding;
+            this.minScale = minScale;
+            this.maxScale = maxScale;
 
         }
 
 
 
-        public void Render(DrawingGroup group, double x, double labelHeight)
+        public void Render(DrawingGroup group, double x, double labelHeight, double scale)
         {
+            double targetHeight = labelHeight * scale;
+            // Vertikale Zentrierung:
+            double yOffset = (labelHeight - targetHeight) / 2;
+
             if (Path.EndsWith(".svg"))
-                RenderSvg(group, x, labelHeight);
+                RenderSvg(group, x, yOffset, targetHeight);
             else
-                RenderPng(group, x, labelHeight);
+                RenderPng(group, x, yOffset, targetHeight);
         }
 
-        void RenderSvg(DrawingGroup group, double x, double labelHeight)
+        // Hilfsmethode leicht angepasst (y und targetHeight als Parameter)
+        void RenderSvg(DrawingGroup group, double x, double y, double targetHeight)
         {
             var reader = new FileSvgReader(new WpfDrawingSettings());
             var drawing = reader.Read(Path);
-
-            if (drawing == null)
-                return;
+            if (drawing == null) return;
 
             var bounds = drawing.Bounds;
-            double scale = labelHeight / bounds.Height;
+            double s = targetHeight / bounds.Height;
 
             var tg = new TransformGroup();
-            tg.Children.Add(new ScaleTransform(scale, scale));
-
-            tg.Children.Add(
-                new TranslateTransform(
-                    x - bounds.X * scale,
-                    -bounds.Y * scale));
+            tg.Children.Add(new ScaleTransform(s, s));
+            tg.Children.Add(new TranslateTransform(x - bounds.X * s, y - bounds.Y * s));
 
             drawing.Transform = tg;
-
             group.Children.Add(drawing);
         }
-        public double GetWidth(double labelHeight)
-        {
-            if (Path.EndsWith(".svg"))
-                return GetSvgWidth(labelHeight);
-            else
-                return GetPngWidth(labelHeight);
-        }
 
-        void RenderPng(DrawingGroup group, double x, double labelHeight)
+        void RenderPng(DrawingGroup group, double x, double y, double targetHeight)
         {
             var bmp = new BitmapImage(new Uri(Path, UriKind.Absolute));
+            double s = targetHeight / bmp.PixelHeight;
+            double width = bmp.PixelWidth * s;
 
-            double scale = labelHeight / bmp.PixelHeight;
-            double width = bmp.PixelWidth * scale;
-
-            var rect = new Rect(x, 0, width, labelHeight);
-
+            var rect = new Rect(x, y, width, targetHeight);
             group.Children.Add(new ImageDrawing(bmp, rect));
+        }
+        public double GetWidth(double labelHeight, double scale)
+        {
+            double scaledHeight = labelHeight * scale;
+            if (Path.EndsWith(".svg"))
+                return GetSvgWidth(scaledHeight);
+            else
+                return GetPngWidth(scaledHeight);
         }
         double GetSvgWidth(double labelHeight)
         {

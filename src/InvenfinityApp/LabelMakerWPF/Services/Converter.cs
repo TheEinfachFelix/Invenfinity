@@ -6,46 +6,59 @@ using LabelMaker.Templates.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LabelMaker.Services
 {
     internal static class Converter
     {
-        public static LabelRoot ToLabel(string AssetPath, JsonTemplate template, BinDataModel bin, PartDataModel Part)
+        public static LabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin, PartDataModel part)
         {
             LabelRoot root = new(bin.SlotLableLength);
+
             foreach (var element in template.elements)
             {
-                string name = element.value;
-                string cleandedValue = element.value.Trim().Replace("{", "").Replace("}", "");
-                if (name.StartsWith("{") && name.EndsWith("}"))
-                {
-                    var Prop = typeof(PartDataModel).GetProperty(cleandedValue) ?? throw new ArgumentException("invallide value");
-                    var value = Prop.GetValue(Part) ?? throw new Exception("not found");
-                    name = value.ToString() ?? throw new Exception("something went wrong");
-                }
+                string resolvedValue = ReplacePlaceholders(element.value, part);
 
                 switch (element.type)
                 {
                     case var _ when element.type == LabelElementImage.Name:
-                        root.Elements.Add(new LabelElementImage(AssetPath, cleandedValue, name, element.widthMm, element.padding));
+                        root.Elements.Add(new LabelElementImage(assetPath, element.value.Replace("{", "").Replace("}", "").Trim(), resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
                         break;
                     case var _ when element.type == LabelElementQrCode.Name:
-                        root.Elements.Add(new LabelElementQrCode(name,  element.widthMm, element.padding));
+                        root.Elements.Add(new LabelElementQrCode(resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
                         break;
                     case var _ when element.type == LabelElementText.Name:
-                        root.Elements.Add(new LabelElementText(name, element.widthMm, element.padding));
+                        root.Elements.Add(new LabelElementText(resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale, element.splitChar));
                         break;
                     default:
-                        throw new Exception("invallide Type");
+                        throw new Exception($"Ungültiger Elementtyp: {element.type}");
                 }
-
             }
             return root;
         }
+
+        private static readonly Regex PlaceholderRegex = new(@"\{(.*?)\}", RegexOptions.Compiled);
+        private static string ReplacePlaceholders(string text, PartDataModel part)
+        {
+            return PlaceholderRegex.Replace(text, match =>
+            {
+                string propName = match.Groups[1].Value.Trim();
+                var prop = typeof(PartDataModel).GetProperty(propName)
+                           ?? throw new ArgumentException($"Property '{propName}' nicht gefunden.");
+
+                var value = prop.GetValue(part) ?? throw new Exception($"Property '{propName}' ist null.");
+                return value.ToString();
+            });
+        }
+
         public static double mmtoUnits(double mm)
         {
             return mm * 96 / 25.4; 
+        }
+        public static double UnitsToMm(double units)
+        {
+            return units * 25.4 / 96;
         }
     }
 }

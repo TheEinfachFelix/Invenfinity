@@ -8,14 +8,16 @@ namespace LabelMaker.Templates.Json
     {
         public string type { get; set; }
         public string value { get; set; }
-        public int? widthMm { get; set; }
-        public int? padding { get; set; }
+        public int? minWidthMm { get; set; }
+        public double? padding { get; set; }
+        public double? minScale { get; set; }
+        public double maxScale { get; set; } = 1;
+        public string? splitChar { get; set; }
     }
 
     internal class JsonTemplate
     {
         public int version { get; set; }
-        public List<string> data { get; set; }
         public List<Element> elements { get; set; }
     }
 }
