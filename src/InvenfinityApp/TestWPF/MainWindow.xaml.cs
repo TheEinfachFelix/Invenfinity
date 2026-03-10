@@ -26,7 +26,7 @@ namespace TestWPF
             var Bin = new BinDataModel()
             {
                 UnitLength = 2,
-                SlotCount = 2,
+                SlotCount = 1,
             };
             var Part = new PartDataModel()
             {

@@ -13,7 +13,7 @@ namespace LabelMaker.Models.Label
         double GetWidth(double labelHeight, double scale);
         public static string Name { get; }
 
-        public double minScale { get; }
-        public double maxScale { get; }
+        public double MinScale { get; }
+        public double MaxScale { get; }
     }
 }

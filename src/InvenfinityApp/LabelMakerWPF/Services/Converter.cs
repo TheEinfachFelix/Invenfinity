@@ -3,8 +3,11 @@ using LabelMaker.Models.Label;
 using LabelMaker.Models.Label.Elements;
 using LabelMaker.Models.Part;
 using LabelMaker.Templates.Json;
+using SharpVectors.Converters;
+using SharpVectors.Renderers.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -23,7 +26,10 @@ namespace LabelMaker.Services
                 switch (element.type)
                 {
                     case var _ when element.type == LabelElementImage.Name:
-                        root.Elements.Add(new LabelElementImage(assetPath, element.value.Replace("{", "").Replace("}", "").Trim(), resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
+                        var path = Path.Combine(assetPath, element.value.Replace("{", "").Replace("}", "").Trim(), resolvedValue+".svg");
+                        var reader = new FileSvgReader(new WpfDrawingSettings());
+                        var drawing = reader.Read(path);
+                        root.Elements.Add(new LabelElementImage(drawing, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
                         break;
                     case var _ when element.type == LabelElementQrCode.Name:
                         root.Elements.Add(new LabelElementQrCode(resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));

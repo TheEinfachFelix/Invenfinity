@@ -21,7 +21,7 @@
 
         {
         "type": "text",
-        "value": "{Thread}x{Length}",
+        "value": "*{Thread}*x{Length}",
         "minWidthMm": 10,
         "minScale":0.4,
         "maxScale":1.1,

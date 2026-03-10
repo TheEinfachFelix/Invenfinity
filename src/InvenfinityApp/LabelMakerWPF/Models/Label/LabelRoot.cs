@@ -77,7 +77,7 @@ namespace LabelMaker.Models.Label
             }
 
             // Finale Skalierungen basierend auf dem gefundenen tBest erstellen
-            return elements.Select(e => e.minScale + tBest * (e.maxScale - e.minScale)).ToList();
+            return elements.Select(e => e.MinScale + tBest * (e.MaxScale - e.MinScale)).ToList();
         }
 
         // Hilfsmethode zur Berechnung der Gesamtbreite für ein gegebenes t
@@ -86,7 +86,7 @@ namespace LabelMaker.Models.Label
             double total = 0;
             foreach (var e in elements)
             {
-                double scale = e.minScale + t * (e.maxScale - e.minScale);
+                double scale = e.MinScale + t * (e.MaxScale - e.MinScale);
                 total += e.GetWidth(labelHeight, scale);
 
                 if (e.Padding.HasValue)
