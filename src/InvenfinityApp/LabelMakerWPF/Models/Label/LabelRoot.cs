@@ -1,4 +1,5 @@
 ﻿using LabelMaker.Services;
+using LabelMakerWPF.Templates.Printer;
 using System;
 using System.Collections.Generic;
 using System.Text;

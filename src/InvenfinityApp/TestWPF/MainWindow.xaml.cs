@@ -1,6 +1,7 @@
 ﻿using LabelMaker;
 using LabelMaker.Models.Bin;
 using LabelMaker.Models.Part;
+using LabelMakerWPF.Templates.Printer;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +40,8 @@ namespace TestWPF
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
             LabelMakerControll var = new(assetPath);
             img.Source = var.test(path, Bin, Part);
+
+            var.TestPrint(path, Bin, Part, new PrinterDymoLM280());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using LabelMaker.Models.Label;
 using LabelMaker.Models.Label.Elements;
 using LabelMaker.Services;
+using LabelMakerWPF.Templates.Printer;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 using System;
@@ -19,22 +20,44 @@ namespace LabelMaker.Rendering
 {
     internal class LabelRenderEngine
     {
-        public void Print(LabelRoot label)
+        public void Print(LabelRoot label, IPrinter Printer)
         {
-            double labelHeight = Converter.mmtoUnits(12);
-            double labelWidth = Converter.mmtoUnits(label.LabelLength);
+            double labelHeightUnits = Converter.mmtoUnits(Math.Min(12,Printer.MaxYSize));
+            var test = Converter.mmtoUnits(label.LabelLength);
 
-            var vector = label.BuildVector(labelHeight);
+            var vector = label.BuildVector(labelHeightUnits);
 
-            var visual = new DrawingVisual();
+            double actualContentWidth = vector.Bounds.Width + Printer.XOffset;
 
-            using (var dc = visual.RenderOpen())
+            // Erstelle ein Visual, das wir manuell verschieben können
+            DrawingVisual visual = new DrawingVisual();
+            using (DrawingContext dc = visual.RenderOpen())
             {
+                double xOffset = Printer.XOffset;
+                double yOffset = Printer.YOffset; // Nutze hier deinen IPrinter-Wert
+
+                // 2. Erstelle eine Verschiebung (Translation)
+                // Damit wird der gesamte Vektor um x und y verschoben gezeichnet.
+                dc.PushTransform(new TranslateTransform(xOffset, yOffset));
+
+                // 3. Zeichne das Label
                 dc.DrawDrawing(vector);
+
+                // 4. Transform schließen
+                dc.Pop();
             }
 
             var pd = new PrintDialog();
-            pd.PrintVisual(visual, "Label Druck");
+
+            var ticket = pd.PrintTicket;
+            ticket.PageOrientation = System.Printing.PageOrientation.Landscape;
+            ticket.PageMediaSize = new System.Printing.PageMediaSize(actualContentWidth, labelHeightUnits);
+            pd.PrintTicket = ticket;
+
+            if (pd.ShowDialog() == true)
+            {
+                pd.PrintVisual(visual, "Label Druck");
+            }
         }
 
         public RenderTargetBitmap ToBitmap(DrawingGroup vector, double width, double height)

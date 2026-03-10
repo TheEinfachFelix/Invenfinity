@@ -4,6 +4,7 @@ using LabelMaker.Models.Part;
 using LabelMaker.Rendering;
 using LabelMaker.Services;
 using LabelMaker.Templates.Json;
+using LabelMakerWPF.Templates.Printer;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,14 @@ namespace LabelMaker
 
             return outp;
 
+        }
+        public void TestPrint(string path, BinDataModel bin, PartDataModel part, IPrinter printer) 
+        {
+            var data = JsonTemplateLoader.LoadJson(path);
+
+            LabelRoot label = Converter.ToLabel(AssetPath, data, bin, part);
+
+            new LabelRenderEngine().Print(label, printer);
         }
     }
 }
