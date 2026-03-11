@@ -7,15 +7,15 @@
       "type": "image",
       "value":"{Drive}",
       "minWidthMm": 20,
-      "minScale":0.7,
-        "padding":2
+      "minScale":0.6,
+        "padding":0.25
     },
     {
       "type": "image",
       "value":"{Head}",
       "minWidthMm": 10,
       "padding":0.5,
-      "minScale":0.7
+      "minScale":0.6
     },
 
 
@@ -28,7 +28,7 @@
         "minScale":0.4,
         "maxScale":1.1,
         "splitChar":"x",
-        "padding":2
+        "padding":0.5
     },
 
 

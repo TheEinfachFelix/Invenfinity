@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabelMaker.Models.Part;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,7 @@ namespace LabelMaker.Models.Bin
         {
             get => TotalLableLength/SlotCount;
         }
+        public List<PartDataModel> Parts { get; set; } = [];
+        public double Padding => 3;
     }
 }

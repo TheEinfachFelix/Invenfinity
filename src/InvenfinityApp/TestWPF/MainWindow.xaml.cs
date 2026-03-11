@@ -23,12 +23,6 @@ namespace TestWPF
         public MainWindow()
         {
             InitializeComponent();
-
-            var Bin = new BinDataModel()
-            {
-                UnitLength = 2,
-                SlotCount = 1,
-            };
             var Part = new PartDataModel()
             {
                 Thread = ScrewThreadType.M6,
@@ -36,12 +30,25 @@ namespace TestWPF
                 Head = ScrewHeadType.Senkkopf,
                 Drive = ScrewDriveType.Philips
             };
-            var path = "C:\\Github\\Invenfinity\\template.json";
+            var Part2 = new PartDataModel()
+            {
+                Thread = ScrewThreadType.M6,
+                Length = 25,
+                Head = ScrewHeadType.Senkkopf,
+                Drive = ScrewDriveType.Philips
+            };
+            var Bin = new BinDataModel()
+            {
+                UnitLength = 2,
+                SlotCount = 3,
+                Parts = [Part, Part2]
+            };
+
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
             LabelMakerControll var = new(assetPath);
-            img.Source = var.test(path, Bin, Part);
+            img.Source = var.PreviewBin(Bin);
 
-            var.TestPrint(path, Bin, Part, new PrinterDymoLM280());
+            //var.Print(Bin, new PrinterPTouchP700(), true);
         }
     }
 }
