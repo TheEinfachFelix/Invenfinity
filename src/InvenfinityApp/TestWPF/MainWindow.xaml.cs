@@ -39,7 +39,7 @@ namespace TestWPF
             };
             var Bin = new BinDataModel()
             {
-                UnitLength = 2,
+                UnitLength = 1,
                 SlotCount = 1,
                 Parts = [Part]
             };
@@ -48,7 +48,7 @@ namespace TestWPF
             LabelMakerControll var = new(assetPath);
             //var.PreviewBin(Bin);
 
-            img.Source = var.Print(Bin, new PrinterPTouchP700(), true);
+            img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
         }
     }
 }

@@ -51,9 +51,8 @@ namespace LabelMaker.Rendering
             var ticket = pd.PrintTicket;
             ticket.PageOrientation = System.Printing.PageOrientation.Landscape;
             double widthInUnits = Converter.mmtoUnits(12);
-            double lengthInUnits = actualContentWidth;
 
-            ticket.PageMediaSize = new PageMediaSize(widthInUnits, lengthInUnits);
+            ticket.PageMediaSize = new PageMediaSize(widthInUnits, actualContentWidth);
             pd.PrintTicket = ticket;
             pd.PrintVisual(visual, "Label Druck");
         }
