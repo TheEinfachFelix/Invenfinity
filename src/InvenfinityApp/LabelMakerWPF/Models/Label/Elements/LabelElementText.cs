@@ -57,6 +57,7 @@ namespace LabelMaker.Models.Label.Elements
             // 4. Die gespeicherten Bereiche fett formatieren
             foreach (var range in boldRanges)
             {
+                formatted.SetFontSize(fontSize + 3, range.start, range.length);
                 formatted.SetFontWeight(FontWeights.Bold, range.start, range.length);
             }
 

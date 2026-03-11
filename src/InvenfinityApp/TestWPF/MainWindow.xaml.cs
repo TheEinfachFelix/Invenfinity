@@ -25,8 +25,8 @@ namespace TestWPF
             InitializeComponent();
             var Part = new PartDataModel()
             {
-                Thread = ScrewThreadType.M6,
-                Length = 25,
+                Thread = ScrewThreadType.M3,
+                Length = 8,
                 Head = ScrewHeadType.Senkkopf,
                 Drive = ScrewDriveType.Philips
             };

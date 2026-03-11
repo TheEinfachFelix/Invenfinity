@@ -26,6 +26,7 @@ namespace LabelMaker
         internal LabelRoot getLabel(BinDataModel bin, PartDataModel part)
         {
             var data = JsonTemplateLoader.LoadJson(part.GetTemplatePath(AssetPath));
+            if (data.version != 1) throw new Exception("Invallide Json Version");
             return Converter.ToLabel(AssetPath, data, bin, part);
         }
         public DrawingGroup GetVektor(BinDataModel bin, PartDataModel part, double Heightmm)
