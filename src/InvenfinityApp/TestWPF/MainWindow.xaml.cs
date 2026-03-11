@@ -40,15 +40,15 @@ namespace TestWPF
             var Bin = new BinDataModel()
             {
                 UnitLength = 2,
-                SlotCount = 3,
-                Parts = [Part, Part2]
+                SlotCount = 1,
+                Parts = [Part]
             };
 
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
             LabelMakerControll var = new(assetPath);
-            img.Source = var.PreviewBin(Bin);
+            //var.PreviewBin(Bin);
 
-            //var.Print(Bin, new PrinterPTouchP700(), true);
+            img.Source = var.Print(Bin, new PrinterPTouchP700(), true);
         }
     }
 }

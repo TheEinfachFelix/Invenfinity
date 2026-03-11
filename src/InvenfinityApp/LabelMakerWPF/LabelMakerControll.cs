@@ -88,13 +88,14 @@ namespace LabelMaker
 
             return outp;
         }
-        public void Print(BinDataModel bin, IPrinter printer, bool showDialog) 
+        public DrawingImage Print(BinDataModel bin, IPrinter printer, bool showDialog) 
         {
-            double labelHeightUnits = Converter.mmtoUnits(Math.Min(12, printer.MaxYSize));
+            double labelHeightUnits = Math.Min(12, printer.MaxYSize);
 
             var vektor = GetVektorForBin(bin, labelHeightUnits);
-
+            var outp = new DrawingImage(vektor);
             new LabelRenderEngine().PrintVekor(vektor, printer, showDialog);
+            return outp;
         }
     }
 }

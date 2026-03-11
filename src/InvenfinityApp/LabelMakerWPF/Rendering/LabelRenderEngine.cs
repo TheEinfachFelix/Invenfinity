@@ -33,6 +33,7 @@ namespace LabelMaker.Rendering
                 double yOffset = Printer.YOffset;
                 dc.PushTransform(new TranslateTransform(xOffset, yOffset));
                 dc.DrawDrawing(toPint);
+
                 dc.Pop();
             }
 
@@ -48,11 +49,11 @@ namespace LabelMaker.Rendering
             }
 
             var ticket = pd.PrintTicket;
-            //ticket.PageOrientation = System.Printing.PageOrientation.Landscape;
-            ticket.PageMediaSize = new System.Printing.PageMediaSize(
-                actualContentWidth + Printer.XOffset,
-                Converter.mmtoUnits(12)
-            );
+            ticket.PageOrientation = System.Printing.PageOrientation.Landscape;
+            double widthInUnits = Converter.mmtoUnits(12);
+            double lengthInUnits = actualContentWidth;
+
+            ticket.PageMediaSize = new PageMediaSize(widthInUnits, lengthInUnits);
             pd.PrintTicket = ticket;
             pd.PrintVisual(visual, "Label Druck");
         }

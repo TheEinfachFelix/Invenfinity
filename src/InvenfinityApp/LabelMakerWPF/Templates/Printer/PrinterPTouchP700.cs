@@ -6,10 +6,10 @@ namespace LabelMakerWPF.Templates.Printer
 {
     public class PrinterPTouchP700 : IPrinter
     {
-        public double XOffset => 0;
+        public double XOffset => 8;
 
-        public double YOffset => 0;
+        public double YOffset => 4;
 
-        public double MaxYSize => 11;
+        public double MaxYSize => 10;
     }
 }
