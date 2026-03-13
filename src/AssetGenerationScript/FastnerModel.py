@@ -21,7 +21,7 @@ class FastenerModel:
         # Interne Verwaltungs-Attribute
         self.familyType = kwargs.get('familyType', "")
         self.dimTable = None
-        self.baseType = fastener_type
+        self.baseType = kwargs.get('baseType', fastener_type)
 
         # 2. Sofortige Berechnung der 'calc_'-Attribute
         self.calc_diam = None

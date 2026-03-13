@@ -9,4 +9,4 @@ http://inventree.localhost/
 
 dotnet ef dbcontext scaffold "Host=localhost;Port=5433;Database=initexample;Username=postgres;Password=initexample" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context AppDbContext --force
 
-FreeCADCmd -c "exec(open('test.py').read())"
+FreeCADCmd -c "exec(open('FastenerGenerator.py').read())"
