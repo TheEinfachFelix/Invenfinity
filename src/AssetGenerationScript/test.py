@@ -20,7 +20,7 @@ from FastnerModel import FastenerModel
 output_path = r"C:\Github\Invenfinity\src\AssetGenerationScript\outp"
 screw_length = "25"
 screw_size = "M6"
-iso_list = ["ISO4162","ISO4017", "ISO4762", "ISO7046"]
+iso_list = ["ISO4162","ISO4017", "ISO4762", "ISO10642"]
 
 if not os.path.exists(output_path):
     os.makedirs(output_path)
@@ -43,23 +43,63 @@ for iso in iso_list:
         # createFastener schlägt in screwTables nach und ruft createScrew auf
         shape = sm.createFastener(attribs)
         
+        # ... (nach shape = sm.createFastener(attribs))
+
         if shape:
-            # Objekt in FreeCAD erstellen, um es zu exportieren
+            # 1. Haupt-Objekt für Seitenansicht
             obj = doc.addObject("Part::Feature", name)
             obj.Shape = shape
             doc.recompute()
             
-            # 2D-Ansicht für SVG
-            view = Draft.make_shape2dview(obj, projection_dir)
+            # Export Seitenansicht
+            view_side = Draft.make_shape2dview(obj, App.Vector(0, -1, 0))
             doc.recompute()
+            importSVG.export([view_side], os.path.join(output_path, f"{name}_side.svg"))
+
+            # --- KOPF-EXTRAKTION (NEUE LOGIK) ---
+            bbox = shape.BoundBox
             
-            file_path = os.path.join(output_path, f"{name}.svg")
-            importSVG.export([view], file_path)
-            print(f"Erfolgreich exportiert: {file_path}")
+            # Wir erstellen zwei Test-Boxen: eine für das obere Ende, eine für das untere.
+            # Da ein Kopf immer dicker ist als der Schaft, vergleichen wir die Flächen.
             
+            # Box Oben (Z > 0)
+            box_top = Part.makeBox(100, 100, bbox.ZMax + 1, App.Vector(-50, -50, 0.01))
+            shape_top = shape.common(box_top)
+            
+            # Box Unten (Z < 0)
+            box_bottom = Part.makeBox(100, 100, abs(bbox.ZMin) + 1, App.Vector(-50, -50, bbox.ZMin - 0.5))
+            shape_bottom = shape.common(box_bottom)
+
+            # Entscheidung: Welcher Teil ist der Kopf?
+            # Wir nehmen den Teil, der in der Draufsicht (X-Y Ebene) die größere Ausdehnung hat.
+            def get_width(s):
+                if not s or not s.Vertexes: return 0
+                return s.BoundBox.XLength
+
+            if get_width(shape_top) >= get_width(shape_bottom):
+                head_shape = shape_top
+            else:
+                head_shape = shape_bottom
+
+            # Export Kopf-SVG
+            if head_shape and head_shape.Vertexes:
+                head_obj = doc.addObject("Part::Feature", f"{name}_HeadTemp")
+                head_obj.Shape = head_shape
+                doc.recompute()
+
+                # Blick von oben
+                view_head = Draft.make_shape2dview(head_obj, App.Vector(0, 0, 1))
+                doc.recompute()
+                
+                importSVG.export([view_head], os.path.join(output_path, f"{name}_head.svg"))
+                
+                doc.removeObject(head_obj.Name)
+                doc.removeObject(view_head.Name)
+
             # Aufräumen
             doc.removeObject(obj.Name)
-            doc.removeObject(view.Name)
+            doc.removeObject(view_side.Name)
+
         else:
             print(f"Fehler: createFastener lieferte kein Shape für {iso}")
 
