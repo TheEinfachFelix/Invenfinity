@@ -8,3 +8,5 @@ https://docs.inventree.org/en/1.1.x/start/docker_install/#update-images
 http://inventree.localhost/
 
 dotnet ef dbcontext scaffold "Host=localhost;Port=5433;Database=initexample;Username=postgres;Password=initexample" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context AppDbContext --force
+
+FreeCADCmd -c "exec(open('test.py').read())"

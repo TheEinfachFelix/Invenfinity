@@ -71,7 +71,7 @@
 - Labels Rendern
 - Label Drucken
 - Label Programm Refactor
-- SVG Icons generieren
+- SVG Icons mit Freecad generieren
 
 ### Daran arbeite ich als nächstes
 
