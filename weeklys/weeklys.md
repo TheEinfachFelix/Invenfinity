@@ -58,15 +58,21 @@
 - Bins Löschen
 - Labels Generieren
 
-## Woche 4 - xx.03.2026
+## Woche 4 - 13.03.2026
 
 ### Das habe ich geschaft
 
 - DTOs Refactorn
 - Bins zwischen Grids verschieben
 - Bins Löschen
-- Use Cases Refactorn 
-
+- Use Cases Refactorn
+- Ui Done
+- Json Struktur um Labels zu definieren
+- Labels Rendern
+- Label Drucken
+- Label Programm Refactor
+- SVG Icons generieren
 
 ### Daran arbeite ich als nächstes
 
+- Besere Labels Generieren
