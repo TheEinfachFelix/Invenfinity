@@ -1,92 +1,93 @@
+import os
+import sys
+
+# 1. PFAD ZUR WORKBENCH SETZEN
+# Dies muss VOR dem Import von screw_maker passieren
+fasteners_path = r"C:\Users\felix\AppData\Roaming\FreeCAD\Mod\fasteners"
+if fasteners_path not in sys.path:
+    sys.path.append(fasteners_path)
+
 import FreeCAD as App
 import Part
-import Draft
 import importSVG
-import math
-import os
+import Draft
+import screw_maker # Jetzt findet er auch die Unterordner
 
-# 1. Neues Dokument erstellen
-doc = App.newDocument("ISO_Schrauben_Generator")
+# ==========================================
+# PARAMETER-KONFIGURATION
+# ==========================================
+output_path = r"C:\Github\Invenfinity\src\AssetGenerationScript\outp"
+screw_length = "25"
+screw_size = "M6"
+iso_list = ["ISO4017", "ISO4762", "ISO7046"]
 
-def create_iso4017(name, d, l, k, s):
-    """
-    Erstellt eine Sechskantschraube nach ISO 4017 (früher DIN 933)
-    d = Gewindedurchmesser, l = Länge, k = Kopfhöhe, s = Schlüsselweite
-    """
-    # Schaft (glatter Zylinder für das Gewinde)
-    shaft = Part.makeCylinder(d / 2.0, l)
-    
-    # Sechskantkopf (Berechnung des Umkreisradius aus der Schlüsselweite)
-    r = (s / 2.0) / math.cos(math.pi / 6.0)
-    head_points = [App.Vector(r * math.cos(i * math.pi / 3), r * math.sin(i * math.pi / 3), 0) for i in range(7)]
-    head_wire = Part.makePolygon(head_points)
-    head_face = Part.Face(head_wire)
-    head_solid = head_face.extrude(App.Vector(0, 0, k))
-    
-    # Kopf oben auf den Schaft setzen
-    head_solid.translate(App.Vector(0, 0, l))
-    
-    # Bauteile verschmelzen
-    screw = shaft.fuse(head_solid)
-    obj = doc.addObject("Part::Feature", name)
-    obj.Shape = screw
-    return obj
+# Hilfsklasse, um die Parameter für die createScrew-Methode zu bündeln
+class FastenerAttribs:
+    def __init__(self, iso, size, length):
+        self.Type = iso
+        # baseType muss oft kleingeschrieben sein, damit die CSV gefunden wird
+        # (z.B. "iso4017" für "iso4017head.csv")
+        self.baseType = iso.lower() 
+        self.Diameter = size
+        self.calc_len = length
+        self.LeftHanded = False
+        self.thread = False
+iso_to_function = {
+    "ISO4017": "makeHexHeadBolt",
+    "ISO4762": "makeCylinderHeadScrew",
+    "ISO7046": "makeCountersunkHeadScrew"
+}
+# ==========================================
 
-def create_iso4762(name, d, l, dk, k, s, t):
-    """
-    Erstellt eine Zylinderschraube mit Innensechskant nach ISO 4762 (früher DIN 912)
-    d = Durchmesser, l = Länge, dk = Kopfdurchmesser, k = Kopfhöhe
-    s = Schlüsselweite Innensechskant, t = Tiefe Innensechskant
-    """
-    # Schaft
-    shaft = Part.makeCylinder(d / 2.0, l)
-    
-    # Zylinderkopf
-    head = Part.makeCylinder(dk / 2.0, k)
-    head.translate(App.Vector(0, 0, l))
-    
-    # Innensechskant ausstanzen
-    r = (s / 2.0) / math.cos(math.pi / 6.0)
-    socket_points = [App.Vector(r * math.cos(i * math.pi / 3), r * math.sin(i * math.pi / 3), 0) for i in range(7)]
-    socket_wire = Part.makePolygon(socket_points)
-    socket_face = Part.Face(socket_wire)
-    socket_solid = socket_face.extrude(App.Vector(0, 0, t))
-    
-    # Innensechskant positionieren (von oben in den Kopf absenken)
-    socket_solid.translate(App.Vector(0, 0, l + k - t))
-    
-    # Innensechskant vom Kopf abziehen
-    head_with_socket = head.cut(socket_solid)
-    
-    # Alles verschmelzen
-    screw = shaft.fuse(head_with_socket)
-    obj = doc.addObject("Part::Feature", name)
-    obj.Shape = screw
-    return obj
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
 
-# 2. Schrauben generieren (Beispielmaße für M8x20)
-# ISO 4017 (Sechskant) M8x20: d=8, l=20, k=5.3, s=13
-screw1 = create_iso4017("ISO4017_M8x20", d=8, l=20, k=5.3, s=13)
+# Dokument erstellen
+doc = App.newDocument("Fastener_Generation")
 
-# ISO 4762 (Zylinderkopf) M8x20: d=8, l=20, dk=13, k=8, s=6, t=4
-screw2 = create_iso4762("ISO4762_M8x20", d=8, l=20, dk=13, k=8, s=6, t=4)
+# Instanz der Screw-Klasse aus screw_maker
+screw_gen = screw_maker.Screw()
 
-doc.recompute()
-
-# 3. Für den SVG-Export in 2D projizieren
-# Blickrichtung exakt von der Seite (Y-Achse) für eine technische Seitenansicht
+# Projektionsrichtung (Draufsicht/Seitenansicht)
 projection_dir = App.Vector(0, -1, 0)
 
-view1 = Draft.make_shape2dview(screw1, projection_dir)
-view2 = Draft.make_shape2dview(screw2, projection_dir)
-doc.recompute()
+for iso in iso_list:
+    function_name = iso_to_function.get(iso)
+    
+    if not function_name:
+        print(f"Keine Funktion für {iso} gefunden.")
+        continue
 
-# 4. SVG-Dateien exportieren
-output_dir = "C:\Github\Invenfinity\src\AssetGenerationScript\outp" # Speichert im Basis-Benutzerordner
-file1 = os.path.join(output_dir, "ISO4017_M8x20.svg")
-file2 = os.path.join(output_dir, "ISO4762_M8x20.svg")
+    name = f"{iso}_{screw_size}x{screw_length}"
+    print(f"Erstelle: {name} mit Funktion: {function_name}")
+    
+    try:
+        attribs = FastenerAttribs(iso, screw_size, screw_length)
+        
+        # WICHTIG: Hier wird jetzt function_name ("makeHexHeadBolt") 
+        # statt "ISO4017" übergeben.
+        shape = screw_gen.createScrew(function_name, attribs)
+        
+        if shape:
+            obj = doc.addObject("Part::Feature", name)
+            obj.Shape = shape
+            doc.recompute()
+            
+            # 2D-Ansicht für SVG Export erzeugen
+            view = Draft.make_shape2dview(obj, projection_dir)
+            doc.recompute()
+            
+            file_path = os.path.join(output_path, f"{name}.svg")
+            importSVG.export([view], file_path)
+            print(f"Erfolgreich exportiert: {file_path}")
+            
+            # Objekte löschen für den nächsten Durchgang
+            doc.removeObject(obj.Name)
+            doc.removeObject(view.Name)
+        else:
+            print(f"Konnte Shape für {iso} nicht generieren.")
+            
+    except Exception as e:
+        print(f"Fehler bei {iso}: {str(e)}")
 
-importSVG.export([view1], file1)
-importSVG.export([view2], file2)
-
-App.Console.PrintMessage(f"Erfolg! Die SVGs wurden gespeichert unter: {output_dir}\n")
+print("Generierung abgeschlossen.")
