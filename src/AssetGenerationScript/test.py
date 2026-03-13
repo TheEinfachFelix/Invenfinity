@@ -1,99 +1,143 @@
 import os
 import sys
-
-# Pfad zur Workbench setzen
-fasteners_path = r"C:\Users\felix\AppData\Roaming\FreeCAD\Mod\fasteners"
-if fasteners_path not in sys.path:
-    sys.path.append(fasteners_path)
-
 import FreeCAD as App
 import Part
 import importSVG
 import Draft
-import ScrewMaker 
-sys.path.insert(1, "C:\Github\Invenfinity\src\AssetGenerationScript")
+import ScrewMaker
+
+# 1. Pfade zentral verwalten
+PATHS = [
+    r"C:\Users\felix\AppData\Roaming\FreeCAD\Mod\fasteners",
+    r"C:\Github\Invenfinity\src\AssetGenerationScript"
+]
+for p in PATHS:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 from FastnerModel import FastenerModel
 
-# ==========================================
-# PARAMETER
-# ==========================================
-output_path = r"C:\Github\Invenfinity\src\AssetGenerationScript\outp"
-screw_length = "25"
-screw_size = "M6"
-iso_list = ["ISO4162","ISO4017", "ISO4762", "ISO10642"]
-
-if not os.path.exists(output_path):
-    os.makedirs(output_path)
-
-doc = App.newDocument("Fastener_Generation")
-
-# Wir instanziieren die Klasse aus deinem Code-Snippet
-sm = ScrewMaker.FSScrewMaker()
-projection_dir = App.Vector(0, -1, 0)
-
-for iso in iso_list:
-    name = f"{iso}_{screw_size}x{screw_length}"
-    print(f"Generiere {name} via createFastener...")
-    
-    try:
-        # 1. Attribute vorbereiten
-        attribs = FastenerModel(iso, screw_size, screw_length, Thread=True)
+class FastenerAutomation:
+    def __init__(self, output_path):
+        self.output_path = output_path
+        self.sm = ScrewMaker.FSScrewMaker()
+        self.doc = App.newDocument("Fastener_Generation")
         
-        # 2. Geometrie direkt über die Methode der Klasse erstellen
-        # createFastener schlägt in screwTables nach und ruft createScrew auf
-        shape = sm.createFastener(attribs)
-        
-        # ... (nach shape = sm.createFastener(attribs))
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
 
-        if shape:
-            # 1. Haupt-Objekt für Seitenansicht
-            obj = doc.addObject("Part::Feature", name)
+    def get_category(self, iso_type):
+        if iso_type in ScrewMaker.screwTables:
+            return ScrewMaker.screwTables[iso_type][1].replace("make","")
+        else:
+            return "Unbekannter Typ" 
+
+    def get_geometry_data(self, iso, size_str, length_str, is_full_thread):
+        d = float(size_str.replace("M", ""))
+        l_total = float(length_str)
+        d_kern = d * 0.85
+        
+        # Kopfhöhe ermitteln: Bei Senkkopf ist k Teil der Gesamtlänge
+        is_countersunk = "10642" in iso or "7046" in iso
+        k = (d * 0.5) if is_countersunk else 0 
+        
+        # Das Gewinde darf maximal bis zum Kopf-Schaft-Übergang gehen
+        l_max_possible = l_total - k
+
+        if is_full_thread:
+            l_thread = l_max_possible
+        else:
+            # Teilgewinde nach Norm: b = 2*d + 6 (für l <= 125)
+            l_thread = min(2 * d + 6, l_max_possible - d)
+
+        return {
+            'd': d,
+            'd_kern': d_kern,
+            'l_total': l_total,
+            'l_thread': l_thread,
+            'k_offset': k, # Startpunkt des Schafts
+            'offset': (d - d_kern) / 2
+        }
+
+    def create_thread_lines(self, g, is_full_thread):
+        # Startpunkt ist immer an der Schraubenspitze (l_total)
+        # Endpunkt ist Spitze minus Gewindelänge
+        x_start = g['l_total']
+        x_end = g['l_total'] - g['l_thread']
+        
+        # Der Auslauf (Runout) darf nicht in den Kopf ragen
+        runout_x = max(g['k_offset'], x_end - g['offset'])
+        
+        lines = []
+        # Kernlinien (Oben/Unten)
+        lines.append(Draft.make_line(App.Vector(x_start, g['d_kern']/2, 0), App.Vector(x_end, g['d_kern']/2, 0)))
+        lines.append(Draft.make_line(App.Vector(x_start, -g['d_kern']/2, 0), App.Vector(x_end, -g['d_kern']/2, 0)))
+        
+        # Auslauf nur zeichnen, wenn es kein Vollgewinde ist 
+        # (oder wenn bei Vollgewinde noch Platz zum Kopf ist)
+        if not is_full_thread or x_end > g['k_offset']:
+            lines.append(Draft.make_line(App.Vector(x_end, g['d_kern']/2, 0), App.Vector(runout_x, g['d']/2, 0)))
+            lines.append(Draft.make_line(App.Vector(x_end, -g['d_kern']/2, 0), App.Vector(runout_x, -g['d']/2, 0)))
+
+        return lines
+
+
+    def generate_iso(self, iso, size, length):
+        """Hauptmethode für einen einzelnen ISO-Typ."""
+        name = f"{iso}_{size}x{length}"
+        print(f"-> Verarbeite: {name}")
+        
+        try:
+            # 1. Modell erstellen
+            attribs = FastenerModel(iso, size, length, Thread=False)
+            shape = self.sm.createFastener(attribs)
+            if not shape:
+                return False
+
+            obj = self.doc.addObject("Part::Feature", name)
             obj.Shape = shape
-            doc.recompute()
-            
+            self.doc.recompute()
+
+            # 2. Geometrie-Daten holen
+            g = self.get_geometry_data(iso, size, length, True)
+
             # --- SEITENANSICHT ---
             view_side = Draft.make_shape2dview(obj, App.Vector(0, -1, 0))
+            view_side.VisibleOnly = False
+            view_side.HiddenLines = True
             
-            # Fehlervermeidung: Sicherer Zugriff auf Properties
-            if hasattr(view_side, "VisibleOnly"):
-                view_side.VisibleOnly = False
-            if hasattr(view_side, "HiddenLines"):
-                view_side.HiddenLines = True  # Erzeugt die gestrichelten Linien (wie oben im Bild)
+            thread_lines = self.create_thread_lines(g, True)
             
-            doc.recompute()
-            importSVG.export([view_side], os.path.join(output_path, f"{name}_side.svg"))
+            self.doc.recompute()
+            importSVG.export([view_side] + thread_lines, os.path.join(self.output_path, f"{name}_side.svg"))
 
-            # --- DRAUFSICHT (KOPF) ---
-            # Wir projizieren das GANZE Objekt von oben. 
-            # Das erzeugt automatisch den Kreis (Schaft) innerhalb des Sechskants.
+            # --- DRAUFSICHT ---
             view_head = Draft.make_shape2dview(obj, App.Vector(0, 0, 1))
+            view_head.VisibleOnly = True
+            view_side.HiddenLines = False
+
+            self.doc.recompute()
+            importSVG.export([view_head ], os.path.join(self.output_path, f"{name}_head.svg"))
             
-            if hasattr(view_head, "HiddenLines"):
-                view_head.HiddenLines = False # Kopf meist ohne verdeckte Linien
-            
-            doc.recompute()
-            importSVG.export([view_head], os.path.join(output_path, f"{name}_head.svg"))
+            return True
+        except Exception as e:
+            print(f"Fehler bei {iso}: {e}")
+            return False
 
-        else:
-            print(f"Fehler: createFastener lieferte kein Shape für {iso}")
+# --- AUSFÜHRUNG ---
+if __name__ == "__main__":
+    # Konfiguration (Hier kannst du später leicht eine UI oder CSV-Import anbinden)
+    OUTPUT = r"C:\Github\Invenfinity\src\AssetGenerationScript\outp"
+    SCREW_SIZE = "M6"
+    SCREW_LEN = "25"
+    ISOS = ["ISO4162", "ISO4017", "ISO4762", "ISO10642"]
 
-    except Exception as e:
-        print(f"Fehler bei {iso}: {str(e)}")
+    worker = FastenerAutomation(OUTPUT)
 
-def get_function_name(iso_type):
-    """
-    Gibt den Namen der Erzeugungs-Funktion für einen gegebenen ISO/DIN Typ zurück.
-    """
-    if iso_type in ScrewMaker.screwTables:
-        # Index 0 ist die Familie ("Screw", "Nut", etc.)
-        # Index 1 ist der Funktionsname ("makeHexHeadBolt", etc.)
-        return ScrewMaker.screwTables[iso_type][1].replace("make","")
-    else:
-        return "Unbekannter Typ"
+    for iso in ISOS:
+        success = worker.generate_iso(iso, SCREW_SIZE, SCREW_LEN)
+        if success:
+            print(f"Erfolg: {iso} exportiert.")
+            print(worker.get_category(iso))
 
-# Beispielaufruf für deine Liste:
-for iso in iso_list:
-    func_name = get_function_name(iso)
-    print(f"ISO: {iso} nutzt die Funktion: {func_name}")
-
-print("Generierung abgeschlossen.")
+    print("\nAlle Aufgaben erledigt.")
