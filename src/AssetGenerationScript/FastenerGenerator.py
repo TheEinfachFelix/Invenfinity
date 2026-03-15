@@ -90,47 +90,44 @@ class FastenerAutomation:
         name = f"{worker.get_category(iso)}_{iso}"
         print(f"-> Verarbeite: {name}")
         
-        try:
-            # 1. Modell erstellen
-            shape = self.sm.createFastener(attribs)
-            if not shape:
-                return False
-
-            obj = self.doc.addObject("Part::Feature", name)
-            obj.Shape = shape
-            obj.Shape = shape.removeSplitter()
-            self.doc.recompute()
-
-            # 2. Geometrie-Daten holen
-            if self.get_category(iso) == "SetScrew":
-                ThreadLength = 0
-
-            thread_lines = []
-            if "Bolt" in worker.get_category(iso) or "Screw" in worker.get_category(iso) or "HexHeadWithFlange" in worker.get_category(iso):
-                g = self.get_geometry_data(iso, attribs.Diameter, attribs.Length, ThreadLength)
-                thread_lines = self.create_thread_lines(g)
-
-
-            # --- SEITENANSICHT ---
-            view_side = Draft.make_shape2dview(obj, App.Vector(0, -1, 0))
-            view_side.VisibleOnly = True
-            view_side.HiddenLines = True
-            
-            self.doc.recompute()
-            importSVG.export([view_side] + thread_lines, os.path.join(self.output_path, f"{name}_side.svg"))
-
-            # --- DRAUFSICHT ---
-            view_head = Draft.make_shape2dview(obj, App.Vector(0, 0, 1))
-            view_head.VisibleOnly = True
-            view_side.HiddenLines = False
-
-            self.doc.recompute()
-            importSVG.export([view_head ], os.path.join(self.output_path, f"{name}_head.svg"))
-            
-            return True
-        except Exception as e:
-            print(f"Fehler bei {iso}: {e}")
+        # 1. Modell erstellen
+        shape = self.sm.createFastener(attribs)
+        if not shape:
             return False
+
+        obj = self.doc.addObject("Part::Feature", name)
+        obj.Shape = shape
+        obj.Shape = shape.removeSplitter()
+        self.doc.recompute()
+
+        # 2. Geometrie-Daten holen
+        if self.get_category(iso) == "SetScrew":
+            ThreadLength = 0
+
+        thread_lines = []
+        if "Bolt" in worker.get_category(iso) or "Screw" in worker.get_category(iso) or "HexHeadWithFlange" in worker.get_category(iso):
+            g = self.get_geometry_data(iso, attribs.Diameter, attribs.Length, ThreadLength)
+            thread_lines = self.create_thread_lines(g)
+
+
+        # --- SEITENANSICHT ---
+        view_side = Draft.make_shape2dview(obj, App.Vector(0, -1, 0))
+        view_side.VisibleOnly = True
+        view_side.HiddenLines = True
+        
+        self.doc.recompute()
+        importSVG.export([view_side] + thread_lines, os.path.join(self.output_path, f"{name}_side.svg"))
+
+        # --- DRAUFSICHT ---
+        view_head = Draft.make_shape2dview(obj, App.Vector(0, 0, 1))
+        view_head.VisibleOnly = True
+        view_side.HiddenLines = False
+
+        self.doc.recompute()
+        importSVG.export([view_head ], os.path.join(self.output_path, f"{name}_head.svg"))
+        
+        return True
+
 
 # --- AUSFÜHRUNG ---
 if __name__ == "__main__":
@@ -139,7 +136,7 @@ if __name__ == "__main__":
     SCREW_SIZE = "M6"
     SCREW_LEN = "30"
     ISOS = ["ISO4162", "ISO4014", "ISO4762", "ISO10642", "ISO4026", "ISO4032", "ISO7040", "DIN1587", "ISO7089", "DIN603", "ISO7380-1", "ISO14580", "ISO4035", "ISO4161", "DIN6334", "DIN315" ]
-
+    #ISOS = []
     worker = FastenerAutomation(OUTPUT)
 
     for iso in ISOS:
@@ -148,6 +145,9 @@ if __name__ == "__main__":
         if success:
             print(f"Erfolg: {iso} exportiert.")
             print(worker.get_category(iso))
+
+    data = FastenerModel("IUTHeatInsert", "M4" ,8.1, ExternalDiam = "6.3")
+    worker.generate_iso(data , 20)
 
     data = FastenerModel("DIN1151-A", "16x30",0)
     worker.generate_iso(data , 20)

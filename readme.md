@@ -9,4 +9,7 @@ http://inventree.localhost/
 
 dotnet ef dbcontext scaffold "Host=localhost;Port=5433;Database=initexample;Username=postgres;Password=initexample" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context AppDbContext --force
 
+# Icon Generation
+
 FreeCADCmd -c "exec(open('FastenerGenerator.py').read())"
+https://wiki.freecad.org/Fasteners_Workbench
