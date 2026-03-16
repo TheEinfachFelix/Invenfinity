@@ -11,9 +11,6 @@ namespace LabelMaker.Models.Label
     {
         public double LabelLength { get; set; }
         public List<ILabelElement> Elements { get; set; } = new List<ILabelElement>();
-        public List<ILabelElement> VisibleElements { get => Elements
-                .Where(e => e.MinWidthMm == null || e.MinWidthMm <= LabelLength)
-                .ToList();}
         public LabelRoot(double labelLength) 
         {
             LabelLength = labelLength;
@@ -22,7 +19,7 @@ namespace LabelMaker.Models.Label
         public DrawingGroup BuildVector(double labelHeight)
         {
             var group = new DrawingGroup();
-            var elements = VisibleElements;
+            var elements = Elements;
 
             if (!elements.Any()) return group;
 
@@ -50,7 +47,7 @@ namespace LabelMaker.Models.Label
         }
         public List<double> CalcScale(double labelHeight)
         {
-            var elements = VisibleElements;
+            var elements = Elements;
             double targetUnits = Converter.mmtoUnits(LabelLength);
 
             // Initialbereiche für die Suche nach dem optimalen 't'

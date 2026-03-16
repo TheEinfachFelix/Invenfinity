@@ -7,7 +7,6 @@ namespace LabelMaker.Models.Label
 {
     internal interface ILabelElement
     {
-        public int? MinWidthMm { get; }
         public double? Padding { get; }
         void Render(DrawingGroup group, double x, double labelHeight, double scale);
         double GetWidth(double labelHeight, double scale);

@@ -3,11 +3,13 @@ using LabelMaker.Models.Label;
 using LabelMaker.Models.Label.Elements;
 using LabelMaker.Models.Part;
 using LabelMaker.Templates.Json;
+using LabelMakerWPF.Models.Label.Elements;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -18,35 +20,49 @@ namespace LabelMaker.Services
         public static LabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin, PartDataModel part)
         {
             LabelRoot root = new(bin.SlotLableLength);
-
-            foreach (var element in template.elements)
+            string newPath = Path.Combine(assetPath, template.requirements.AssetType);
+            root.Elements = toLabelElements(template.partElement, bin, part, newPath);
+            
+            return root;
+        }
+        public static List<ILabelElement> toLabelElements(List<LayoutItem> items, BinDataModel bin, PartDataModel part, string assetPath)
+        {
+            List<ILabelElement> outp = [];
+            foreach (var element in items)
             {
                 string resolvedValue = ReplacePlaceholders(element.value, part);
 
                 switch (element.type)
                 {
                     case var _ when element.type == LabelElementImage.Name:
-                        var path = Path.Combine(assetPath, element.value.Replace("{", "").Replace("}", "").Trim(), resolvedValue+".svg");
+                        var path = Path.Combine(assetPath, part.Typename + "_" + resolvedValue + ".svg");
                         var reader = new FileSvgReader(new WpfDrawingSettings());
                         var drawing = reader.Read(path);
-                        root.Elements.Add(new LabelElementImage(drawing, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
+                        outp.Add(LabelElementImage.GenerateElement(element, drawing));
                         break;
                     case var _ when element.type == LabelElementQrCode.Name:
-                        root.Elements.Add(new LabelElementQrCode(resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale));
+                        outp.Add(LabelElementQrCode.GenerateElement(element, resolvedValue));
                         break;
                     case var _ when element.type == LabelElementText.Name:
-                        root.Elements.Add(new LabelElementText(resolvedValue, element.minWidthMm, element.padding, element.minScale ?? 0.5, element.maxScale, element.splitChar));
+                        outp.Add(LabelElementText.GenerateElement(element, resolvedValue));
+                        break;
+                    case var _ when element.type == LabelElementGroupe.Name:
+                        outp.Add(LabelElementGroupe.GenerateElement(element, bin, part, assetPath));
+                        break;
+                    case var _ when element.type == LabelElementStack.Name:
+                        outp.Add(LabelElementStack.GenerateElement(element, bin, part, assetPath));
                         break;
                     default:
                         throw new Exception($"Ungültiger Elementtyp: {element.type}");
                 }
             }
-            return root;
+            return outp;
         }
 
         private static readonly Regex PlaceholderRegex = new(@"\{(.*?)\}", RegexOptions.Compiled);
-        private static string ReplacePlaceholders(string text, PartDataModel part)
+        private static string ReplacePlaceholders(string? text, PartDataModel part)
         {
+            if (text == null) return "";
             return PlaceholderRegex.Replace(text, match =>
             {
                 string propName = match.Groups[1].Value.Trim();

@@ -138,14 +138,14 @@ if __name__ == "__main__":
     # Konfiguration (Hier kannst du später leicht eine UI oder CSV-Import anbinden)
     OUTPUT = r"C:\Github\Invenfinity\src\Assets\Line"
     SCREW_SIZE = "M6"
-    SCREW_LEN = "30"
+    SCREW_LEN = "20"
     ISOS = ["ISO4162", "ISO4014", "ISO4762", "ISO10642", "ISO4026", "ISO4032", "ISO7040", "DIN1587", "ISO7089", "DIN603", "ISO7380-1", "ISO14580", "ISO4035", "ISO4161", "DIN6334", "DIN315" ]
     #ISOS = []
     worker = FastenerAutomation(OUTPUT)
 
     for iso in ISOS:
         data = FastenerModel(iso, SCREW_SIZE, SCREW_LEN, Thread=False)
-        success = worker.generate_iso(data, 20)
+        success = worker.generate_iso(data, 15)
         if success:
             print(f"Erfolg: {iso} exportiert.")
             print(worker.get_category(iso))

@@ -11,9 +11,8 @@ namespace LabelMaker.Models.Part
     {
         public double Length { get; set; } // mm
         public int Id { get; set; }
+        public string Typename { get; set; }
         public ScrewThreadType Thread { get; set; }
-        public ScrewDriveType Drive { get; set; }
-        public ScrewHeadType Head { get; set; }
         public TemplateType Template { get; set; }
         public string GetTemplatePath(string assetPath)
         {

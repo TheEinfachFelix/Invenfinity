@@ -1,4 +1,5 @@
-﻿using LabelMakerWPF.Models.Label.Elements;
+﻿using LabelMaker.Templates.Json;
+using LabelMakerWPF.Models.Label.Elements;
 using LabelMakerWPF.Services;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
@@ -11,13 +12,13 @@ using System.Windows.Media.Imaging;
 
 namespace LabelMaker.Models.Label.Elements
 {
-    internal class LabelElementImage : LabelElementBase
+    internal class LabelElementImage : LabelElementBase, ILabelElement
     {
         private readonly Drawing _svgDrawing;
         private readonly double _aspectRatio;
         public static string Name => "image";
-        public LabelElementImage(Drawing svgDrawing, int? widthMm, double? padding, double minScale, double maxScale)
-            : base(widthMm, padding, minScale, maxScale)
+        public LabelElementImage(Drawing svgDrawing, double? padding, double minScale, double maxScale)
+            : base( padding, minScale, maxScale)
         {
             _svgDrawing = svgDrawing ?? throw new ArgumentNullException(nameof(svgDrawing));
 
@@ -38,6 +39,10 @@ namespace LabelMaker.Models.Label.Elements
             double y = CalculateYOffset(labelHeight, targetHeight);
 
             SvgHelper.DrawSvg(group, _svgDrawing, x, y, targetWidth, targetHeight);
+        }
+        public static LabelElementImage GenerateElement(LayoutItem item, Drawing svgDrawing)
+        {
+            return new(svgDrawing, item.padding, item.minScale ?? 0.5, item.maxScale);
         }
     }
 }

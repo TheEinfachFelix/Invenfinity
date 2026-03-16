@@ -1,4 +1,6 @@
 ﻿using LabelMaker.Models.Label;
+using LabelMaker.Templates.Json;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +15,8 @@ namespace LabelMakerWPF.Models.Label.Elements
         public double MinScale { get; }
         public double MaxScale { get; }
 
-        protected LabelElementBase(int? widthMm, double? padding, double minScale, double maxScale)
+        protected LabelElementBase(double? padding, double minScale, double maxScale)
         {
-            MinWidthMm = widthMm;
             Padding = padding;
             MinScale = minScale;
             MaxScale = maxScale;
@@ -27,5 +28,6 @@ namespace LabelMakerWPF.Models.Label.Elements
         // Hilfsmethode für alle Elemente
         protected double CalculateYOffset(double labelHeight, double targetHeight)
             => (labelHeight - targetHeight) / 2;
+
     }
 }

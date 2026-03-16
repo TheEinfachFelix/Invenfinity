@@ -1,4 +1,5 @@
-﻿using LabelMakerWPF.Models.Label.Elements;
+﻿using LabelMaker.Templates.Json;
+using LabelMakerWPF.Models.Label.Elements;
 using LabelMakerWPF.Services;
 using QRCoder;
 using SharpVectors.Converters;
@@ -14,13 +15,13 @@ using System.Windows.Media.Imaging;
 
 namespace LabelMaker.Models.Label.Elements
 {
-    internal class LabelElementQrCode : LabelElementBase
+    internal class LabelElementQrCode : LabelElementBase, ILabelElement
     {
         private Drawing _drawing;
         public string value;
         public static string Name => "qrcode";
-        public LabelElementQrCode(string  value, int? widthMm, double? padding, double minScale, double maxScale)
-            : base(widthMm, padding, minScale, maxScale)
+        public LabelElementQrCode(string  value, double? padding, double minScale, double maxScale)
+            : base( padding, minScale, maxScale)
         {
             this.value = value;
 
@@ -51,6 +52,10 @@ namespace LabelMaker.Models.Label.Elements
                 yOffset,
                 size,   // Zielbreite
                 size);  // Zielhöhe
+        }
+        public static LabelElementQrCode GenerateElement(LayoutItem item, string resolvedValue)
+        {
+            return new(resolvedValue, item.padding, item.minScale ?? 0.5, item.maxScale);
         }
     }
 }

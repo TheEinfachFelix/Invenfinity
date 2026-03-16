@@ -82,7 +82,7 @@ namespace LabelMaker
             var data = GetVektorForBin(bin,12);
             var outp = new DrawingImage(data);
 
-            Trace.WriteLine(bin.SlotLableLength*2);
+            Trace.WriteLine(bin.SlotLableLength);
             Trace.WriteLine(Converter.UnitsToMm(outp.Width));
             Trace.WriteLine(Converter.UnitsToMm(outp.Height));
 
@@ -94,6 +94,9 @@ namespace LabelMaker
 
             var vektor = GetVektorForBin(bin, labelHeightUnits);
             var outp = new DrawingImage(vektor);
+            Trace.WriteLine(bin.SlotLableLength * 2);
+            Trace.WriteLine(Converter.UnitsToMm(outp.Width));
+            Trace.WriteLine(Converter.UnitsToMm(outp.Height));
             new LabelRenderEngine().PrintVekor(vektor, printer, showDialog);
             return outp;
         }

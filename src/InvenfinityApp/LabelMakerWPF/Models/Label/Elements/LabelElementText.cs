@@ -1,5 +1,7 @@
-﻿using LabelMakerWPF.Models.Label.Elements;
+﻿using LabelMaker.Templates.Json;
+using LabelMakerWPF.Models.Label.Elements;
 using LabelMakerWPF.Services;
+using SharpVectors.Dom;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,18 +12,15 @@ using System.Windows.Media;
 
 namespace LabelMaker.Models.Label.Elements
 {
-    internal class LabelElementText : LabelElementBase
+    internal class LabelElementText : LabelElementBase, ILabelElement
     {
         private Typeface typeface = new (new FontFamily("Segoe UI"),FontStyles.Normal,FontWeights.Normal,FontStretches.Normal);
-        private const double AUTO_SPLIT_THRESHOLD = 0.45;
         public string Text { get; private set; }
-        public string? SplitChar { get; private set; }
         public static string Name => "text";
-        public LabelElementText(string text, int? widthMm, double? padding, double minScale, double maxScale, string? splitChar)
-            : base(widthMm, padding, minScale, maxScale)
+        public LabelElementText(string text, double? padding, double minScale, double maxScale)
+            : base(padding, minScale, maxScale)
         { 
             this.Text = text;
-            this.SplitChar = splitChar;
         }
         private FormattedText GetText(double labelHeight, double scale)
         {
@@ -29,12 +28,6 @@ namespace LabelMaker.Models.Label.Elements
 
             double fontSize = labelHeight * scale;
             var thisText = Text;
-
-            // 1. Bestehende Logik für splitChar (Umbruch)
-            if (scale <= AUTO_SPLIT_THRESHOLD && SplitChar != null)
-            {
-                thisText = TextParser.SplitTextCenter(thisText, SplitChar);
-            }
 
             // 2. Logik für Fettdruck (*text*)
             var bold = TextParser.BoldFinder(thisText);
@@ -79,6 +72,11 @@ namespace LabelMaker.Models.Label.Elements
                     new Point(x, (labelHeight - formatted.Height) / 2)));
 
             group.Children.Add(drawing);
+        }
+
+        public static LabelElementText GenerateElement(LayoutItem item, string resolvedValue)
+        {
+            return new LabelElementText(resolvedValue, item.padding, item.minScale ?? 0.5, item.maxScale);
         }
     }
 }

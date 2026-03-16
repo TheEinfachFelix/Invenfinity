@@ -6,6 +6,7 @@ namespace LabelMakerWPF.Models.Part
 {
     public enum TemplateType
     {
-        ScrewM
+        WideSingle//,
+        //NormalStack
     }
 }

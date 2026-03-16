@@ -27,28 +27,27 @@ namespace TestWPF
             {
                 Thread = ScrewThreadType.M3,
                 Length = 8,
-                Head = ScrewHeadType.Senkkopf,
-                Drive = ScrewDriveType.Philips
+                Typename = "mechanical_screw_cylinder"
             };
             var Part2 = new PartDataModel()
             {
                 Thread = ScrewThreadType.M6,
                 Length = 25,
-                Head = ScrewHeadType.Senkkopf,
-                Drive = ScrewDriveType.Philips
+                Typename = "mechanical_screw_cylinder"
             };
             var Bin = new BinDataModel()
             {
-                UnitLength = 1,
+                UnitLength = 2,
                 SlotCount = 1,
                 Parts = [Part]
             };
 
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
             LabelMakerControll var = new(assetPath);
-            //var.PreviewBin(Bin);
+            //img.Source = var.PreviewBin(Bin);
+            img.Source = var.PreviewPart(Bin,Part);
 
-            img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
+            //img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
         }
     }
 }
