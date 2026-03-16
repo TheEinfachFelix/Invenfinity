@@ -16,13 +16,14 @@ for p in PATHS:
         sys.path.insert(0, p)
 
 from FastnerModel import FastenerModel
+from FastenerNameMapper import mapper
 
 class FastenerAutomation:
     def __init__(self, output_path):
         self.output_path = output_path
         self.sm = ScrewMaker.FSScrewMaker()
         self.doc = App.newDocument("Fastener_Generation")
-        
+
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
 
@@ -87,7 +88,9 @@ class FastenerAutomation:
     def generate_iso(self, attribs : FastenerModel, ThreadLength):
         """Hauptmethode für einen einzelnen ISO-Typ."""
         iso = attribs.Type
-        name = f"{worker.get_category(iso)}_{iso}"
+        name = f"mechanical_{mapper[iso]}"
+        category = worker.get_category(iso)
+
         print(f"-> Verarbeite: {name}")
         
         # 1. Modell erstellen
@@ -105,16 +108,17 @@ class FastenerAutomation:
             ThreadLength = 0
 
         thread_lines = []
-        if "Bolt" in worker.get_category(iso) or "Screw" in worker.get_category(iso) or "HexHeadWithFlange" in worker.get_category(iso):
+        if "Bolt" in category or "Screw" in category or "HexHeadWithFlange" in category:
             g = self.get_geometry_data(iso, attribs.Diameter, attribs.Length, ThreadLength)
             thread_lines = self.create_thread_lines(g)
-
 
         # --- SEITENANSICHT ---
         view_side = Draft.make_shape2dview(obj, App.Vector(0, -1, 0))
         view_side.VisibleOnly = True
         view_side.HiddenLines = True
-        
+        if "Nut" in category or "TSlot" in category or "HeatInsert" in category:
+            view_side.HiddenLines = False
+
         self.doc.recompute()
         importSVG.export([view_side] + thread_lines, os.path.join(self.output_path, f"{name}_side.svg"))
 
@@ -132,7 +136,7 @@ class FastenerAutomation:
 # --- AUSFÜHRUNG ---
 if __name__ == "__main__":
     # Konfiguration (Hier kannst du später leicht eine UI oder CSV-Import anbinden)
-    OUTPUT = r"C:\Github\Invenfinity\src\AssetGenerationScript\outp"
+    OUTPUT = r"C:\Github\Invenfinity\src\Assets\Line"
     SCREW_SIZE = "M6"
     SCREW_LEN = "30"
     ISOS = ["ISO4162", "ISO4014", "ISO4762", "ISO10642", "ISO4026", "ISO4032", "ISO7040", "DIN1587", "ISO7089", "DIN603", "ISO7380-1", "ISO14580", "ISO4035", "ISO4161", "DIN6334", "DIN315" ]
