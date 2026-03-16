@@ -76,3 +76,7 @@
 ### Daran arbeite ich als nächstes
 
 - Besere Labels Generieren
+
+## Woche 5 - xx.03.2026
+
+- Finale SVGs generieren und passend benennen
