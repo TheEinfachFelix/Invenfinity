@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LabelMaker.Templates.Json;
+using LabelMakerWPF.Models.Label.Elements;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
@@ -8,11 +10,13 @@ namespace LabelMaker.Models.Label
     internal interface ILabelElement
     {
         public double? Padding { get; }
-        void Render(DrawingGroup group, double x, double labelHeight, double scale);
-        double GetWidth(double labelHeight, double scale);
-        public static string Name { get; }
-
+        DrawingGroup Render(double labelHeightUnits, double labelLengthUnits);
+        DrawingGroup RenderStandardSize(double labelHeightUnits);
+        public static string Name { get; } = "NotSet";
         public double MinScale { get; }
         public double MaxScale { get; }
+        public HorisontalAlignCases HorisontalAlign { get; }
+        public VerticalAlignCases VerticalAlign { get; }
+        public OrientationCases Orientation { get; }
     }
 }

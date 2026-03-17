@@ -14,9 +14,9 @@ namespace LabelMaker.Templates.Json
         public List<LayoutItem> Bottom { get; set; }
         public List<LayoutItem> elements { get; set; }
         public string value { get; set; }
-        public int? minScale { get; set; }
+        public double minScale { get; set; } = 0.5;
         public string verticalAlign { get; set; }
-        public double maxScale { get; set; }
+        public double maxScale { get; set; } = 1;
         public string orientation { get; set; }
     }
 

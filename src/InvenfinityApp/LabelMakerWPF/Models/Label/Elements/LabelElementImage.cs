@@ -34,6 +34,8 @@ namespace LabelMaker.Models.Label.Elements
 
         public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
         {
+            if (scale > MaxScale || scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
+
             double targetHeight = labelHeight * scale;
             double targetWidth = GetWidth(labelHeight, scale);
             double y = CalculateYOffset(labelHeight, targetHeight);

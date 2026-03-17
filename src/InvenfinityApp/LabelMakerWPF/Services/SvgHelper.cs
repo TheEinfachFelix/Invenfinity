@@ -1,4 +1,5 @@
-﻿using QRCoder;
+﻿using LabelMakerWPF.Models.Label.Elements;
+using QRCoder;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 using System;
@@ -12,15 +13,16 @@ namespace LabelMakerWPF.Services
 {
     internal static class SvgHelper
     {
-        public static void DrawSvg(
-            DrawingGroup target,
+        public static DrawingGroup DrawSvg(
             Drawing svgSource, // Das Original aus dem Cache
             double x,
             double y,
+            OrientationCases orientation,
             double targetWidth,
             double targetHeight)
         {
             if (svgSource == null) return;
+            DrawingGroup target = new();
 
             Rect bounds = svgSource.Bounds;
             if (bounds.Width == 0 || bounds.Height == 0) return;
@@ -42,6 +44,7 @@ namespace LabelMakerWPF.Services
             wrapper.Children.Add(svgSource); // Das Original bleibt unverändert
 
             target.Children.Add(wrapper);
+            return target;
         }
         public static Drawing GenerateQrCode(string value)
         {

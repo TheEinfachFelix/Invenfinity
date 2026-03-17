@@ -6,6 +6,7 @@ using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -20,42 +21,36 @@ namespace LabelMaker.Models.Label.Elements
         private Drawing _drawing;
         public string value;
         public static string Name => "qrcode";
-        public LabelElementQrCode(string  value, double? padding, double minScale, double maxScale)
-            : base( padding, minScale, maxScale)
+        public LabelElementQrCode(string  value, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+            : base( padding, minScale, maxScale, hori, vert, orient)
         {
             this.value = value;
 
             _drawing = SvgHelper.GenerateQrCode(value);
         }
 
-        public override double GetWidth(double labelHeight, double scale)
+        public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            // Breite = Höhe beim QR-Code, aber skaliert!
-            return labelHeight * scale;
-        }
-
-        public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
-        {
-
-
-            if (_drawing == null) return;
-
-            // Zielgröße berechnen
-            double size = labelHeight * scale;
-            // Vertikal zentrieren
-            double yOffset = (labelHeight - size) / 2;
-
-            SvgHelper.DrawSvg(
-                group,
+            return SvgHelper.DrawSvg(
                 _drawing,
-                x,
-                yOffset,
-                size,   // Zielbreite
-                size);  // Zielhöhe
+                getXOffest(labelLengthUnits,labelHeightUnits),
+                getYOffest(labelHeightUnits, labelHeightUnits),
+                Orientation,
+                labelLengthUnits,   // Zielbreite
+                labelHeightUnits);  // Zielhöhe
         }
+
+        public override DrawingGroup RenderStandardSize(double labelHeightUnits)
+        {
+            return Render(labelHeightUnits, labelHeightUnits);
+        }
+
         public static LabelElementQrCode GenerateElement(LayoutItem item, string resolvedValue)
         {
-            return new(resolvedValue, item.padding, item.minScale ?? 0.5, item.maxScale);
+            HorisontalAlignCases hori = Enum.Parse<HorisontalAlignCases>(item.horisontalAlign, true);
+            VerticalAlignCases vert = Enum.Parse<VerticalAlignCases>(item.verticalAlign, true);
+            OrientationCases orient = Enum.Parse<OrientationCases>(item.orientation, true);
+            return new(resolvedValue, item.padding, item.minScale, item.maxScale, hori, vert, orient);
         }
     }
 }

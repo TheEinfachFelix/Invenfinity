@@ -1,4 +1,5 @@
-﻿using LabelMaker.Templates.Json;
+﻿using LabelMaker.Services;
+using LabelMaker.Templates.Json;
 using LabelMakerWPF.Models.Label.Elements;
 using LabelMakerWPF.Services;
 using SharpVectors.Dom;
@@ -17,14 +18,14 @@ namespace LabelMaker.Models.Label.Elements
         private Typeface typeface = new (new FontFamily("Segoe UI"),FontStyles.Normal,FontWeights.Normal,FontStretches.Normal);
         public string Text { get; private set; }
         public static string Name => "text";
-        public LabelElementText(string text, double? padding, double minScale, double maxScale)
-            : base(padding, minScale, maxScale)
+        public LabelElementText(string text, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+            : base(padding, minScale, maxScale, hori, vert, orient)
         { 
             this.Text = text;
         }
         private FormattedText GetText(double labelHeight, double scale)
         {
-            if (scale < MinScale || scale > MaxScale) throw new ArgumentOutOfRangeException(nameof(scale));
+            if (scale > MaxScale || scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
 
             double fontSize = labelHeight * scale;
             var thisText = Text;
@@ -56,27 +57,56 @@ namespace LabelMaker.Models.Label.Elements
 
             return formatted;
         }
-        public override double GetWidth(double labelHeight, double scale)
+
+        public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return GetText(labelHeight,scale).Width;
+            double standardLength = GetStandardLength(labelHeightUnits);
+            double scale = standardLength / labelLengthUnits;
+            if (scale > MaxScale) scale = MaxScale;
+            if (scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
+
+            var text = GetText(labelHeightUnits, scale);
+            double height = text.Height;
+            double length = text.Width;
+
+            // TODO Orientation
+
+            GeometryDrawing drawing = new(
+            Brushes.Black,
+            null,
+            text.BuildGeometry(
+                new Point(getXOffest(labelLengthUnits,length), getYOffest(labelHeightUnits, height))));
+
+            // TODO setLength
+
+            DrawingGroup grou = new();
+            grou.Children.Add(drawing);
+            return grou;
         }
 
-        public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
+        public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
-            var formatted = GetText(labelHeight,scale);
+            return Render(labelHeightUnits, GetStandardLength(labelHeightUnits));
+        }
+
+        private double GetStandardLength(double labelHeightUnits)
+        {
+            var formatted = GetText(labelHeightUnits, 1);
 
             var drawing = new GeometryDrawing(
                 Brushes.Black,
                 null,
                 formatted.BuildGeometry(
-                    new Point(x, (labelHeight - formatted.Height) / 2)));
-
-            group.Children.Add(drawing);
+                    new Point(0, 0)));
+            return drawing.Bounds.Width + PaddingUnits;
         }
 
         public static LabelElementText GenerateElement(LayoutItem item, string resolvedValue)
         {
-            return new LabelElementText(resolvedValue, item.padding, item.minScale ?? 0.5, item.maxScale);
+            HorisontalAlignCases hori = Enum.Parse<HorisontalAlignCases>(item.horisontalAlign, true);
+            VerticalAlignCases vert = Enum.Parse<VerticalAlignCases>(item.verticalAlign, true);
+            OrientationCases orient = Enum.Parse<OrientationCases>(item.orientation, true);
+            return new LabelElementText(resolvedValue, item.padding, item.minScale, item.maxScale, hori, vert, orient);
         }
     }
 }
