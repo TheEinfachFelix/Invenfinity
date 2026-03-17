@@ -14,6 +14,6 @@ namespace LabelMakerWPF.Models.Label.Elements
     }
     public enum OrientationCases
     {
-        Horizontal, Vertical, Wide
+        Horizontal, Vertical, Wide, Narrow
     }
 }

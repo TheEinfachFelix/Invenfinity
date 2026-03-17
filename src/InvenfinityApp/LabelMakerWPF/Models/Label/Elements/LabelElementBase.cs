@@ -13,15 +13,15 @@ namespace LabelMakerWPF.Models.Label.Elements
     internal abstract class LabelElementBase : ILabelElement
     {
         public int? MinWidthMm { get; }
-        public double? Padding { get; }
-        public double PaddingUnits { get { return Converter.mmtoUnits(Padding ?? 0); } }
+        public double Padding { get; }
+        public double PaddingUnits { get { return Converter.mmtoUnits(Padding); } }
         public double MinScale { get; }
         public double MaxScale { get; }
         public HorisontalAlignCases HorisontalAlign { get; }
         public VerticalAlignCases VerticalAlign { get; }
         public OrientationCases Orientation { get; }
 
-        protected LabelElementBase(double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        protected LabelElementBase(double padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
         {
             Padding = padding;
             MinScale = minScale;

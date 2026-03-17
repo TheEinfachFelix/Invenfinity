@@ -8,6 +8,7 @@ using LabelMakerWPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace LabelMakerWPF.Models.Label.Elements
@@ -17,14 +18,32 @@ namespace LabelMakerWPF.Models.Label.Elements
         public List<ILabelElement> elements = [];
         public static string Name => "groupe";
 
-        public LabelElementGroupe(double? padding, double minScale, double maxScale, List<ILabelElement> elements, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        public LabelElementGroupe(double padding, double minScale, double maxScale, List<ILabelElement> elements, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
             : base(padding, minScale, maxScale, hori, vert, orient)
         {
             this.elements = elements;
+
+            // Scale berechnen
+            double standardLen = RenderStandardSize(12).Bounds.Width;
+            double minLen = 0;
+            double maxLen = 0;
+            foreach (var item in elements)
+            {
+                double itemLen = item.RenderStandardSize(12).Bounds.Width;
+                minLen += itemLen * item.MinScale;
+                maxLen += itemLen * item.MaxScale;
+            }
+            double newMinScale = minLen / standardLen;
+            double newMaxScale = maxLen / standardLen;
+            if (MinScale == new LayoutItem().minScale || newMinScale > minScale)
+                minScale = newMinScale;
+            if (MaxScale == new LayoutItem().maxScale || newMaxScale < maxScale)
+                maxScale = newMaxScale;
         }
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
             return RenderStandardSize(labelHeightUnits);
+            // TODO
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)

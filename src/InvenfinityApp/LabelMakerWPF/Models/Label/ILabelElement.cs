@@ -9,7 +9,8 @@ namespace LabelMaker.Models.Label
 {
     internal interface ILabelElement
     {
-        public double? Padding { get; }
+        public double Padding { get; }
+        public double PaddingUnits { get; }
         DrawingGroup Render(double labelHeightUnits, double labelLengthUnits);
         DrawingGroup RenderStandardSize(double labelHeightUnits);
         public static string Name { get; } = "NotSet";

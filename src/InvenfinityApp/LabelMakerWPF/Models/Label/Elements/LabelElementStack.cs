@@ -16,7 +16,7 @@ namespace LabelMakerWPF.Models.Label.Elements
     {
         public List<ILabelElement> top = [];
         public List<ILabelElement> btm = [];
-        public LabelElementStack(double? padding, double minScale, double maxScale, List<ILabelElement> top, List<ILabelElement> btm, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        public LabelElementStack(double padding, double minScale, double maxScale, List<ILabelElement> top, List<ILabelElement> btm, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
             : base(padding, minScale, maxScale, hori, vert, orient)
         {
             this.top = top;

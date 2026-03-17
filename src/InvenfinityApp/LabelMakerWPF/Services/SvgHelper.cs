@@ -16,10 +16,10 @@ namespace LabelMakerWPF.Services
     internal static class SvgHelper
     {
         public static DrawingGroup DrawSvg(
-     Drawing svgSource,
-     ILabelElement element,
-     double targetLengthUnits,
-     double targetHeightUnits)
+             Drawing svgSource,
+             ILabelElement element,
+             double targetLengthUnits,
+             double targetHeightUnits)
         {
             var outputGroup = new DrawingGroup();
             if (svgSource == null) return outputGroup;
@@ -27,34 +27,71 @@ namespace LabelMakerWPF.Services
             Rect bounds = svgSource.Bounds;
             if (bounds.Width == 0 || bounds.Height == 0) return outputGroup;
 
-            // Contain Scaling
-            double scale = Math.Min(targetLengthUnits / bounds.Width, targetHeightUnits / bounds.Height);
+            double angle = 0;
+            switch (element.Orientation)
+            {
+                case OrientationCases.Vertical:
+                    angle = 90;
+                    break;
+                case OrientationCases.Wide:
+                    // Wenn es höher als breit ist, rotiere es ins Querformat
+                    if (bounds.Width < bounds.Height) angle = 90;
+                    break;
+                case OrientationCases.Narrow:
+                    // Wenn es breiter als hoch ist, rotiere es ins Hochformat
+                    if (bounds.Width > bounds.Height) angle = 90;
+                    break;
+                case OrientationCases.Horizontal:
+                default:
+                    angle = 0;
+                    break;
+            }
 
-            double effectiveScale = (scale * Math.Max(bounds.Width, bounds.Height)) / Math.Min(targetHeightUnits, targetLengthUnits);
-            if (effectiveScale > element.MaxScale) throw new ArgumentOutOfRangeException(nameof(scale));
-            if (effectiveScale < element.MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
+            bool isRotated = Math.Abs(angle % 180) > 0.1;
+            double currentWidth = isRotated ? bounds.Height : bounds.Width;
+            double currentHeight = isRotated ? bounds.Width : bounds.Height;
 
-            double scaledWidth = bounds.Width * scale;
-            double scaledHeight = bounds.Height * scale;
+            // Contain Scaling basierend auf den neuen Dimensionen
+            double relScale = targetHeightUnits / currentHeight;
+            double scale = Math.Min(targetLengthUnits / currentWidth, targetHeightUnits / currentHeight);
 
+            double effectiveScale = Math.Round(scale / relScale, 3);
+            if (effectiveScale > element.MaxScale || effectiveScale < element.MinScale)
+                throw new ArgumentOutOfRangeException(nameof(scale));
+
+            double scaledWidth = currentWidth * scale;
+            double scaledHeight = currentHeight * scale;
+
+            // Offsets basierend auf den rotierten, skalierten Maßen
             double x = element.getXOffest(targetLengthUnits, scaledWidth);
             double y = element.getYOffest(targetHeightUnits, scaledHeight);
 
-            // WICHTIG: Bounds normalisieren
+            // 3. Transformationen anwenden
             var transformGroup = new TransformGroup();
-            transformGroup.Children.Add(new TranslateTransform(-bounds.X, -bounds.Y)); // Ursprung korrigieren
+
+            // Schritt A: Ursprung auf (0,0) korrigieren
+            transformGroup.Children.Add(new TranslateTransform(-bounds.X, -bounds.Y));
+
+            // Schritt B: Rotation
+            if (isRotated)
+            {
+                transformGroup.Children.Add(new RotateTransform(angle));
+                // Nach 90° Drehung liegt der Inhalt im negativen X-Bereich (WPF Logik)
+                // Wir schieben ihn zurück in den positiven Bereich
+                transformGroup.Children.Add(new TranslateTransform(bounds.Height, 0));
+            }
+
+            // Schritt C: Skalierung und finale Positionierung
             transformGroup.Children.Add(new ScaleTransform(scale, scale));
             transformGroup.Children.Add(new TranslateTransform(x, y));
 
-            var contentGroup = new DrawingGroup
-            {
-                Transform = transformGroup
-            };
+            var contentGroup = new DrawingGroup { Transform = transformGroup };
             contentGroup.Children.Add(svgSource);
 
+            // Hintergrund/Bounding Box
             var background = new GeometryDrawing
             {
-                Geometry = new RectangleGeometry(new Rect(0, 0, targetLengthUnits, targetHeightUnits)),
+                Geometry = new RectangleGeometry(new Rect(0, 0, targetLengthUnits+element.PaddingUnits, targetHeightUnits)),
                 Brush = Brushes.Transparent,
                 Pen = null
             };

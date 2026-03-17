@@ -6,10 +6,12 @@ using SharpVectors.Dom;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LabelMaker.Models.Label.Elements
 {
@@ -18,16 +20,14 @@ namespace LabelMaker.Models.Label.Elements
         private Typeface typeface = new (new FontFamily("Segoe UI"),FontStyles.Normal,FontWeights.Normal,FontStretches.Normal);
         public string Text { get; private set; }
         public static string Name => "text";
-        public LabelElementText(string text, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        public LabelElementText(string text, double padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
             : base(padding, minScale, maxScale, hori, vert, orient)
         { 
             this.Text = text;
         }
-        private FormattedText GetText(double labelHeight, double scale)
+        private GeometryDrawing GetText(double labelHeight)
         {
-            if (scale > MaxScale || scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
-
-            double fontSize = labelHeight * scale;
+            double fontSize = labelHeight;
             var thisText = Text;
 
             // 2. Logik für Fettdruck (*text*)
@@ -55,32 +55,19 @@ namespace LabelMaker.Models.Label.Elements
                 formatted.SetFontWeight(FontWeights.Bold, range.start, range.length);
             }
 
-            return formatted;
+            GeometryDrawing drawing = new(
+                Brushes.Black,
+                null,
+                formatted.BuildGeometry(
+                    new Point(0, 0)));
+
+            return drawing;
         }
 
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            double standardLength = GetStandardLength(labelHeightUnits);
-            double scale = standardLength / labelLengthUnits;
-            if (scale > MaxScale) scale = MaxScale;
-            if (scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
-
-            var text = GetText(labelHeightUnits, scale);
-            double height = text.Height;
-            double length = text.Width;
-
-            // TODO Orientation
-
-            
-
-            GeometryDrawing drawing = new(
-            Brushes.Black,
-            null,
-            text.BuildGeometry(
-                new Point(getXOffest(labelLengthUnits,length), getYOffest(labelHeightUnits, height))));
-
-            // TODO setLength
-            return SvgHelper.DrawSvg(drawing, this, labelLengthUnits, labelHeightUnits);
+            var text = GetText(labelHeightUnits);
+            return SvgHelper.DrawSvg(text, this, labelLengthUnits, labelHeightUnits);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)
@@ -90,14 +77,23 @@ namespace LabelMaker.Models.Label.Elements
 
         private double GetStandardLength(double labelHeightUnits)
         {
-            var formatted = GetText(labelHeightUnits, 1);
+            var formatted = GetText(labelHeightUnits);
+            var bounds = formatted.Bounds;
+            switch (Orientation)
+            {
+                case OrientationCases.Vertical:
+                    return bounds.Height + PaddingUnits;
+                case OrientationCases.Wide:
+                    // Wenn es höher als breit ist, rotiere es ins Querformat
+                    if (bounds.Width < bounds.Height) return bounds.Height + PaddingUnits;
+                    break;
+                case OrientationCases.Narrow:
+                    // Wenn es breiter als hoch ist, rotiere es ins Hochformat
+                    if (bounds.Width > bounds.Height) return bounds.Height + PaddingUnits;
+                    break;
+            }
 
-            var drawing = new GeometryDrawing(
-                Brushes.Black,
-                null,
-                formatted.BuildGeometry(
-                    new Point(0, 0)));
-            return drawing.Bounds.Width + PaddingUnits;
+            return bounds.Width + PaddingUnits;
         }
 
         public static LabelElementText GenerateElement(LayoutItem item, string resolvedValue)

@@ -21,7 +21,7 @@ namespace LabelMaker.Models.Label.Elements
         private Drawing _drawing;
         public string value;
         public static string Name => "qrcode";
-        public LabelElementQrCode(string  value, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        public LabelElementQrCode(string  value, double padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
             : base( padding, minScale, maxScale, hori, vert, orient)
         {
             this.value = value;

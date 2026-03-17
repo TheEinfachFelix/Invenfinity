@@ -17,7 +17,7 @@ namespace LabelMaker.Models.Label.Elements
         private readonly Drawing _svgDrawing;
         private readonly double _aspectRatio;
         public static string Name => "image";
-        public LabelElementImage(Drawing svgDrawing, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+        public LabelElementImage(Drawing svgDrawing, double padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
             : base( padding, minScale, maxScale, hori, vert, orient)
         {
             _svgDrawing = svgDrawing ?? throw new ArgumentNullException(nameof(svgDrawing));
