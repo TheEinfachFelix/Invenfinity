@@ -71,6 +71,8 @@ namespace LabelMaker.Models.Label.Elements
 
             // TODO Orientation
 
+            
+
             GeometryDrawing drawing = new(
             Brushes.Black,
             null,
@@ -78,10 +80,7 @@ namespace LabelMaker.Models.Label.Elements
                 new Point(getXOffest(labelLengthUnits,length), getYOffest(labelHeightUnits, height))));
 
             // TODO setLength
-
-            DrawingGroup grou = new();
-            grou.Children.Add(drawing);
-            return grou;
+            return SvgHelper.DrawSvg(drawing, this, labelLengthUnits, labelHeightUnits);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)

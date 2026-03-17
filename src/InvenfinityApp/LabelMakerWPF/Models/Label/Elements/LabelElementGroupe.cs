@@ -17,57 +17,32 @@ namespace LabelMakerWPF.Models.Label.Elements
         public List<ILabelElement> elements = [];
         public static string Name => "groupe";
 
-        public LabelElementGroupe(double? padding, double minScale, double maxScale, List<ILabelElement> elements) : base(padding, minScale, maxScale)
+        public LabelElementGroupe(double? padding, double minScale, double maxScale, List<ILabelElement> elements, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+            : base(padding, minScale, maxScale, hori, vert, orient)
         {
             this.elements = elements;
         }
-
-        public override double GetWidth(double labelHeight, double scale)
+        public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return getContent(labelHeight).Bounds.Width;
+            return RenderStandardSize(labelHeightUnits);
         }
 
-        public DrawingGroup getContent(double labelHeight)
+        public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
-            var group = new DrawingGroup();
-
-            if (!elements.Any()) return group;
-
-            // 1. Berechne die individuellen Skalierungswerte für die feste Länge
-            //var scales = CalcScale(labelHeight);
-
-            double xOffset = 0;
-
-            for (int i = 0; i < elements.Count; i++)
+            var list = new List<DrawingGroup>();
+            foreach (var item in elements)
             {
-                var element = elements[i];
-                double currentScale = 1;//scales[i];
-
-                // Rendern mit der berechneten Skalierung
-                element.Render(group, xOffset, labelHeight, currentScale);
-
-                // Offset erhöhen
-                xOffset += element.GetWidth(labelHeight, currentScale);
-
-                if (element.Padding.HasValue)
-                    xOffset += Converter.mmtoUnits(element.Padding.Value);
+                list.Add(item.RenderStandardSize(labelHeightUnits));
             }
-
-            return group;
-        }
-
-        public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
-        {
-            double targetHeight = labelHeight * scale;
-            double targetWidth = GetWidth(labelHeight, scale);
-            double y = CalculateYOffset(labelHeight, targetHeight);
-
-            SvgHelper.DrawSvg(group, getContent(labelHeight), x, y, targetWidth, targetHeight);
+            return SvgHelper.concadGroups(list);
         }
         public static LabelElementGroupe GenerateElement(LayoutItem item, BinDataModel bin, PartDataModel part, string assetPath)
         {
+            HorisontalAlignCases hori = Enum.Parse<HorisontalAlignCases>(item.horisontalAlign, true);
+            VerticalAlignCases vert = Enum.Parse<VerticalAlignCases>(item.verticalAlign, true);
+            OrientationCases orient = Enum.Parse<OrientationCases>(item.orientation, true);
             List<ILabelElement> list = Converter.toLabelElements(item.elements, bin, part, assetPath);
-            return new(item.padding, item.minScale ?? 0.5, item.maxScale, list);
+            return new(item.padding, item.minScale, item.maxScale, list, hori, vert, orient);
         }
     }
 }

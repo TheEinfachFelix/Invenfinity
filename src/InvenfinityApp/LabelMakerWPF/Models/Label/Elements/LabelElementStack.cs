@@ -16,7 +16,8 @@ namespace LabelMakerWPF.Models.Label.Elements
     {
         public List<ILabelElement> top = [];
         public List<ILabelElement> btm = [];
-        public LabelElementStack(double? padding, double minScale, double maxScale, List<ILabelElement> top, List<ILabelElement> btm) : base(padding, minScale, maxScale)
+        public LabelElementStack(double? padding, double minScale, double maxScale, List<ILabelElement> top, List<ILabelElement> btm, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+            : base(padding, minScale, maxScale, hori, vert, orient)
         {
             this.top = top;
             this.btm = btm;
@@ -24,20 +25,25 @@ namespace LabelMakerWPF.Models.Label.Elements
 
         public static string Name => "stack";
 
-        public override double GetWidth(double labelHeight, double scale)
+        public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
             throw new NotImplementedException();
         }
 
-        public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
+        public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
             throw new NotImplementedException();
         }
         public static LabelElementStack GenerateElement(LayoutItem item, BinDataModel bin, PartDataModel part, string assetPath)
         {
+            HorisontalAlignCases hori = Enum.Parse<HorisontalAlignCases>(item.horisontalAlign, true);
+            VerticalAlignCases vert = Enum.Parse<VerticalAlignCases>(item.verticalAlign, true);
+            OrientationCases orient = Enum.Parse<OrientationCases>(item.orientation, true);
             List<ILabelElement> top = Converter.toLabelElements(item.Top, bin, part, assetPath);
             List<ILabelElement> btm = Converter.toLabelElements(item.Bottom, bin, part, assetPath);
-            return new(item.padding, item.minScale ?? 0.5, item.maxScale, top, btm);
+            return new(item.padding, item.minScale, item.maxScale, top, btm, hori, vert, orient);
         }
+
+
     }
 }

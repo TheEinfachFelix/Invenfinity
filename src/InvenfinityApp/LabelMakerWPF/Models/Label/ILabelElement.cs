@@ -18,5 +18,8 @@ namespace LabelMaker.Models.Label
         public HorisontalAlignCases HorisontalAlign { get; }
         public VerticalAlignCases VerticalAlign { get; }
         public OrientationCases Orientation { get; }
+
+        internal double getXOffest(double labelLengthUnits, double contentLengthUnits);
+        internal double getYOffest(double labelHeightUnits, double contentHeightUnits);
     }
 }

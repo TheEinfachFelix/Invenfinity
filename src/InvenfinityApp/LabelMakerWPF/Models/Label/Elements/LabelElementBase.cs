@@ -30,7 +30,7 @@ namespace LabelMakerWPF.Models.Label.Elements
             VerticalAlign = vert;
             Orientation = orient;
         }
-        protected double getXOffest (double labelLengthUnits, double contentLengthUnits)
+        public double getXOffest (double labelLengthUnits, double contentLengthUnits)
         {
             switch (HorisontalAlign)
             {
@@ -44,13 +44,13 @@ namespace LabelMakerWPF.Models.Label.Elements
                     throw new Exception("HorisontalAlignCase not found");
             }
         }
-        protected double getYOffest (double  labelHeightUnits, double contentHeightUnits)
+        public double getYOffest (double  labelHeightUnits, double contentHeightUnits)
         {
             switch (VerticalAlign)
             {
-                case VerticalAlignCases.Bottom:
-                    return 0;
                 case VerticalAlignCases.Top:
+                    return 0;
+                case VerticalAlignCases.Bottom:
                     return labelHeightUnits - contentHeightUnits;
                 case VerticalAlignCases.Center:
                     return (labelHeightUnits - contentHeightUnits) / 2;

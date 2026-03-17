@@ -33,11 +33,9 @@ namespace LabelMaker.Models.Label.Elements
         {
             return SvgHelper.DrawSvg(
                 _drawing,
-                getXOffest(labelLengthUnits,labelHeightUnits),
-                getYOffest(labelHeightUnits, labelHeightUnits),
-                Orientation,
-                labelLengthUnits,   // Zielbreite
-                labelHeightUnits);  // Zielhöhe
+                this,
+                labelLengthUnits,
+                labelHeightUnits);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)

@@ -1,4 +1,5 @@
 ﻿using LabelMaker.Services;
+using LabelMakerWPF.Services;
 using LabelMakerWPF.Templates.Printer;
 using System;
 using System.Collections.Generic;
@@ -27,22 +28,29 @@ namespace LabelMaker.Models.Label
 
             double xOffset = 0;
 
-            for (int i = 0; i < elements.Count; i++)
+            var list = new List<DrawingGroup>();
+            foreach (var item in elements)
             {
-                var element = elements[i];
-                double currentScale = 1;
-
-                // Rendern mit der berechneten Skalierung
-                element.Render(group, xOffset, labelHeight, currentScale);
-
-                // Offset erhöhen
-                xOffset += element.GetWidth(labelHeight, currentScale);
-
-                if (element.Padding.HasValue)
-                    xOffset += Converter.mmtoUnits(element.Padding.Value);
+                list.Add(item.RenderStandardSize(labelHeight));
             }
+            return SvgHelper.concadGroups(list);
 
-            return group;
+            //for (int i = 0; i < elements.Count; i++)
+            //{
+            //    var element = elements[i];
+            //    double currentScale = 1;
+
+            //    // Rendern mit der berechneten Skalierung
+            //    element.Render(group, xOffset, labelHeight, currentScale);
+
+            //    // Offset erhöhen
+            //    xOffset += element.GetWidth(labelHeight, currentScale);
+
+            //    if (element.Padding.HasValue)
+            //        xOffset += Converter.mmtoUnits(element.Padding.Value);
+            //}
+
+            //return group;
         }
         
     }

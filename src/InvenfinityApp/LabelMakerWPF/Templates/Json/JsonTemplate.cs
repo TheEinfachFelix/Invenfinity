@@ -9,15 +9,15 @@ namespace LabelMaker.Templates.Json
     {
         public string type { get; set; }
         public double padding { get; set; }
-        public string horisontalAlign { get; set; }
+        public string horisontalAlign { get; set; } = "center";
         public List<LayoutItem> Top { get; set; }
         public List<LayoutItem> Bottom { get; set; }
         public List<LayoutItem> elements { get; set; }
         public string value { get; set; }
         public double minScale { get; set; } = 0.5;
-        public string verticalAlign { get; set; }
+        public string verticalAlign { get; set; } = "Center";
         public double maxScale { get; set; } = 1;
-        public string orientation { get; set; }
+        public string orientation { get; set; } = "Horizontal";
     }
 
     public class Requirements

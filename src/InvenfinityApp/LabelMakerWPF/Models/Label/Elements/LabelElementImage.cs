@@ -17,8 +17,8 @@ namespace LabelMaker.Models.Label.Elements
         private readonly Drawing _svgDrawing;
         private readonly double _aspectRatio;
         public static string Name => "image";
-        public LabelElementImage(Drawing svgDrawing, double? padding, double minScale, double maxScale)
-            : base( padding, minScale, maxScale)
+        public LabelElementImage(Drawing svgDrawing, double? padding, double minScale, double maxScale, HorisontalAlignCases hori, VerticalAlignCases vert, OrientationCases orient)
+            : base( padding, minScale, maxScale, hori, vert, orient)
         {
             _svgDrawing = svgDrawing ?? throw new ArgumentNullException(nameof(svgDrawing));
 
@@ -27,24 +27,21 @@ namespace LabelMaker.Models.Label.Elements
             _aspectRatio = bounds.Height != 0 ? bounds.Width / bounds.Height : 1.0;
         }
 
-        public override double GetWidth(double labelHeight, double scale)
+        public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return (labelHeight * scale) * _aspectRatio;
+            return SvgHelper.DrawSvg(_svgDrawing, this, labelLengthUnits, labelHeightUnits);
         }
 
-        public override void Render(DrawingGroup group, double x, double labelHeight, double scale)
+        public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
-            if (scale > MaxScale || scale < MinScale) throw new ArgumentOutOfRangeException(nameof(scale));
-
-            double targetHeight = labelHeight * scale;
-            double targetWidth = GetWidth(labelHeight, scale);
-            double y = CalculateYOffset(labelHeight, targetHeight);
-
-            SvgHelper.DrawSvg(group, _svgDrawing, x, y, targetWidth, targetHeight);
+            return Render(labelHeightUnits, labelHeightUnits * _aspectRatio);
         }
         public static LabelElementImage GenerateElement(LayoutItem item, Drawing svgDrawing)
         {
-            return new(svgDrawing, item.padding, item.minScale ?? 0.5, item.maxScale);
+            HorisontalAlignCases hori = Enum.Parse<HorisontalAlignCases>(item.horisontalAlign, true);
+            VerticalAlignCases vert = Enum.Parse<VerticalAlignCases>(item.verticalAlign, true);
+            OrientationCases orient = Enum.Parse<OrientationCases>(item.orientation, true);
+            return new(svgDrawing, item.padding, item.minScale, item.maxScale, hori, vert, orient);
         }
     }
 }
