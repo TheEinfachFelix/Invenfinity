@@ -9,12 +9,12 @@ using System.Windows.Media;
 
 namespace LabelMaker.Models.Label
 {
-    public class BinLabelRoot
+    public class PartLabelRoot
     {
         internal double labelLength { get; set; }
         internal double labelLengthUnits {  get { return Converter.mmtoUnits(labelLength); } }
         internal List<ILabelElement> elements { get; set; } = [];
-        internal BinLabelRoot(double labelLength) 
+        internal PartLabelRoot(double labelLength) 
         {
             this.labelLength = labelLength;
         }

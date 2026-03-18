@@ -6,6 +6,7 @@ using SharpVectors.Renderers.Wpf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Transactions;
 using System.Windows;
@@ -16,10 +17,10 @@ namespace LabelMakerWPF.Services
     internal static class LayoutHelper
     {
         public static DrawingGroup CreateDrawGroup(
-             Drawing svgSource,
-             ILabelElement element,
-             double targetLengthUnits,
-             double targetHeightUnits)
+     DrawingGroup svgSource,
+     ILabelElement element,
+     double targetLengthUnits,
+     double targetHeightUnits)
         {
             var outputGroup = new DrawingGroup();
             if (svgSource == null) return outputGroup;
@@ -91,7 +92,7 @@ namespace LabelMakerWPF.Services
             // Hintergrund/Bounding Box
             var background = new GeometryDrawing
             {
-                Geometry = new RectangleGeometry(new Rect(0, 0, targetLengthUnits+element.PaddingUnits, targetHeightUnits)),
+                Geometry = new RectangleGeometry(new Rect(0, 0, targetLengthUnits + element.PaddingUnits, targetHeightUnits)),
                 Brush = Brushes.Transparent,
                 Pen = null
             };
@@ -100,6 +101,16 @@ namespace LabelMakerWPF.Services
             outputGroup.Children.Add(contentGroup);
 
             return outputGroup;
+        }
+        public static DrawingGroup CreateDrawGroup(
+             Drawing svgSource,
+             ILabelElement element,
+             double targetLengthUnits,
+             double targetHeightUnits)
+        {
+            DrawingGroup group = new DrawingGroup();
+            group.Children.Add(svgSource);
+            return CreateDrawGroup(group,element,targetLengthUnits,targetHeightUnits);
         }
         public static DrawingGroup concadGroups(List<DrawingGroup> groups)
         {
@@ -155,6 +166,37 @@ namespace LabelMakerWPF.Services
             {
                 return reader.Read(stream);
             }
+        }
+
+        public static DrawingGroup TrimWhitespace(DrawingGroup input)
+        {
+            if (input == null || input.Children.Count == 0)
+                return input;
+
+            Rect bounds = input.Bounds;
+
+            if (bounds.IsEmpty)
+                return input;
+
+            var result = new DrawingGroup();
+
+            // Inhalt verschieben
+            var wrapper = new DrawingGroup
+            {
+                Transform = new TranslateTransform(-bounds.X, -bounds.Y)
+            };
+
+            foreach (var child in input.Children)
+            {
+                wrapper.Children.Add(child);
+            }
+
+            result.Children.Add(wrapper);
+
+            // 🔥 DAS ist der entscheidende Teil
+            result.ClipGeometry = new RectangleGeometry(new Rect(0, 0, bounds.Width, bounds.Height));
+
+            return result;
         }
 
         /// <summary>

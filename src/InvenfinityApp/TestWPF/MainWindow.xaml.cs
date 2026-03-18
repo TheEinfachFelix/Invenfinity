@@ -1,6 +1,7 @@
 ﻿using LabelMaker;
 using LabelMaker.Models.Bin;
 using LabelMaker.Models.Part;
+using LabelMakerWPF.Models.Part;
 using LabelMakerWPF.Templates.Printer;
 using System.Text;
 using System.Windows;
@@ -37,9 +38,10 @@ namespace TestWPF
             };
             var Bin = new BinDataModel()
             {
-                UnitLength = 2,
-                SlotCount = 1,
-                Parts = [Part]
+                UnitLength = 4,
+                SlotCount = 2,
+                Parts = [Part, Part2],
+                Template = TemplateType.NormalStack,
             };
 
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
@@ -50,6 +52,12 @@ namespace TestWPF
             img.Source = drawing.RenderImg(12);
 
             //img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
+
+            // TODO
+            // Stack Implementation
+            // Layout umd Part aus der json implementation
+            // Renderer und Services refactor
+            // RenderStandardSize mit orientation
         }
     }
 }

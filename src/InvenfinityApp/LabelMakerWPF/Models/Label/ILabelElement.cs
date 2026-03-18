@@ -1,4 +1,5 @@
-﻿using LabelMaker.Templates.Json;
+﻿using LabelMaker.Models.Label.Elements;
+using LabelMaker.Templates.Json;
 using LabelMakerWPF.Models.Label.Elements;
 using System;
 using System.Collections.Generic;

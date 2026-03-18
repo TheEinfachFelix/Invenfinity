@@ -4,6 +4,7 @@ using LabelMaker.Models.Label.Elements;
 using LabelMaker.Models.Part;
 using LabelMaker.Services;
 using LabelMaker.Templates.Json;
+using LabelMakerWPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
@@ -27,12 +28,51 @@ namespace LabelMakerWPF.Models.Label.Elements
 
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            throw new NotImplementedException();
+            double rowHeigth = labelHeightUnits / 2;
+            var newTop = LayoutHelper.RenderAndScaleList(top, rowHeigth, labelLengthUnits);
+            var newBtm = LayoutHelper.RenderAndScaleList(btm, rowHeigth, labelLengthUnits);
+            var neoTop = LayoutHelper.CreateDrawGroup(newTop, this, labelLengthUnits, rowHeigth);
+            var neoBtm = LayoutHelper.CreateDrawGroup(newBtm, this, labelLengthUnits, rowHeigth);
+            var stack = StackVertical(neoTop, neoBtm, rowHeigth);
+            return LayoutHelper.CreateDrawGroup(stack, this, labelLengthUnits, labelHeightUnits);
+            return StackVertical(neoTop, neoBtm, rowHeigth);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
-            throw new NotImplementedException();
+            double rowHeigth = labelHeightUnits / 2;
+
+            var newTop = new List<DrawingGroup>();
+            foreach (var item in top)
+            {
+                newTop.Add(item.RenderStandardSize(rowHeigth));
+            }
+            var neoTop = LayoutHelper.concadGroups(newTop);
+
+            var newBtm = new List<DrawingGroup>();
+            foreach (var item in btm)
+            {
+                newBtm.Add(item.RenderStandardSize(rowHeigth));
+            }
+            var neoBtm = LayoutHelper.concadGroups(newBtm);
+            return StackVertical(neoTop, neoBtm, rowHeigth);
+        }
+
+        private DrawingGroup StackVertical(DrawingGroup topGroup, DrawingGroup bottomGroup, double offsetY)
+        {
+            var result = new DrawingGroup();
+
+            // Top bleibt bei Y = 0
+            result.Children.Add(topGroup);
+
+            // Bottom nach unten verschieben
+            var transformedBottom = new DrawingGroup();
+            transformedBottom.Transform = new TranslateTransform(0, offsetY);
+            transformedBottom.Children.Add(bottomGroup);
+
+            result.Children.Add(transformedBottom);
+
+            return result;
         }
         public static LabelElementStack GenerateElement(LayoutItem item, BinDataModel bin, PartDataModel part, string assetPath)
         {
@@ -43,7 +83,5 @@ namespace LabelMakerWPF.Models.Label.Elements
             List<ILabelElement> btm = Converter.toLabelElements(item.Bottom, bin, part, assetPath);
             return new(item.padding, item.minScale, item.maxScale, top, btm, hori, vert, orient);
         }
-
-
     }
 }

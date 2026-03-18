@@ -17,9 +17,9 @@ namespace LabelMaker.Services
 {
     internal static class Converter
     {
-        public static BinLabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin)
+        public static PartLabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin)
         {
-            BinLabelRoot root = new(bin.TotalLableLength);
+            PartLabelRoot root = new(bin.TotalLableLength);
             string newPath = Path.Combine(assetPath, template.requirements.AssetType);
             List<ILabelElement> list = [];
             foreach (var part in bin.Parts)

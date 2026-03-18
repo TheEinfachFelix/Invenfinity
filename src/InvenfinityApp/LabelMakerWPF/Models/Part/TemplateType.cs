@@ -6,7 +6,8 @@ namespace LabelMakerWPF.Models.Part
 {
     public enum TemplateType
     {
-        WideSingle//,
-        //NormalStack
+        WideSingle,
+        NormalStack,
+        Test
     }
 }

@@ -19,13 +19,13 @@ namespace LabelMaker
     public static class LabelMakerControll
     {
 
-        public static BinLabelRoot ToLabel(this BinDataModel bin, string AssetPath)
+        public static PartLabelRoot ToLabel(this BinDataModel bin, string AssetPath)
         {
             var data = JsonTemplateLoader.LoadJson(bin.GetTemplatePath(AssetPath));
             if (data.version != 1) throw new Exception("Invallide Json Version");
             return Converter.ToLabel(AssetPath, data, bin);
         }
-        public static DrawingGroup Render(this BinLabelRoot label, double Heigthmm)
+        public static DrawingGroup Render(this PartLabelRoot label, double Heigthmm)
         {
             double heightUnits = Converter.mmtoUnits(Heigthmm);
             var data = label.Render(heightUnits);
@@ -34,12 +34,12 @@ namespace LabelMaker
             Trace.WriteLine(Converter.UnitsToMm(data.Bounds.Height));
             return data;
         }
-        public static DrawingImage RenderImg(this BinLabelRoot label, double Heigthmm)
+        public static DrawingImage RenderImg(this PartLabelRoot label, double Heigthmm)
         {
             return new (Render(label, Heigthmm));
         }
 
-        public static void Print(this BinLabelRoot label, IPrinter printer, bool showDialog)
+        public static void Print(this PartLabelRoot label, IPrinter printer, bool showDialog)
         {
             var drawing = label.Render(printer.MaxYSize);
             new LabelRenderEngine().PrintVekor(drawing, printer, showDialog);

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "requirements": {
+        "minWidthPerPart": 1,
+        "AssetType": "Line"
+    },
+    "Layout": [
+        {
+            "type": "partElement",
+            "padding": 1
+        }
+    ],
+    "partElement": [
+                        {
+                    "type": "image",
+                    "value": "head",
+                    "padding": 1,
+                    "maxScale":8,
+                    "minScale": 1,
+                    "horisontalAlign": "Right"
+                },
+                {
+                    "type": "image",
+                    "value": "side",
+                    "padding": 1,
+                    "minScale": 1,"maxScale":8,
+                    "orientation": "Wide",
+                    "horisontalAlign": "Left"
+                }
+    ]
+}

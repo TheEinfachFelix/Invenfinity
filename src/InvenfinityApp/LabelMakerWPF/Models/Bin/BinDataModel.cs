@@ -13,7 +13,7 @@ namespace LabelMaker.Models.Bin
         public int SlotCount { get; set; }
         public double TotalLableLength //mm
         {
-            get => UnitLength*42-2;
+            get => UnitLength*42-3;
         }
         public double SlotLableLength
         {

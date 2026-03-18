@@ -6,14 +6,29 @@
     },
     "Layout": [
         {
+            "type": "qrcode",
+            "value": "oo",
+            "minScale": 1,
+            "verticalAlign": "Center",
+            "horisontalAlign": "Right"
+        },
+        {
             "type": "partElement",
             "padding": 1
+        },
+        {
+            "type": "qrcode",
+            "value": "11",
+            "minScale": 1,
+            "verticalAlign": "Center",
+            "horisontalAlign": "Right"
         }
     ],
     "partElement": [
         {
             "type": "groupe",
             "horisontalAlign": "Right",
+            "orientation": "Wide",
             "elements": [
                 {
                     "type": "image",

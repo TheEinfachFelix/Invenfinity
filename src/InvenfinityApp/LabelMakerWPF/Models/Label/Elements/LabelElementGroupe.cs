@@ -6,6 +6,7 @@ using LabelMaker.Services;
 using LabelMaker.Templates.Json;
 using LabelMakerWPF.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Documents;
@@ -42,11 +43,14 @@ namespace LabelMakerWPF.Models.Label.Elements
         }
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return LayoutHelper.RenderAndScaleList(elements, labelHeightUnits, labelLengthUnits);
+            var data = LayoutHelper.RenderAndScaleList(elements, labelHeightUnits, labelLengthUnits);
+            data = LayoutHelper.TrimWhitespace(data);
+            return LayoutHelper.CreateDrawGroup(data, this, labelLengthUnits, labelHeightUnits);
         }
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
             var list = new List<DrawingGroup>();
+
             foreach (var item in elements)
             {
                 list.Add(item.RenderStandardSize(labelHeightUnits));
