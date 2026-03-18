@@ -67,7 +67,7 @@ namespace LabelMaker.Models.Label.Elements
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
             var text = GetText(labelHeightUnits);
-            return SvgHelper.DrawSvg(text, this, labelLengthUnits, labelHeightUnits);
+            return LayoutHelper.CreateDrawGroup(text, this, labelLengthUnits, labelHeightUnits);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)

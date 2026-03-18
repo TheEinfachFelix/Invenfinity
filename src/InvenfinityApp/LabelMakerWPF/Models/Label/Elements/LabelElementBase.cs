@@ -15,8 +15,8 @@ namespace LabelMakerWPF.Models.Label.Elements
         public int? MinWidthMm { get; }
         public double Padding { get; }
         public double PaddingUnits { get { return Converter.mmtoUnits(Padding); } }
-        public double MinScale { get; }
-        public double MaxScale { get; }
+        public double MinScale { get; internal set; }
+        public double MaxScale { get; internal set; }
         public HorisontalAlignCases HorisontalAlign { get; }
         public VerticalAlignCases VerticalAlign { get; }
         public OrientationCases Orientation { get; }

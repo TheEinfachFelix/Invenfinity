@@ -26,12 +26,12 @@ namespace LabelMaker.Models.Label.Elements
         {
             this.value = value;
 
-            _drawing = SvgHelper.GenerateQrCode(value);
+            _drawing = LayoutHelper.GenerateQrCode(value);
         }
 
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return SvgHelper.DrawSvg(
+            return LayoutHelper.CreateDrawGroup(
                 _drawing,
                 this,
                 labelLengthUnits,

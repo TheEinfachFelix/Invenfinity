@@ -19,14 +19,12 @@
                     "type": "image",
                     "value": "head",
                     "padding": 1,
-                    "minScale": 1,
                     "verticalAlign": "Center"
                 },
                 {
                     "type": "image",
                     "value": "side",
                     "padding": 1,
-                    "minScale": 1,
                     "orientation": "Wide",
                     "verticalAlign": "Center"
                 },

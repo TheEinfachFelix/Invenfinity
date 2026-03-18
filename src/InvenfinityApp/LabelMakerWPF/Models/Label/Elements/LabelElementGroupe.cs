@@ -36,16 +36,14 @@ namespace LabelMakerWPF.Models.Label.Elements
             double newMinScale = minLen / standardLen;
             double newMaxScale = maxLen / standardLen;
             if (MinScale == new LayoutItem().minScale || newMinScale > minScale)
-                minScale = newMinScale;
+                this.MinScale = Math.Max(this.MinScale, newMinScale);
             if (MaxScale == new LayoutItem().maxScale || newMaxScale < maxScale)
-                maxScale = newMaxScale;
+                this.MaxScale = Math.Min(this.MaxScale, newMaxScale);
         }
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return RenderStandardSize(labelHeightUnits);
-            // TODO
+            return LayoutHelper.RenderAndScaleList(elements, labelHeightUnits, labelLengthUnits);
         }
-
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)
         {
             var list = new List<DrawingGroup>();
@@ -53,7 +51,7 @@ namespace LabelMakerWPF.Models.Label.Elements
             {
                 list.Add(item.RenderStandardSize(labelHeightUnits));
             }
-            return SvgHelper.concadGroups(list);
+            return LayoutHelper.concadGroups(list);
         }
         public static LabelElementGroupe GenerateElement(LayoutItem item, BinDataModel bin, PartDataModel part, string assetPath)
         {

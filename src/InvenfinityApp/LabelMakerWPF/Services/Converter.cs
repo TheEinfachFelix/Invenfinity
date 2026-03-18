@@ -21,7 +21,7 @@ namespace LabelMaker.Services
         {
             LabelRoot root = new(bin.SlotLableLength);
             string newPath = Path.Combine(assetPath, template.requirements.AssetType);
-            root.Elements = toLabelElements(template.partElement, bin, part, newPath);
+            root.elements = toLabelElements(template.partElement, bin, part, newPath);
             
             return root;
         }

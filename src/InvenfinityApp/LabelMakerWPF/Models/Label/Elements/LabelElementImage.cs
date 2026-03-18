@@ -29,7 +29,7 @@ namespace LabelMaker.Models.Label.Elements
 
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {
-            return SvgHelper.DrawSvg(_svgDrawing, this, labelLengthUnits, labelHeightUnits);
+            return LayoutHelper.CreateDrawGroup(_svgDrawing, this, labelLengthUnits, labelHeightUnits);
         }
 
         public override DrawingGroup RenderStandardSize(double labelHeightUnits)
