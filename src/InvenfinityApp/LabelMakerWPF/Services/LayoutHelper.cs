@@ -185,8 +185,8 @@ namespace LabelMakerWPF.Services
             if (targetTotalLengthUnits < totalMinLength - epsilon)
                 throw new InvalidOperationException($"Skalierungsfehler: Die Ziellänge ({targetTotalLengthUnits}) ist kleiner als die minimal mögliche Länge ({totalMinLength}).");
 
-            if (targetTotalLengthUnits > totalMaxLength + epsilon)
-                throw new InvalidOperationException($"Skalierungsfehler: Die Ziellänge ({targetTotalLengthUnits}) ist größer als die maximal mögliche Länge ({totalMaxLength}).");
+            //if (targetTotalLengthUnits > totalMaxLength + epsilon)
+            //    throw new InvalidOperationException($"Skalierungsfehler: Die Ziellänge ({targetTotalLengthUnits}) ist größer als die maximal mögliche Länge ({totalMaxLength}).");
 
             double remainingTargetLength = targetTotalLengthUnits;
             bool changed = true;

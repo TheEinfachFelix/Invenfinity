@@ -17,11 +17,16 @@ namespace LabelMaker.Services
 {
     internal static class Converter
     {
-        public static LabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin, PartDataModel part)
+        public static BinLabelRoot ToLabel(string assetPath, JsonTemplate template, BinDataModel bin)
         {
-            LabelRoot root = new(bin.SlotLableLength);
+            BinLabelRoot root = new(bin.TotalLableLength);
             string newPath = Path.Combine(assetPath, template.requirements.AssetType);
-            root.elements = toLabelElements(template.partElement, bin, part, newPath);
+            List<ILabelElement> list = [];
+            foreach (var part in bin.Parts)
+            {
+                list.AddRange(toLabelElements(template.partElement, bin, part, newPath));
+            }
+            root.elements = list;
             
             return root;
         }

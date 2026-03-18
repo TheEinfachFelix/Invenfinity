@@ -43,9 +43,11 @@ namespace TestWPF
             };
 
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
-            LabelMakerControll var = new(assetPath);
+
+            var drawing = Bin.ToLabel(assetPath);
+
             //img.Source = var.PreviewBin(Bin);
-            img.Source = var.PreviewPart(Bin,Part);
+            img.Source = drawing.RenderImg(12);
 
             //img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
         }

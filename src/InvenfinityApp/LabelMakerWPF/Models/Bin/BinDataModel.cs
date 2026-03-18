@@ -1,6 +1,8 @@
 ﻿using LabelMaker.Models.Part;
+using LabelMakerWPF.Models.Part;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace LabelMaker.Models.Bin
@@ -19,5 +21,10 @@ namespace LabelMaker.Models.Bin
         }
         public List<PartDataModel> Parts { get; set; } = [];
         public double Padding => 3;
+        public TemplateType Template { get; set; }
+        public string GetTemplatePath(string assetPath)
+        {
+            return Path.Combine(assetPath, "Templates", Template.ToString() + ".json");
+        }
     }
 }

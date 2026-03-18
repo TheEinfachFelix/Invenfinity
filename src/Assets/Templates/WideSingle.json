@@ -18,13 +18,13 @@
                 {
                     "type": "image",
                     "value": "head",
-                    "padding": 1,
+                    "padding": 0.25,
                     "verticalAlign": "Center"
                 },
                 {
                     "type": "image",
                     "value": "side",
-                    "padding": 1,
+                    "padding": 0.5,
                     "orientation": "Wide",
                     "verticalAlign": "Center"
                 },
@@ -32,7 +32,7 @@
                     "type": "text",
                     "value": "*{Thread}*x{Length}",
                     "maxScale": 8,
-                    "padding": 1
+                    "padding": 0.5
                 }
             ]
         },
@@ -40,7 +40,6 @@
             "type": "qrcode",
             "value": "{Id}",
             "minScale": 1,
-            "padding": 1,
             "verticalAlign": "Center",
             "horisontalAlign": "Right"
         }

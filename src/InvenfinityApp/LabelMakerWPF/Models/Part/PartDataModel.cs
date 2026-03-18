@@ -13,10 +13,5 @@ namespace LabelMaker.Models.Part
         public int Id { get; set; }
         public string Typename { get; set; }
         public ScrewThreadType Thread { get; set; }
-        public TemplateType Template { get; set; }
-        public string GetTemplatePath(string assetPath)
-        {
-            return Path.Combine(assetPath, "Templates", Template.ToString() + ".json");
-        }
     }
 }
