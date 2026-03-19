@@ -54,10 +54,10 @@ namespace TestWPF
             //img.Source = var.Print(Bin, new PrinterPTouchP700(), false);
 
             // TODO
-            // Stack Implementation
             // Layout umd Part aus der json implementation
             // Renderer und Services refactor
             // RenderStandardSize mit orientation
+            // Group Cutter -> Strip Whitespace methode
         }
     }
 }

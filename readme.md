@@ -13,3 +13,8 @@ dotnet ef dbcontext scaffold "Host=localhost;Port=5433;Database=initexample;User
 
 FreeCADCmd -c "exec(open('FastenerGenerator.py').read())"
 https://wiki.freecad.org/Fasteners_Workbench
+
+# Klassendiagramm generation
+
+puml-gen ".\Backend\" .\umlBackend -dir
+java -jar C:\tools\plantuml\plantuml.jar -tsvg .\umlBackend\include.puml
