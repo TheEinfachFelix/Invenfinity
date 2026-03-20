@@ -19,7 +19,7 @@
 
         <StackPanel Grid.Column="1">
 
-            <TextBlock Text="Location Erstellen"
+            <TextBlock Text="Grid Erstellen"
                FontSize="20"
                FontWeight="Bold"
                Margin="0,0,0,20"/>
