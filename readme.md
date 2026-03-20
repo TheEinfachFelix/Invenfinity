@@ -22,5 +22,3 @@ java -jar C:\tools\plantuml\plantuml.jar -tsvg .\umlBackend\include.puml
 # Testprotokoll
 dotnet test --logger "trx;LogFileName=testresults.trx"
 trxlog2html -i TestResults/testresults.trx -o TestResults/report.html
-
-hi felix
