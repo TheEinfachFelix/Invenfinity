@@ -4,7 +4,7 @@
 
 ### SD
 
-- Klassendiagramm
+- Klassendiagramm (DONE)
 - Aktivitätsdiagramm
 - Sequenzdiagramm
 - Programmierung (DONE)

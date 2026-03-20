@@ -12,7 +12,6 @@ namespace Backend.Test.Domain
         public void Setup()
         {
         }
-
         [Test]
         public void TestBin1()
         {

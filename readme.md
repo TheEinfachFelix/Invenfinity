@@ -18,3 +18,10 @@ https://wiki.freecad.org/Fasteners_Workbench
 
 puml-gen ".\Backend\" .\umlBackend -dir
 java -jar C:\tools\plantuml\plantuml.jar -tsvg .\umlBackend\include.puml
+
+# Testprotokoll
+dotnet test --logger "trx;LogFileName=testresults.trx"
+trxlog2html -i TestResults/testresults.trx -o TestResults/report.html
+
+Testart
+Erwartetes ergebiss eingabe

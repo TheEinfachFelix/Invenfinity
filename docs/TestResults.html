@@ -1,0 +1,522 @@
+<html>
+<head><meta charset="utf-8"/>
+<title>Test Report</title>
+<style type="text/css">
+html, body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+#html-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-method-name {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 50%; /* Leicht vergrößert für mehr Text */
+  text-align: left;
+  line-height: 1.4;
+}
+.test-status {
+  width: 15%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.test-class-container {
+  margin-bottom: 2rem;
+}
+.test-class-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.test-class-info .class-name {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+</style>
+</head>
+<body>
+<div id="html-content">
+    <header>
+        <h1 id="title">Test Report</h1>
+    </header>
+    <div id="metadata-container">
+        <div id="timestamp">Started: 2026-03-20T10:34:39.7388256+01:00</div>
+        <div id="summary">
+            <div id="suite-summary">
+                <div class="summary-total">Test Classes (6)</div>
+            </div>
+            <div id="test-summary">
+                <div class="summary-total">Test Cases (23)</div>
+                <div class="summary-passed">23 passed</div>
+                <div class="summary-failed summary-empty">0 failed</div>
+                <div class="summary-pending summary-empty">0 pending</div>
+            </div>
+        </div>
+    </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDBin</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestBin1</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initialisierung von DBin mit binType1.<br>
+                  <strong>Eingabe:</strong> ID=1, Typ=binType1.<br>
+                  <strong>Erwartet:</strong> Korrekte Zuweisung, 2 Slots, Grid ist null, GetPosition() wirft Exception.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0177560</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestBin2</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initialisierung von DBin mit binType2.<br>
+                  <strong>Eingabe:</strong> ID=2, Typ=binType2.<br>
+                  <strong>Erwartet:</strong> Korrekte Zuweisung, 1 Slot, Grid ist null, GetPosition() wirft Exception.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0008060</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestParts</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Hinzufügen und Entfernen von Teilen (Parts) im Bin.<br>
+                  <strong>Eingabe:</strong> part1 an Slot 0, part2 an Slot 1, dann RemovePart.<br>
+                  <strong>Erwartet:</strong> Slots verwalten die Parts korrekt an den richtigen Indizes (Count rauf/runter).
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0015140</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDBinType</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestBinlist</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> DBinType Bin-Listenverwaltung und Löschstatus.<br>
+                  <strong>Eingabe:</strong> Add Bin1/Bin2 zur Liste, Remove Bin1.<br>
+                  <strong>Erwartet:</strong> Liste aktualisiert Einträge/Anzahl korrekt, isDeletable() ist True wenn leer.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0148430</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestTestData1</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Konstruktor von DBinType prüfen.<br>
+                  <strong>Eingabe:</strong> BinTypeId=1, SlotCount=2, X=1, Y=1.<br>
+                  <strong>Erwartet:</strong> Eigenschaften stimmen genau mit den Parametern überein.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0011770</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestTestData2</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Konstruktor von DBinType prüfen.<br>
+                  <strong>Eingabe:</strong> BinTypeId=2, SlotCount=1, X=1, Y=2.<br>
+                  <strong>Erwartet:</strong> Eigenschaften stimmen genau mit den Parametern überein.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0002480</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDGrid</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridBinPos</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Hinzufügen, Bewegen und Entfernen von Bins im Grid.<br>
+                  <strong>Eingabe:</strong> AddBin bei (2,3), MoveBin nach (0,0), RemoveBin.<br>
+                  <strong>Erwartet:</strong> Bin-Positionen und Grid-Matrix aktualisieren sich, GetAllPositions liefert Arrays, Remove löscht Bin restlos.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0082490</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridBinPosNotInGrid</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Behandlung von Bin-Bewegungen außerhalb des Grids.<br>
+                  <strong>Eingabe:</strong> MoveBin auf Koordinaten (5,6) im 5x6 Grid.<br>
+                  <strong>Erwartet:</strong> Löst eine InvalidOperationException aus.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0009770</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridCreateGrid</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Generierung der Grid-Matrix-Struktur.<br>
+                  <strong>Eingabe:</strong> Grid-Größe 5x6.<br>
+                  <strong>Erwartet:</strong> Erstellt ein 2D-Array der Größe 5x6, in dem jedes Feld mit null initialisiert ist.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0020240</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridCtor</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initialisierung des Grid-Konstruktors.<br>
+                  <strong>Eingabe:</strong> ID=1, Name="grid1", Location=root, X=5, Y=6.<br>
+                  <strong>Erwartet:</strong> Alle Eigenschaften werden korrekt zugewiesen.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0002740</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridisDeletable</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Prüfung der Löschbarkeit des Grids.<br>
+                  <strong>Eingabe:</strong> Leeres Grid, dann Hinzufügen eines Bins.<br>
+                  <strong>Erwartet:</strong> isDeletable() ist True solange leer, False wenn mindestens ein Bin vorhanden ist.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0006470</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridisfree</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Prüfung, ob definierte Grid-Bereiche frei sind.<br>
+                  <strong>Eingabe:</strong> Belegtes Feld bei (2,3), freies Feld bei (0,0), außerhalb bei (9,9).<br>
+                  <strong>Erwartet:</strong> True für freies Feld, False für belegte oder außerhalb liegende Koordinaten.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0003040</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridResize</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Größenanpassung (Resize) des Grids.<br>
+                  <strong>Eingabe:</strong> Resize auf 2x2. Versuch mit Bin außerhalb und innerhalb des neuen Bereichs.<br>
+                  <strong>Erwartet:</strong> Exception wenn Bin abgeschnitten wird, MinRequiredGridSize korrekt berechnet, Resize erfolgreich wenn Bin im Limit.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0013070</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDLocation</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridAdd</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Grid zu Location hinzufügen.<br>
+                  <strong>Eingabe:</strong> Neues Grid an locRoot.<br>
+                  <strong>Erwartet:</strong> Grid-Liste der Location hat korrekte Anzahl (Count 1).
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0006179</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestGridGetByID</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Suche eines Grids über die ID.<br>
+                  <strong>Eingabe:</strong> Suche nach angelegter Grid-ID in Parent-Location.<br>
+                  <strong>Erwartet:</strong> FindGridByID liefert das korrekte Grid-Objekt zurück.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0005419</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestLocationAddChild</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Kind-Locations hinzufügen.<br>
+                  <strong>Eingabe:</strong> Parent-Location und Child-Location.<br>
+                  <strong>Erwartet:</strong> Die Children-Liste der Parent-Location enthält das übergebene Child.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0004330</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestLocationCtor</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initialisierung einer Root-Location ohne Parent.<br>
+                  <strong>Eingabe:</strong> LocationId=1, Name="loc1", Parent=null.<br>
+                  <strong>Erwartet:</strong> Eigenschaften stimmen, leere Listen generiert, isDeletable() ist False.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0008500</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestLocationCtorWithParent</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initialisierung einer Location mit zugehörigem Parent.<br>
+                  <strong>Eingabe:</strong> LocationId=2, Name="loc1", Parent=parentObject.<br>
+                  <strong>Erwartet:</strong> ParentId/Parent korrekt verknüpft, Parent erhält Child in Liste, isDeletable() Status stimmen überein.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0006480</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDPart</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestPart1</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> DPart Konstruktor (ohne externe ID).<br>
+                  <strong>Eingabe:</strong> PartId=1, InventreeId=null.<br>
+                  <strong>Erwartet:</strong> PartId zugewiesen, InventreeId bleibt null, Bins-Liste ist initialisiert.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0004390</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestPart2</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> DPart Konstruktor (mit externer ID).<br>
+                  <strong>Eingabe:</strong> PartId=2, InventreeId=12.<br>
+                  <strong>Erwartet:</strong> PartId und InventreeId werden exakt übernommen, Bins-Liste ist initialisiert.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0004220</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="test-class-container">
+    <div class="test-class-info">
+        <div class="class-name">Backend.Test.Domain.TestDset</div>
+    </div>
+    <div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestDsetFindPart</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Suche nach Parts im Dataset.<br>
+                  <strong>Eingabe:</strong> Suchanfragen nach Part-ID 1, 2 und 3.<br>
+                  <strong>Erwartet:</strong> Gibt Part für ID 1 & 2 zurück, wirft Exception bei ID 3 (nicht vorhanden).
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0010620</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestDsetFindType</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Suche nach Bin-Types im Dataset.<br>
+                  <strong>Eingabe:</strong> Suchanfragen nach BinType-ID 1, 2 und 3.<br>
+                  <strong>Erwartet:</strong> Gibt BinType für ID 1 & 2 zurück, wirft Exception bei ID 3 (nicht vorhanden).
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0009590</div>
+            </div>
+        </div>
+        <div class="test-result Passed">
+            <div class="test-info">
+              <div class="test-method-name">TestDsetsetup</div>
+              <div class="test-title">
+                  <strong>Art:</strong> Unit Test<br>
+                  <strong>Test:</strong> Initiales Setup der Dataset-Properties.<br>
+                  <strong>Eingabe:</strong> Zuweisung von Root-Location, BinTypes-Liste und Parts-Liste.<br>
+                  <strong>Erwartet:</strong> Das Dataset referenziert die übergebenen Listen und Objekte korrekt.
+              </div>
+              <div class="test-status">Passed</div>
+              <div class="test-duration">00:00:00.0005610</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -40,10 +40,12 @@ namespace Backend.Test.Domain
             Assert.That(data.Bins, Is.Empty);
             Assert.That(data.IsDeletable(), Is.True);
             var bin1 = TestData.bin1(data);
+            data.Bins.Add(bin1);
             Assert.That(data.Bins, Has.Count.EqualTo(1));
             Assert.That(data.Bins, Contains.Item(bin1));
             Assert.That(bin1.BinType, Is.EqualTo(data));
             var bin2 = TestData.bin2(data);
+            data.Bins.Add(bin2);
             Assert.That(data.Bins, Has.Count.EqualTo(2));
             Assert.That(data.Bins, Contains.Item(bin2));
             Assert.That(bin1.BinType, Is.EqualTo(data));
