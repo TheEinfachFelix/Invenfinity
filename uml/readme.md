@@ -21,6 +21,6 @@
 
 - Projektantrag (DONE)
 - User Stories (DONE)
-- **Benutzerdokumentation**
+- Benutzerdokumentation (DONE)
 - Datenbankmodell (DONE)
-- Projektpräsentation
+- **Projektpräsentation**

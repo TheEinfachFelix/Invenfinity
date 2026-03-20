@@ -25,6 +25,7 @@ Diese Software dient zur Verwaltung eines modularen Lagersystems basierend auf *
 Gridfinity ist ein Open-Source-Boxensystem. Das System baut auf einem 42x42mm Raster (**Grid**) auf und bietet mehr als ca. 100.000 Box-Typen (**BinTypes**). Eine Box (**Bin**) kann dabei ein oder mehrere Felder des Grids nutzen.
 
 ![Bild eines Beispiel Gridfinitys von Zack Freedman](./IMGs/Gridfinity.png)
+[Quelle](https://www.youtube.com/watch?v=ra_9zU-mnl8)
 
 ### Grundprinzip
 
@@ -40,11 +41,11 @@ Gridfinity ist ein Open-Source-Boxensystem. Das System baut auf einem 42x42mm Ra
 Das System ist streng hierarchisch aufgebaut, um eine logische Abbildung der physischen Welt zu ermöglichen:
 
 ``` txt
-**Location**
-└── **Location** (Unterort)
-└── **Grid**
-    └── **Bin**
-        └── **Part**
+Location
+└── Location (Unterort)
+└── Grid
+    └── Bin
+        └── Part
 ```
 
 ### Definitionen
