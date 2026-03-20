@@ -114,7 +114,6 @@ namespace Backend.Application.UseCases
             var oldBinGrid = bin.Grid;
 
 
-
             if ((oldBinGrid != null && newGridId == null) || (oldBinGrid != null && oldBinGrid.GridId != newGridId))
                 _repo.RemoveBinfromGrid(BinId, oldBinGrid.GridId);
 
