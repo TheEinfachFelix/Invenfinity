@@ -71,6 +71,8 @@ Die Anwendung unterteilt sich in drei Hauptbereiche:
 
 ## Locations verwalten
 
+![Location Edit Page](./IMGs/LocationEdit.png)
+
 ### Location erstellen
 
 1. **LocationEdit** öffnen.
@@ -101,6 +103,8 @@ Die Anwendung unterteilt sich in drei Hauptbereiche:
 **Hinweis:** Das Verwalten der Bins im Grid wird später behandelt.
 
 ## Bins verwalten
+
+![Bin Edit Page](./IMGs/BinEdit.png)
 
 ### Bin erstellen
 

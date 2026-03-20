@@ -12,7 +12,7 @@
 
 ### VP
 
-- **Zustandsdiagramm**
+- Zustandsdiagramm (DONE)
 - Use-Case-Diagramm (DONE)
 - Benutzeroberfläche (DONE)
 - Testprotokoll (DONE)

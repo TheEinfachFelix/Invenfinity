@@ -69,6 +69,7 @@ namespace Backend.Domain
 
         public void AddPart(DPart inPart, int SlotNr)
         {
+            if (Slots.Count == 0) throw new Exception("BinAddtype not set");
             if (SlotNr < 0 || SlotNr >= BinType.SlotCount) throw new Exception("SlotNr out of range");
             if (Slots[SlotNr] != null) throw new Exception("Slot already filled");
             Slots[SlotNr] = inPart;
