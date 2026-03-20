@@ -5,8 +5,8 @@
 ### SD
 
 - Klassendiagramm (DONE)
-- **Aktivitätsdiagramm**
-- **Sequenzdiagramm**
+- Aktivitätsdiagramm (DONE)
+- Sequenzdiagramm
 - Programmierung (DONE)
 - Datenbankanbindung (DONE)
 

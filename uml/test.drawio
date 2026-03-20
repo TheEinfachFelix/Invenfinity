@@ -1,0 +1,94 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="UpdateBin Activity">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <mxCell id="start" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="380" y="40" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a1" value="Bin laden &amp;amp; altes Grid merken" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="start" target="a1"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="d1" value="Aus altem Grid&#xa;entfernen?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="210" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="a1" target="d1"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="a2" value="Repo: RemoveBinfromGrid" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="235" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="d1" target="a2">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" value="10" /></mxGeometry>
+          <mxCell value="Ja" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e3" />
+        </mxCell>
+
+        <mxCell id="d2" value="In neues Grid&#xa;verschieben?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="370" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="d1" target="d2"><mxGeometry relative="1" as="geometry"><mxPoint as="offset" value="-10" /></mxGeometry>
+          <mxCell value="Nein" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e4" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="a2" target="d2"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="a3" value="FindFreePosForBin" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="395" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="d2" target="a3">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell value="Ja" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e6" />
+        </mxCell>
+
+        <mxCell id="d3" value="Position&#xa;gefunden?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="500" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="a3" target="d3"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="err" value="Exception: No free position" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="720" y="510" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="d3" target="err">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell value="Nein" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e8" />
+        </mxCell>
+
+        <mxCell id="a4" value="Repo: CreateBinPos" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="510" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="d3" target="a4">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell value="Ja" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e9" />
+        </mxCell>
+
+        <mxCell id="a5" value="GetChangedSlots&#xa;(Vergleich alt vs neu)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="640" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="d2" target="a5">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell value="Nein" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e10" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="a4" target="a5"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="a6" value="Repo: UpdateBinSlot&#xa;(für jede Änderung)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="750" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="a5" target="a6"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="a7" value="reload()&#xa;(Cache Refresh)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="850" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="a6" target="a7"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="end" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="380" y="950" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="a7" target="end"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
