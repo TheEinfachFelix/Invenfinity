@@ -5,22 +5,22 @@
 ### SD
 
 - Klassendiagramm (DONE)
-- Aktivitätsdiagramm
-- Sequenzdiagramm
+- **Aktivitätsdiagramm**
+- **Sequenzdiagramm**
 - Programmierung (DONE)
 - Datenbankanbindung (DONE)
 
 ### VP
 
-- Zustandsdiagramm
+- **Zustandsdiagramm**
 - Use-Case-Diagramm (DONE)
 - Benutzeroberfläche (DONE)
-- Testprotokoll
+- Testprotokoll (DONE)
 
 ### GI
 
 - Projektantrag (DONE)
 - User Stories (DONE)
-- Benutzerdokumentation
+- **Benutzerdokumentation**
 - Datenbankmodell (DONE)
 - Projektpräsentation

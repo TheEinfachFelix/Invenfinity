@@ -23,5 +23,4 @@ java -jar C:\tools\plantuml\plantuml.jar -tsvg .\umlBackend\include.puml
 dotnet test --logger "trx;LogFileName=testresults.trx"
 trxlog2html -i TestResults/testresults.trx -o TestResults/report.html
 
-Testart
-Erwartetes ergebiss eingabe
+hi felix
