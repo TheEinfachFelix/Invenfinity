@@ -16,7 +16,7 @@
         <!-- LEFT TREE -->
         <uc:LocationTree Grid.Column="0" x:Name="locTree"/>
 
-        <StackPanel Grid.Column="1" DataContext="{Binding SelectedItemEdit}">
+        <StackPanel Grid.Column="1">
 
             <TextBlock Text="Location Erstellen"
                FontSize="20"

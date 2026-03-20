@@ -2,6 +2,8 @@
 
 Willkommen beim Benutzerhandbuch für **Invenfinity**, Ihrer Software zur effizienten Verwaltung von modularen Lagersystemen.
 
+![Bild der Gridseite](./IMGs/Grid.png)
+
 ## Inhalt
 
 1. [Lagerphilosophie](#lagerphilosophie)
@@ -21,6 +23,8 @@ Diese Software dient zur Verwaltung eines modularen Lagersystems basierend auf *
 ### Was ist Gridfinity?
 
 Gridfinity ist ein Open-Source-Boxensystem. Das System baut auf einem 42x42mm Raster (**Grid**) auf und bietet mehr als ca. 100.000 Box-Typen (**BinTypes**). Eine Box (**Bin**) kann dabei ein oder mehrere Felder des Grids nutzen.
+
+![Bild eines Beispiel Gridfinitys von Uack Freedman](./IMGs/Gridfinity.png)
 
 ### Grundprinzip
 
@@ -55,6 +59,8 @@ Das System ist streng hierarchisch aufgebaut, um eine logische Abbildung der phy
 
 Die Anwendung unterteilt sich in drei Hauptbereiche:
 
+![Bild Des Grid Tabs mit den unten genannten bereichen markiert](./IMGs/GridLayout.png)
+
 1. **Navigation (links):** Eine Baumstruktur aller Locations. Die Auswahl steuert die restlichen Ansichten.
 2. **Grid-Ansicht (Mitte):** Visuelle Darstellung des Grids. Zeigt Bins, deren Positionen und Inhalte direkt an.
 3. **Edit-Tabs (Rechts/Kontext):**
@@ -68,13 +74,16 @@ Die Anwendung unterteilt sich in drei Hauptbereiche:
 
 1. **LocationEdit** öffnen.
 2. Auf **"Neue Location"** klicken.
-3. Name vergeben und ggf. eine `ParentId` setzen, indem sie in dem Baumdiagramm links den Parent auswählen.
+3. Name vergeben und ggf. eine `ParentId` setzen, indem sie in dem Baumden Parent auswählen.
+
+    ![Visuelle Beschreibung wie die ParentId ausgefüllt wird](./IMGs/LocationErstellen.png)
+
 4. **"Erstellen"** klicken.
 
 ### Location bearbeiten/löschen
 
 * Wählen Sie die Location im Baum aus, passen Sie die Werte an und speichern Sie.
-* **Hinweis beim Löschen:** Damit eine Location gelöscht werden kann, darf sie keine Sub-Locations und Grids haben.
+* **Hinweis beim Löschen:** Damit eine Location oder Grid gelöscht werden kann, darf sie keine Sub-Locations und Grids haben.
 
 ## Grids verwalten
 
@@ -83,6 +92,9 @@ Die Anwendung unterteilt sich in drei Hauptbereiche:
 1. Auf **"Neues Grid"** klicken.
 2. Name vergeben und eine `ParentId` setzen, indem sie in dem Baum den Parent auswählen.
 3. **X Size** und **Y Size** (Anzahl der 42mm Einheiten) setzen.
+
+    ![Verdeutlichungen für Gird ](./IMGs/GridErstellen.png)
+
 4. **"Erstellen"** klicken.
 
 **Hinweis:** das Verwalten der Bins im Grid wird später behandelt.
@@ -94,6 +106,9 @@ Die Anwendung unterteilt sich in drei Hauptbereiche:
 1. **BinEdit** öffnen und **"Bin erstellen"** klicken.
 2. Passendes **Grid** oder `Empty` auswählen.
 3. Passenden **BinType** auswählen.
+
+    ![Bin Erstellen](./IMGs/BinErstellen.png)
+
 4. **"Bin Erstellen"** klicken.
 
 ### Bin im Grid verschieben
@@ -107,7 +122,13 @@ Speichern ist nicht notwendig
 
 1. *Grid* öffnen.
 2. In der relevanten Bin auf **"Edit"** klicken.
+
+    ![Bin Edit Btn im Grid Tab](./IMGs/GridBinEditBtn.png)
+
 3. das Feld **"Grid ID"** bearbeiten.
+
+    ![GriID Bearbeiten](./IMGs/BinEditGridID.png)
+
 4. **"Speichern"** klicken.
 
 **Hinweis**: Beim verschieben werden nur Grids angezeigt die außreichend Platz haben.
@@ -117,6 +138,13 @@ Speichern ist nicht notwendig
 Ist eine Bin dem Grid `Empty` zugeordnet, ist es eine Gridless Bin. Diese lassen sich über das Dropdown auf der Seite *BinEdit* Bearbeiten.
 Dieses vereinfacht das Verschieben von Bin und bietet einen einfachen Zwischenspeicher.
 
+### Bin Löschen
+
+1. Bin auswählen (Über Gridless Bins oder über *Grid* Tab)
+2. Slots der Bin Leeren (siehe [Hier](#bins-verwalten))
+3. **"Grid ID"** auf `Empty` setzen.
+4. **"Löschen"** klicken
+
 ## Parts verwalten
 
 Um die Parts einer Bin zu bearbeiten ist es vorrausgesetzt, die zu bearbeitende Bin ausgewählt ist.
@@ -124,6 +152,8 @@ Um die Parts einer Bin zu bearbeiten ist es vorrausgesetzt, die zu bearbeitende 
 * **Hinzufügen:** im Feld **"Part hinzufügen"** das relevante Part suchen und mit eiem doppelklick dem obersten freien Solt zuweisen.
 * **Reihenfolge:** Innerhalb eines Bins können Parts über die Pfeilsymbole (**↑ / ↓**) in den Slots verschoben werden.
 * **Entfernen:** Über die Schaltfläche "Entfernen" wird das Part aus dem Slot gelöscht.
+
+![Erleuterung Slots und Parts verwalten](./IMGs/BinEditSlots.png)
 
 Nach dem Bearbeiten ist ein Speichern notwendig.
 
@@ -148,3 +178,5 @@ Wenn die Software nicht sauber oder garnicht startet gibt es diese Lösungsmögl
 
 * **InvenTree Integration:** Automatischer Abgleich von Part-Daten aus der zentralen Verwaltung.
 * **Label Generierung:** Automatisches Erstellen und Drucken von Labels inklusive Barcodes oder QR-Codes für jeden Bin.
+
+    ![Beispiellabel](./IMGs/LabelExampel.png)
