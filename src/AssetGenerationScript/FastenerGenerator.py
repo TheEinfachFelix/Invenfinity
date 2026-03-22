@@ -18,7 +18,7 @@ for p in PATHS:
 from FastnerModel import FastenerModel
 from FastenerNameMapper import mapper
 
-class FastenerAutomation:
+class FastenerGenerator:
     def __init__(self, output_path):
         self.output_path = output_path
         self.sm = ScrewMaker.FSScrewMaker()
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     SCREW_LEN = "20"
     ISOS = ["ISO4162", "ISO4014", "ISO4762", "ISO10642", "ISO4026", "ISO4032", "ISO7040", "DIN1587", "ISO7089", "DIN603", "ISO7380-1", "ISO14580", "ISO4035", "ISO4161", "DIN6334", "DIN315" ]
     #ISOS = []
-    worker = FastenerAutomation(OUTPUT)
+    worker = FastenerGenerator(OUTPUT)
 
     for iso in ISOS:
         data = FastenerModel(iso, SCREW_SIZE, SCREW_LEN, Thread=False)
