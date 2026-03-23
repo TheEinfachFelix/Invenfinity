@@ -19,8 +19,8 @@
                 {
                     "type": "groupe",
                     "horisontalAlign": "Center",
-                    "orientation": "Wide",                    "maxScale":8,
-
+                    "orientation": "Wide",
+                    "maxScale": 8,
                     "elements": [
                         {
                             "type": "image",
