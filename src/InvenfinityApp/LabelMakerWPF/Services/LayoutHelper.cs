@@ -168,41 +168,81 @@ namespace LabelMakerWPF.Services
             }
         }
 
-        public static DrawingGroup TrimWhitespace(DrawingGroup input)
+    public static DrawingGroup TrimWhitespace(DrawingGroup input)
+    {
+        if (input == null) return null;
+
+        // 1. Alle transparenten Hintergrund-Rechtecke rekursiv entfernen
+        var cleanedDrawing = RemoveTransparentBackgrounds(input) as DrawingGroup;
+
+        // Wenn nach dem Bereinigen nichts mehr übrig ist, leere Gruppe zurückgeben
+        if (cleanedDrawing == null) return new DrawingGroup();
+
+        // 2. Jetzt die ECHTEN Bounds des rein sichtbaren Inhalts berechnen
+        Rect bounds = cleanedDrawing.Bounds;
+
+        if (bounds.IsEmpty) return cleanedDrawing;
+
+        // 3. Den sichtbaren Inhalt exakt auf (0,0) verschieben
+        var transformGroup = new TransformGroup();
+        if (cleanedDrawing.Transform != null)
         {
-            if (input == null || input.Children.Count == 0)
-                return input;
-
-            Rect bounds = input.Bounds;
-
-            if (bounds.IsEmpty)
-                return input;
-
-            var result = new DrawingGroup();
-
-            // Inhalt verschieben
-            var wrapper = new DrawingGroup
-            {
-                Transform = new TranslateTransform(-bounds.X, -bounds.Y)
-            };
-
-            foreach (var child in input.Children)
-            {
-                wrapper.Children.Add(child);
-            }
-
-            result.Children.Add(wrapper);
-
-            // 🔥 DAS ist der entscheidende Teil
-            result.ClipGeometry = new RectangleGeometry(new Rect(0, 0, bounds.Width, bounds.Height));
-
-            return result;
+            transformGroup.Children.Add(cleanedDrawing.Transform);
         }
 
-        /// <summary>
-        /// Berechnet die aufgeteilten Längen für die Elemente basierend auf der Ziel-Länge, Standard-Längen und Min/Max-Skalierungen.
-        /// </summary>
-        public static double[] CalculateDistributedLengths(double targetTotalLengthUnits, double[] standardLengthsUnits, double[] minScales, double[] maxScales)
+        // Verschieben um die tatsächliche obere linke Kante des sichtbaren Inhalts
+        transformGroup.Children.Add(new TranslateTransform(-bounds.X, -bounds.Y));
+
+        cleanedDrawing.Transform = transformGroup;
+
+        return cleanedDrawing;
+    }
+
+    // Rekursive Hilfsmethode, die den Baum durchläuft und unsichtbare Elemente aussortiert
+    private static Drawing RemoveTransparentBackgrounds(Drawing drawing)
+    {
+        if (drawing == null) return null;
+
+        if (drawing is DrawingGroup group)
+        {
+            // Klonen, um die Eigenschaften (Transform, Opacity etc.) zu behalten
+            var clonedGroup = group.Clone();
+            clonedGroup.Children.Clear(); // Children leeren und nur die sichtbaren neu hinzufügen
+
+            foreach (var child in group.Children)
+            {
+                var cleanedChild = RemoveTransparentBackgrounds(child);
+                if (cleanedChild != null)
+                {
+                    clonedGroup.Children.Add(cleanedChild);
+                }
+            }
+
+            // Wenn die Gruppe leer ist (z.B. weil sie nur transparente Elemente enthielt), ignoriere sie
+            return clonedGroup.Children.Count > 0 ? clonedGroup : null;
+        }
+
+        if (drawing is GeometryDrawing geomDrawing)
+        {
+            // Prüfen, ob das Element sichtbar ist
+            bool hasBrush = geomDrawing.Brush != null && geomDrawing.Brush != Brushes.Transparent;
+            bool hasPen = geomDrawing.Pen != null && geomDrawing.Pen.Thickness > 0 && geomDrawing.Pen.Brush != Brushes.Transparent;
+
+            // Dein Hintergrund hat Brush = Transparent und Pen = null. Er fällt hier durch.
+            if (!hasBrush && !hasPen)
+            {
+                return null; // Unsichtbares Element verwerfen
+            }
+        }
+
+        // Für alle anderen (sichtbaren GeometryDrawings, ImageDrawings, etc.) das Original klonen
+        return drawing.Clone();
+    }
+
+    /// <summary>
+    /// Berechnet die aufgeteilten Längen für die Elemente basierend auf der Ziel-Länge, Standard-Längen und Min/Max-Skalierungen.
+    /// </summary>
+    public static double[] CalculateDistributedLengths(double targetTotalLengthUnits, double[] standardLengthsUnits, double[] minScales, double[] maxScales)
         {
             int n = standardLengthsUnits.Length;
             double[] finalLengths = new double[n];

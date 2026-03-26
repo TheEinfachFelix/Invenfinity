@@ -41,7 +41,7 @@ namespace TestWPF
                 UnitLength = 4,
                 SlotCount = 2,
                 Parts = [Part, Part2],
-                Template = TemplateType.WideSingle,
+                Template = TemplateType.NormalStack,
             };
 
             var assetPath = "C:/Github/Invenfinity/src/Assets/";
