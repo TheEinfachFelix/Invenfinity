@@ -57,6 +57,9 @@ namespace LabelMaker.Services
                     case var _ when element.type == LabelElementStack.Name:
                         outp.Add(LabelElementStack.GenerateElement(element, bin, part, assetPath));
                         break;
+                    case var _ when element.type == LabelElementPart.Name:
+                        outp.Add(LabelElementPart.GenerateElement(element));
+                        break;
                     default:
                         throw new Exception($"Ungültiger Elementtyp: {element.type}");
                 }

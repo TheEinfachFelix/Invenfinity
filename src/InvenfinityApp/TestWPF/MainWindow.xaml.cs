@@ -38,7 +38,7 @@ namespace TestWPF
             };
             var Bin = new BinDataModel()
             {
-                UnitLength = 4,
+                UnitLength = 2,
                 SlotCount = 2,
                 Parts = [Part, Part2],
                 Template = TemplateType.NormalStack,
@@ -57,7 +57,6 @@ namespace TestWPF
             // Layout umd Part aus der json implementation
             // Renderer und Services refactor
             // RenderStandardSize mit orientation
-            // Group Cutter -> Strip Whitespace methode
         }
     }
 }
