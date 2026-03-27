@@ -14,6 +14,7 @@
         },
         {
             "type": "partElement",
+            "maxScale": 8,
             "padding": 1
         },
         {

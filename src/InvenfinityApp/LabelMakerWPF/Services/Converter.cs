@@ -21,16 +21,13 @@ namespace LabelMaker.Services
         {
             PartLabelRoot root = new(bin.TotalLableLength);
             string newPath = Path.Combine(assetPath, template.requirements.AssetType);
-            List<ILabelElement> list = [];
-            foreach (var part in bin.Parts)
-            {
-                list.AddRange(toLabelElements(template.partElement, bin, part, newPath));
-            }
-            root.elements = list;
+            PartDataModel part = new();
+
+            root.elements = toLabelElements(template.Layout, bin, part, newPath, template);
             
             return root;
         }
-        public static List<ILabelElement> toLabelElements(List<LayoutItem> items, BinDataModel bin, PartDataModel part, string assetPath)
+        public static List<ILabelElement> toLabelElements(List<LayoutItem> items, BinDataModel bin, PartDataModel part, string assetPath, JsonTemplate? template = null)
         {
             List<ILabelElement> outp = [];
             foreach (var element in items)
@@ -58,7 +55,13 @@ namespace LabelMaker.Services
                         outp.Add(LabelElementStack.GenerateElement(element, bin, part, assetPath));
                         break;
                     case var _ when element.type == LabelElementPart.Name:
-                        outp.Add(LabelElementPart.GenerateElement(element));
+                        List<ILabelElement> list = [];
+                        if (template == null) throw new ArgumentNullException(nameof(template));
+                        foreach (var npart in bin.Parts)
+                        {
+                            list.AddRange(toLabelElements(template.partElement, bin, npart, assetPath, template));
+                        }
+                        outp.Add(LabelElementPart.GenerateElement(element, list));
                         break;
                     default:
                         throw new Exception($"Ungültiger Elementtyp: {element.type}");

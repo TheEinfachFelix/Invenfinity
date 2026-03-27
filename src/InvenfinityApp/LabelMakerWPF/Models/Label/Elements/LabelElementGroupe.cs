@@ -39,7 +39,7 @@ namespace LabelMakerWPF.Models.Label.Elements
             if (MinScale == new LayoutItem().minScale || newMinScale > minScale)
                 this.MinScale = Math.Max(this.MinScale, newMinScale);
             if (MaxScale == new LayoutItem().maxScale || newMaxScale < maxScale)
-                this.MaxScale = Math.Min(this.MaxScale, newMaxScale);
+                this.MaxScale = Math.Max(this.MaxScale, newMaxScale);
         }
         public override DrawingGroup Render(double labelHeightUnits, double labelLengthUnits)
         {

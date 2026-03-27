@@ -38,7 +38,7 @@ namespace TestWPF
             };
             var Bin = new BinDataModel()
             {
-                UnitLength = 2,
+                UnitLength = 4,
                 SlotCount = 2,
                 Parts = [Part, Part2],
                 Template = TemplateType.NormalStack,
